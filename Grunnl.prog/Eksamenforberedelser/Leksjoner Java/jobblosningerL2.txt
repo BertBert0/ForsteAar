@@ -1,0 +1,295 @@
+
+/**********************************************
+   På denne fila er alle løsningsforlagene til 
+   jobbene 1 - 7 i leksjon 2 samlet. Du må
+   klippe ut en og en jobb, lime den inn i en
+   fil og lagre den som en java-fil med samme
+   navn som det klassen (jobben) har.
+ **********************************************/ 
+
+
+// Leksjon 2: Jobb 1
+// Utviklet av RMI - Aug 2017
+//******************************************
+// Programmet tester innlesing fra brukeren, 
+// lagring i variabler og utskrift i et  
+// dialogvindu.
+//******************************************
+ 
+import static java.lang.Integer.*;
+import static javax.swing.JOptionPane.*;
+
+public class Variabeltest {
+
+  public static void main(String[] args) {
+    // Deklarerer String-variabler
+    String fornavn, etternavn;
+    // Initierer en String-variabel
+    String melding = "Lykke til med Java!";
+    // Deklarerer int-variabel
+    int årstall;
+
+    // Innlesing av både for- og etternavn
+    fornavn = showInputDialog("Gi inn fornavnet ditt:");
+    etternavn = showInputDialog("Gi inn etternavnet ditt:");
+
+    // OBS!! Innlesing av heltallsverdier i 2 steg
+    String tallTekst = showInputDialog("Gi inn årstall:");
+    årstall = parseInt(tallTekst);
+ 
+
+    // Utskrift av info
+    showMessageDialog(null,"Fornavn:" + fornavn + "\n"
+                         + "Etternavn:" + etternavn + "\n"
+                         + "Årstall: " + årstall + "\n"
+                         + melding);
+  }
+}
+
+
+// Leksjon 2: Jobb 2
+// Utviklet av RMI - Aug 2017
+//******************************************
+// Programmet leser inn et heltall, beregner
+// summen av tallet med seg selv, og samme
+// produkt. Skriver ut resultatene.
+//******************************************
+ 
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+
+public class Kalkulator {
+
+  public static void main(String[] args) {
+    // Innlesing
+    String tallTekst = showInputDialog("Gi et heltall: ");
+    // Konverterer fra String til heltall:
+    int tall = parseInt(tallTekst);
+
+    // Beregning
+    int svarAdd = tall + tall;   // Sum, addisjon +
+    int svarMult = tall * tall;  // Produkt
+
+    // Utskrift
+    SshowMessageDialog(null, tall + " + " + tall + " = " + svarAdd + "\n"
+                           + tall + " * " + tall + " = " + svarMult);
+  }
+}
+
+
+
+
+/* Leksjon 2: Jobb 3
+ * Utviklet av RMI - August 2017
+ *******************************************
+ * Programmet leser inn lengde og bredde for
+ * et rektangel, med en grafisk veiledning,
+ * beregner og skriver ut omkretsen.
+ *******************************************
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+
+public class Omkretsberegning {
+
+  public static void main(String[] args) {
+
+    // Innlesing...
+    String ledetekst = "Beregning av omkrets:" + "\n"
+                          + "***********" + "\n" 
+                          + "|                |  Høyde" + "\n" 
+                          + "***********" + "\n"
+                          + "   Bredde "+ "\n" + "\n"; 
+    String innTxt = showInputDialog(ledetekst + "Gi bredde: ");
+    int lengde = parseInt(innTxt);
+    // NB! Gjenbruker allerede deklarert variabel 'innTxt'
+    innTxt = showInputDialog(ledetekst + "Gi høyde: ");
+    int bredde = parseInt(innTxt);
+
+    // Beregning...
+    int omkrets = lengde*2 + bredde*2;
+
+    // Skriver ut resultat...
+    showMessageDialog(null, "Rektangel med " + "\n"
+                          + "Bredde: " + lengde + "\n"
+                          + "Høyde: " + bredde + "\n"
+                          + "Omkrets: " + omkrets);
+  }
+}
+
+
+
+/* Leksjon 2: Jobb 4
+ * Utviklet av RMI - August 2017
+ *******************************************
+ * Programmet leser en lengde gitt i tommer,
+ * omregner lengden til meter og skriver ut
+ * en kvittering med inndata og resultat.
+ *  Obs! Programmet bruker en konstant.
+ *******************************************
+ */ 
+import static java.lang.Integer.*;
+import static javax.swing.JOptionPane.*;
+
+public class Lengdeomregning {
+
+  public static void main(String[] args) {
+
+    // Deklarerer en konstant
+    final double CM_PR_TOMME = 2.54;
+
+    // Innlesing av lengde i tommer
+    String tallTekst = showInputDialog("Gi lengde i antall tommer:");
+    int tommeTall = parseInt(tallTekst); 
+
+    // Omregning: tommer -> meter 
+    double cmTall = CM_PR_TOMME * tommeTall;
+    double meterTall = cmTall / 100;  // Deletegnet: shift 7
+
+    // Utskrift
+    String utTekst =  "Innlest antall tommer: " + tommeTall + "\n"
+                   + "Tilsvarende lengde i meter: " + meterTall; 
+    showMessageDialog(null, utTekst);
+  }
+}
+
+
+
+/* Leksjon 2: Jobb nr 5  
+ * RMI - August 2017
+ *********************************************
+ * Programmet leser inn et beløp via et antall
+ * 20-kr, antall 10-kr, antall 5-kr og antall
+ * 1-kr. Beregner og skriver ut kroneverdien 
+ * til dette beløpet sammen med inndata.
+ *********************************************
+ */
+import static java.lang.System.*;
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+
+public class Mynttelling {
+
+  public static void main(String[] args) {
+
+    // Innlesing av antall 20-kr
+    String ant20krTekst = showInputDialog("Gi ant. 20-kr:");
+    // Konvertering (tallkverning) fra tekst til heltall
+    int ant20kr = parseInt(ant20krTekst);
+
+    // Leser inn antall av de andre myntene på samme måte
+    String ant10krTekst = showInputDialog("Gi ant. 10-kr:");
+    int ant10kr = parseInt(ant10krTekst);
+
+    String ant5krTekst = showInputDialog("Gi ant. 5-kr:");
+    int ant5kr = parseInt(ant5krTekst);
+
+    String ant1krTekst = showInputDialog("Gi ant. 1-kr:");
+    int ant1kr = parseInt(ant1krTekst); 
+
+    // Beregning av samlet kroneverdi i myntene
+    int verdi = ant20kr*20 + ant10kr*10 + ant5kr*5 + ant1kr;
+
+    // Lager en oversiktlig utskrift (i konsollet)
+    String utTxt = "Myntveksling" + "\n"
+                 + "------------------" + "\n"
+                 + "Antall 20-kr:    " + ant20kr + "\n"
+                 + "Antall 10-kr:    " + ant10kr + "\n"
+                 + "Antall  5-kr:    " + ant5kr + "\n"
+                 + "Antall  1-kr:    " + ant1kr + "\n"
+                 + "------------------" + "\n"
+                 + "Samlet verdi:   " + verdi + "\n"
+                 + "==================" + "\n";
+    out.println(utTxt);  
+    // Endre selv: Skriv resultatet i et dialogvindu
+  }
+}
+
+
+
+/* Leksjon 2: Jobb nr 7  
+ * RMI - September 2017
+ *********************************************
+ * Programmet leser inn et beløp og beregner 
+ * hvordan dette best bør utbetales ved effektiv
+ * bruk av myntene: 20-kr, 10-kr, 5-kr og 1-kr.
+ *********************************************
+ */
+import static java.lang.System.*;
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+
+public class Mynttelling {
+
+  public static void main(String[] args) {
+
+    // Innlesing av beløp
+    String beløpTekst = showInputDialog("Gi beløp i hele kr:");
+    // Konvertering (tallkverning) fra tekst til heltall
+    int beløp = parseInt(beløpTekst);
+
+    // Beregning av antall ulike myntenheter
+    int ant20kr, ant10kr, ant5kr, ant1kr;
+    
+    ant20kr = beløp / 20;
+    // Restkroner til utebetaling på øvrige mynter
+    int restKr = beløp % 20; 
+
+    ant10kr = restKr / 10; 
+
+    restKr = restKr % 10;
+
+    ant5kr = restKr / 5;
+
+    ant1kr = restKr % 5;
+
+    // Lager en oversiktlig utskrift (i konsollet)
+    String utTxt = "Beløp: " + beløp + " kr" + "\n"
+                 + "Utbetales ved" + "\n"
+                 + "Antall 20-kr:    " + ant20kr + "\n"
+                 + "Antall 10-kr:    " + ant10kr + "\n"
+                 + "Antall  5-kr:    " + ant5kr + "\n"
+                 + "Antall  1-kr:    " + ant1kr;
+    out.println(utTxt);  
+    // Endre selv: Skriv resultatet i et dialogvindu
+
+  }
+}
+
+
+
+/* Leksjon 2: Eksempel på grafikk
+ * RMI - September 2017
+ *********************************************
+ *  Programmet tegner det franske flagget, tre 
+ *  stolper i fargene blått, hvitt og rødt. 
+ *********************************************
+ *
+ *  NB! Se oppgave 17a) for utvide programmet 
+ *  til å skalere flagget til et større, eller
+ *  mindre flagg.
+ */
+ 
+public class FranskFlagg extends EasyGraphics {   
+ 
+  public static void main(String[] args) {
+    launch(args);
+  }
+ 
+  public void run() {
+    makeWindow("Fransk flagg", 500, 500);             
+    // Tegner tre stolper, like høye, like brede
+    setColor(0,0,255);    
+    fillRectangle(50, 50, 100, 200);
+
+    setColor(255,255,255);    
+    fillRectangle(150, 50, 100, 200);  
+
+    setColor(255,0,0);    
+    fillRectangle(250, 50, 100, 200);  
+
+    setColor(0,0,0);    
+    drawRectangle(50, 50, 300, 200);  
+
+  }
+}

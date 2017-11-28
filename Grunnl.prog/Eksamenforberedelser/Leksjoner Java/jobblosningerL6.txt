@@ -1,0 +1,331 @@
+/*************************************************************************
+   På denne fila er alle løsningsforlagene til jobbene i leksjon 6/Kap7. 
+   Du må klippe ut én og én jobb, lime den inn i en fil og lagre den som 
+   en java-fil med samme navn som klassen.
+ *************************************************************************/ 
+
+
+
+/* Leksjon 6/Kap.7, jobb 1 a): Testing av filer
+ * Utviklet av RMI - November 2017
+ ***********************************************************
+ * Programmet tester permanenet lagring på fil ved å skrive
+ * data (navneliste) til en sekvensiell tekstfil.
+ ***********************************************************
+ */ 
+
+import java.io.*;  // Trenger PrintWriter
+import static javax.swing.JOptionPane.*; 
+
+public class Filtest {
+
+  public static void main(String[] args) throws Exception {
+
+    // Lager ei navneliste (for å slippe innlesing fra brukeren her)
+    String[] navn = {"Ole Olsen", "Ida Nilsen", "Ola Normann", "Medel Swenson", "Anne By"};
+
+    // Skriver navn til fil
+    // Kan gjøre det rett fram slik:
+    //    PrintWriter skriver = new PrintWriter("navn.txt");
+    // Et bedre alternativ:
+    String filnavn = "navn.txt";
+    PrintWriter skriver = new PrintWriter(filnavn);
+    
+    for (int i=0; i<navn.length; i++)
+      skriver.println(navn[i]);   
+      // Legger ut ett navn pr linje på tekstfilen
+
+    skriver.close();  // "Lukker filen" - viktig for ikke å miste data
+
+    // Skriver ut kvittering til brukeren om at filskrivingen er ferdig
+    String utTekst = "Filutskrift er ferdig, ok!";
+    showMessageDialog(null, utTekst);
+  }
+
+}
+
+
+/* Leksjon 6/Kap.7, jobb 1 a): Testing av filer
+ * Utviklet av RMI - November 2017
+ ***********************************************************
+ * Programmet tester permanent lagring på fil ved å lese
+ * inn data (navn) fra en sekvensiell tekstfil som har ett
+ * navn pr tekstlinje. Antall navn er ukjent. NB! Navnefilen 
+ * må allerede ligge i samme mappe som kjørende program.
+ * Programmet bygger opp ei navneliste i hurtigminnet i form
+ * av en String-tabell.
+ * En ny fil åpnes og navnene i tabellen skrives i omvendt
+ * rekkefølgen på den nye filen. Filen lukkes.
+ * Til slutt leses ett navn fra bruker, og dette legges til
+ * bakerst/nederst på den opprinnelige navnefilen.
+ *********************************************************** 
+ */ 
+
+import java.io.*;
+import java.util.*; 
+import static javax.swing.JOptionPane.*; 
+
+public class FiltestV2 {
+
+  public static void main(String[] args) throws Exception {
+
+    // Vi kan opprette en "stor" nok tabell i programmet, og
+    // så fylle inn i den så lenge det er flere navn på filen.
+    //    String[] navn = new String[100];  
+
+    // Et bedre alternativ er å bestemme eksakt rett størrelse 
+    // på tabellen som skal inneholde navnene.
+        // Åpner fil for lesing
+    String filnavn = "navn.txt";
+    File fil = new File(filnavn);  // Filinnpakning av "tekst"
+    Scanner leser = new Scanner(fil);
+        // Teller antall navn på filen
+    int antallNavn = 0; // Teller antall linjer -> antall navn
+    // Fortsetter så lenge det er tekst på linjer
+    while ( leser.hasNextLine() ) {   
+      String linje = leser.nextLine();    
+      antallNavn++; 
+    } 
+        // Lukker fil etter tellelesing
+    leser.close();
+
+    // Oppretter tabellen
+    String[] navn = new String[antallNavn];
+    
+    // Henter data fra fil og legger i en tabell i hurtigminnet
+        // Åpner filen på nytt
+    leser = new Scanner(fil);    
+    int i=0;      // Sjekker om det er flere tekstlinjer
+    while ( leser.hasNextLine() ) {
+                  // Henter inn neste tekstlinje
+      navn[i] = leser.nextLine();  
+      i++; 
+    } 
+    int antNavn = i;
+        // Lukker fil etter navnelesing
+    leser.close();
+
+    // Skriver navn i omvendt rekkefølge på en ny fil
+    PrintWriter skriver = new PrintWriter("snu"+filnavn);
+    for(int j=antNavn-1; j>=0; j--)
+      skriver.println(navn[j]);  
+    skriver.close();
+
+    // Leser inn et nytt navn og skriver dette på den opprinnelige filen.
+    String nyttNavn = showInputDialog("Gi navn (Fornavn Etternavn):");
+    // Henger på en linje til filen  'navn.txt'        // Append = true
+    FileWriter skrivekobling = new FileWriter(filnavn, true);
+    skriver = new PrintWriter(skrivekobling);
+    skriver.println(nyttNavn);   
+    skriver.close();
+
+    // Skriver ut kvittering til brukeren om at filskrivingen er ferdig
+    String utTekst = "Filutskrift er ferdig, ok!";
+    showMessageDialog(null, utTekst);
+  }
+
+}
+
+
+
+/* Leksjon 6, jobb 1 b): Navneliste  
+ * Utviklet av RMI - November 2017
+ *****************************************************
+ * Alternativ 1:  Programmet leser inn navn på formen 
+ * 'Fornavn Etternavn' fra fil, og legger dem på en ny 
+ * fil i samme rekkefølge som: 'Etternavn, Fornavn'. 
+ *****************************************************
+ * Alternativ 2: La navn på 'fornavn.txt' ha ett eller
+ * flere fornavn, f.eks.  Jens Kåre Brage Olav Hansen,
+ * og da snus navnet til: Hansen, Jens Kåre Brage Olav
+ *****************************************************
+ */
+import java.io.*;
+import java.util.*;
+ 
+public class NavnefilTest {
+ 
+  public static void main(String[] args) throws Exception {     
+    String filnavn = "fornavn.txt";
+    File fil = new File(filnavn);
+    Scanner leser = new Scanner(fil); 
+    PrintWriter skriver = new PrintWriter("etternavn.txt"); 
+    while ( leser.hasNextLine() )  {
+      String navn = leser.nextLine(); 
+      Scanner navneleser = new Scanner(navn);
+      //****************************************************
+      // Alternativ 1: Kun ett fornavn, og kun ett etternavn
+      //****************************************************
+      // String fornavn = navneleser.next();
+      // String etternavn = navneleser.next(); 
+      // skriver.println(etternavn + ", " + fornavn); 
+      //*********************************************************
+      // Alternativ 2: Ett eller flere fornavn, kun ett etternavn
+      //*********************************************************
+      String[] navneTab = new String[10];
+      int n=0;  // Teller antall navneelement på linja
+      while ( navneleser.hasNext() ) { 
+        navneTab[n] = navneleser.next();
+        // Legger hvert navneelement inn i en tabell
+        n++;  // Teller opp antall navn ett hakk
+      }
+      // Legger etternavn først i snudd versjon av navnet
+      String snuNavn = navneTab[n-1] + ", ";
+      // Henger på alle fornavn i den rekkefølge de stod
+      for (int i=0; i<=n-2; i++)
+        snuNavn += navneTab[i] + " ";
+      skriver.println(snuNavn);
+    }
+    leser.close(); 
+    skriver.close();     
+  }   
+  
+}
+
+
+
+/* Leksjon 6, jobb 2: Tallanalyse  pkt a)
+ * Utviklet av RMI - November 2017
+ *****************************************************
+ * Programmet leser desimaltall fra fil, avrunder til
+ * heltall som skrives på ny fil - med maks fire tall
+ * på hver linje. 
+ *****************************************************
+ * På tekstfil med fastfont, kan vi skrive verdiene i
+ * høyrejusterte kolonner med gitt bredde på kolonna.
+ * De to 'skrivPent'-metodene her fungerer ikke særlig
+ * bra i dialogvindu med proporsjonalfont.
+ ***************************************************** 
+ */
+import java.io.*;
+import java.util.*;
+ 
+public class Tallanalyse {
+ 
+  public static void main(String[] args) throws Exception {     
+    String filnavn = "desimal.txt";
+    File fil = new File(filnavn);
+    Scanner leser = new Scanner(fil);
+
+    leser.useLocale(Locale.US);  // Endrer fra komma til punktum
+
+    PrintWriter skriver = new PrintWriter("heltall.txt");
+    int antall = 0;
+    while ( leser.hasNextDouble() )  {
+      double des = leser.nextDouble(); 
+      int hel = (int)Math.round(des);
+      // Ulike utskriftsalternativ:
+      //   skriver.print(hel + " ");
+      //   skriver.print( skrivPent(hel) );
+      skriver.print( skrivPent2(hel, 7) );
+      // Skriver heltall i kolonner med bredde 7
+      antall++;
+      if ( antall % 4 == 0 )
+        skriver.println(); 
+        // Linjeskift etter hvert 4. tall
+    }
+    leser.close(); 
+    skriver.close();     
+  } // Slutt på main  
+
+  // Hjelpemetoder til bruk i dette programmet
+
+  private static String skrivPent(int tall) {
+    String ut = "";
+    if ( tall < 10 )   ut += " ";
+    if ( tall < 100 )  ut += " ";
+    if ( tall < 1000 ) ut += " ";
+    return ut+tall;
+  } // Slutt på skrivPent
+
+  /* Eksamensoppgave 1d)
+   * Hjelpemetode som teller antall siffer i et
+   * heltall - forutsatt at det er positivt.
+   */
+  private static int antallSiffer(int tall) {
+    // tall = Math.abs(tall);
+    // Denne vil sikre korrekt siffertelling 
+    // også for negative tall.
+    int ant = 0;
+    do {
+      ant++;  // Alle tall har minst ett siffer
+      tall = tall / 10;
+    } while ( tall > 0);
+    return ant;
+  } // Slutt på antallSiffer  
+
+  private static String skrivPent2(int tall, int bredde) {
+    String ut = "";
+    int antBlanke = bredde - antallSiffer(tall);
+    for (int i=0; i<antBlanke; i++)
+      ut += " ";
+    return ut+tall;
+  } // Slutt på skrivPent2
+
+}
+
+
+
+/* Leksjon 6/ Kap.7: Jobb 3 (Eksamen 03.05.2011)
+ * Utviklet av RMI - November 2017
+ ************************************************************************
+ * Programmet leser informasjon fra en tekstfil (datalogg) som består av 
+ * et produktgruppenr og et sekundantall for tlf-samtale angående dette 
+ * produktgruppenummeret. Leste data lagres i to tabeller, en som teller 
+ * antall tlf-samtaler for hvert gr.nr. og en som summerer total tlf-tid 
+ * for hvert gr.nr. 
+ * Programmet beregner og skriver til ny fil gjennomsnittlig tlf-tid i 
+ * sekund for hvert gr.nr.
+ ************************************************************************
+ */ 
+import static javax.swing.JOptionPane.*;  
+import java.util.*;  // Scanner
+import java.io.*;    // File og PrintWriter
+
+public class Telefonbetjening {
+
+  public static void main(String[] args) throws Exception {
+    
+    // Oppretter to telletabeller 
+    final int ANT_GRUPPER = 9;
+    // Kan indeksere 1-8 som produktgruppenummer, 0 er ubrukt
+    int[] antTlfsamtaler = new int[ANT_GRUPPER];
+    int[] antTlfsekund = new int[ANT_GRUPPER];
+
+    // Lesing fra fil (filnavn: ukedag.txt)
+    String filnavn = showInputDialog("Gi filnavn: ");
+    File fil = new File(filnavn);
+    Scanner leser = new Scanner(fil);
+    while ( leser.hasNextLine() ) {
+      String linje = leser.nextLine(); 
+      // Splitter inndatalinje i gruppenr og tlftid
+      Scanner linjeleser = new Scanner(linje);
+      linjeleser.useDelimiter("-");
+      // Skilletegn '-' mellom grNr og tlfTid på fil
+      int grpNr = linjeleser.nextInt();
+      int sekund = linjeleser.nextInt();
+      antTlfsamtaler[grpNr]++;
+      antTlfsekund[grpNr] += sekund;
+    }
+    leser.close();
+    
+    // Overfører telleresultatene til fil
+       // 1) Åpne (ny) fil
+    PrintWriter skriver = new PrintWriter("res" + filnavn);
+       // 2) Overføre data til fil 
+    for (int grpNr=1; grpNr<ANT_GRUPPER; grpNr++)
+      if ( antTlfsamtaler[grpNr] > 0 ){
+        int snittTlftid = antTlfsekund[grpNr] / antTlfsamtaler[grpNr];      
+        skriver.println(grpNr + ": " + snittTlftid);
+      }
+      else  // kan ikke dele på 0 !
+        skriver.println(grpNr + ": 0");
+        
+       // 3) Lukke fil 
+    skriver.close();
+
+    String utTekst = "Resultat til fil er OK!";
+    showMessageDialog(null,utTekst);
+  }
+
+}

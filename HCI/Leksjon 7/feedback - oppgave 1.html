@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Feedback</title>
+<style type="text/css">
+form {
+	border: solid 1px;
+	border-radius: 20px;
+	margin: auto;
+    padding: 20px;
+    width: 500px ;
+    margin: 0 auto;
+}
+input {
+	width: 400px;
+	margin-bottom: 20px;
+
+}
+textarea {
+	width: 400px;
+	margin-bottom: 20px;
+    height: 10em;
+}
+label {
+	display: inline-block;
+	text-align: right;
+	width: 65px;
+    vertical-align: top;
+}
+.button {
+	width: 200px;
+	margin: auto;
+    display: block;
+}
+</style>
+</head>
+<body>
+	<div id="formdiv">
+<form>
+	<label for="name">Name:</label>
+	<input type="text" name="name">
+	<label for="emal">E-mail:</label>
+	<input type="text" name="email">
+	<label for="message">Message:</label>
+	<textarea name="message"></textarea>
+	<input type="submit" class="button" value="Send your message">
+</form>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,188 @@
+/*************************************************************************
+   På denne fila er alle løsningsforlagene til jobbene i leksjon 5. 
+   Du må klippe ut én og én jobb, lime den inn i en fil og lagre den som 
+   en java-fil med samme navn som klassen.
+ *************************************************************************/ 
+
+
+
+/* Leksjon 5: Jobb nr 1
+ * Utviklet av RMI - Oktober 2017
+ ************************************************************
+ * Ser på et tallsett (med verdier i området 1-10), beregner 
+ * gjennomsnittet av dem og finner antall tall som er mindre 
+ * enn snittet. 
+ * Sjekker også om snittet finnes i tallsettet.
+ * Avgjør hvilket tall som er hyppigst forekommende.
+ ************************************************************
+ * NB! Programmet bruker metoder i Min-klassen (se leksjon 4)
+ */
+import static java.lang.System.*;  
+// Dette programmet skriver resultat i konsollet!
+
+public class TallanalyseV2 {
+
+  public static void main(String[] args) {
+ 
+    // Versjon 1: Setter tabellen via en verdiliste 
+    // int[] tall = {10, 1, 10, 3, 9, 8, 10, 6, 2, 1};   
+
+    // Leser antall tall som skal analyseres 
+    int antTall = Min.lesHeltall(1, 100); 
+
+    // Setter tabellen via en lengde-deklarasjon 
+    int[] tall = new int[antTall];
+
+    // Fyller tabellen med tilfeldige tall (1-10)
+    for (int i=0; i<antTall; i++)  
+      tall[i] = Min.trekkTall(1,10);  
+
+    // Skriver ut alle tallene for kontroll  
+    for (int i=0; i<antTall; i++)  
+      out.print(tall[i] + "  ");
+    out.println(); // Linjeskift etter siste tall
+
+    // Beregner (heltallig) gjennomsnittet av tallene 
+    int sum = 0;
+    // NB! Vi kan fortsatt bruke tabellens egen lengde
+    for (int i=0; i<tall.length; i++)  
+      sum += tall[i]; 
+    int snitt = (int)(sum / tall.length + 0.5);
+    out.println("Snittet av tallene er " + snitt);
+
+    // Versjon 1:
+    // Lister opp tall som er mindre enn snittet 
+    out.print("Tall mindre enn snittet: "); 
+    for (int i=0; i<tall.length; i++)  
+      if ( tall[i] < snitt )
+        out.print(tall[i] + "  ");  
+    out.println();
+
+    // Versjon 2:
+    // Teller antall tall som er mindre enn snittet 
+    int antMindre = 0;
+    for (int i=0; i<tall.length; i++)  
+      if ( tall[i] < snitt )
+        antMindre++;     
+    out.println("Antall tall som er mindre enn snittet: " + antMindre);  
+
+    // Finnes snitt som et av tallene?
+    boolean funnet=false; 
+    int pos=0;
+    while ( !funnet && pos<tall.length )  
+      if ( tall[pos] == snitt )
+        funnet = true;   
+      else 
+        pos++;
+    String svar = "Ja!";
+    if ( !funnet ) svar = "Nei...";
+    out.println("Snitt-verdien er et av tallene: " + svar);  
+
+    // Hvilket tall er hyppigst forekommende?
+    // Teller først antall av hvert siffer
+    int[] antall = new int[11]; // Indeksert 0-10, skal IKKE bruke 0    
+    for (int i=0; i<tall.length; i++)  
+      antall[ tall[i] ]++;  // NB! tall[i] er et tall 1-10
+    // Søker etter største verdi
+    int max = antall[1];  // Antar at største antall er fremst i tabellen
+    int hyppigst = 1;     // Første posisjon er tallet 1 
+    for (int i=2; i<10; i++)  
+      if ( max < antall[i]) {
+        max = antall[i];
+        hyppigst = i;
+      }  
+    out.println("Hyppigst forekommende tall er: " + hyppigst + "  ("+max+" stk)"); 
+    // NB! Dersom det er flere tall som har samme max-antallet, så skrives kun
+    //     ut det første av tallene som det er flest av.
+  }
+
+}
+
+
+
+/* Leksjon 5: Jobb nr 2
+ * Utviklet av RMI - Oktober 2017
+ ****************************************************************
+ * Kommer snart . . .
+ */
+
+
+
+/* Leksjon 5: Jobb nr 3
+ * Utviklet av RMI - November 2017
+ ************************************************************
+ * Ser på sum øyne ved kast av to terninger, og teller antall
+ * forekomster av hver sum. Ønsket antall kast leses inn fra 
+ * brukeren. Antall forekomster telles i en tabell.
+ * Resultatene fra kastene presenteres i diagram med blokker 
+ * som i lengden avspeiler forekomstene.
+ ************************************************************
+ * NB! Programmet bruker ikke metodekall til Min-klassen. Her  
+ * har vi hentet inn hele metodekoden.
+ */
+import static java.lang.System.*;  
+import static java.lang.Integer.*; 
+
+public class DiagramTerningkast extends EasyGraphics {
+	
+  public static void main(String[] args) {
+    launch(args);
+  }
+
+  public void run () {
+    int winX=850, winY=650;
+    makeWindow("Sum øyne i to terningkast", winX, winY);    
+    // Leser inn ønsket antall kast
+    String tallTekst = getText("Gi antall kast:");
+    int antKast = parseInt(tallTekst);
+    // Oppretter telletabellen for verdier 2-12
+    int[] antallAv = new int[13]; // Høyeste sum er 12
+    // Foretar (simulering av) terningkastene
+    for (int kast=1; kast<=antKast; kast++) {
+      // Kaster første terning
+      int øyne1 = trekkTall(1,6);
+      // Kaster andre terning
+      int øyne2 = trekkTall(1,6);
+      // Beregner sumen av øyne på terningene
+      int sumØyne = øyne1 + øyne2;  
+      // Øker antallet av denne summen ett hakk
+      antallAv[sumØyne]++;
+    }     
+
+    // Vindustørrelse minus to marger, delt på lengste blokk
+    double faktor = (double)(winX-200)/maximum(antallAv);  
+
+    // Lager diagrammet
+    setFont("Arial", 40);
+    drawString("Kastresultat: Sum øyne", 100, 50);
+    for (int i=2; i<antallAv.length; i++) {
+      int inn = 50;
+      if (i < 10)
+      	inn = 70;
+      setFont("Arial", 30);
+      setColor(0,0,0);
+      drawString(i+":  ", inn, i*50); 
+      setColor(0,0,255);
+      fillRectangle(100, i*50-30, (int)(faktor*antallAv[i]), 35);
+      setFont("Arial", 20);
+      drawString(antallAv[i]+"", 100 + (int)(faktor*antallAv[i]) + 10, i*50);  
+      // Skriver antallet kast litt (10 pix) bak hver blokk
+    }
+  }    
+
+  // Hjelpemetoder  
+
+  // Metoden trekker et tilfeldig heltall i området min - max
+  private static int trekkTall(int min, int max) {
+    return min + (int)(Math.random()*(max-min+1) );
+  }  
+
+  // Metoden finner det største tallet i en tabell
+  private static int maximum(int[] tab) {  
+    int max = tab[0];	
+    for (int i=2; i<tab.length; i++) 
+      if (max < tab[i])
+      	max = tab[i];
+    return max;
+  }
+}

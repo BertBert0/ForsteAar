@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Oppgave 1</title>
+</head>
+<body>
+<script>
+	function sum(input) {
+	var sum = 0;
+	for(var i=0;i<input.length;i++){
+		if(isNaN(input[i])){
+			continue;
+		}
+		sum += input[i];
+	}
+	return sum;
+}
+
+
+
+	console.log(sum([1,2,3]));
+	console.log(sum([100,-200,3]));
+	console.log(sum([1,2,'a',3]));
+
+</script>
+
+
+</body>
+</html>

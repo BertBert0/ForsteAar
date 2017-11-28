@@ -1,0 +1,427 @@
+/*************************************************************************
+   På denne fila er alle løsningsforlagene til alle jobbene i leksjon 4.
+   Du må klippe ut én og én jobb, lime den inn i en fil og lagre den som
+   en java-fil med samme navn som klassen.
+ *************************************************************************/ 
+ 
+
+
+/* Leksjon 4: Jobb nr 1  
+ * Utviklet av RMI - Oktober 2017
+ ******************************************************************
+ * Tegner en slags trappetrinn-figur ved bruk av hjelpemetode for
+ * å lage linjer (trinn) med ulike tegn. 
+ */
+import static java.lang.System.*;
+import static java.lang.Integer.*;
+import static javax.swing.JOptionPane.*;
+
+public class Trappetrinn {
+
+  public static void main(String[] args) { 
+    // Innlesing av antall trinn 
+    String tallTekst = showInputDialog("Gi antall trinn ("+min+"-"+max+"): ");
+    int antTrinn = parseInt(tallTekst);
+
+    // Utskrift av trapp til konsoll 
+    for (int trinn=1; trinn<=antTrinn; trinn++) {
+      skrivTrinn('T', 2*trinn);
+      out.println();
+    }     
+  }
+
+  // Hjelpemetode (private) til bruk i dette programmet. 
+  // Tegner en sekvens av tegn i konsollet
+  private static void skrivTrinn(char t, int antall) {
+    for (int i=1; i<=antall; i++)
+      out.print(t);
+  }   
+
+}
+
+
+
+/* Leksjon 4: Jobb nr 2 
+ * Utviklet av RMI - Oktober 2017
+ *****************************************************
+ * Programmet beregner gjennomsnittlig tverrsum for et
+ * innlest antall tosifrede heltall. Det er en egne 
+ * metoder for å trekke tilfeldige tall, for å beregne 
+ * tverrsum og for å styre programgjentak.
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*; 
+import static java.lang.Math.*; 
+
+public class Tverrsum {
+
+  public static void main(String[] args) {
+    
+    do {   // Bruker do-løkke til programgjentak
+
+      // Leser inn antall tosifrede tall
+      String innTxt = showInputDialog("Gi ant. tall: ");
+      int antTall = parseInt(innTxt);
+
+      // Trekker de tresifrede heltallene
+      int totalsum = 0;
+      for (int tallNr=1; tallNr<=antTall; tallNr++) {
+        int tall = trekkTall(100,999);        
+        totalsum += tverrsum(tall);
+      }
+
+      // Snitt beregnet, og avrundet til nærmeste heltall vha Math.round
+      int snitt = (int)( round(1.0*totalsum/antTall) ); 
+      
+      // Beregner og skriver ut gjennomsnitt av alle tverrsummene
+      showMessageDialog(null, "Antall heltall: " + antTall + "\n" 
+                            + "Snitt tverrsum: " + snitt); 
+
+    } while ( ønskerFortsettelse() );
+
+    // Slutt på main-metoden
+  }
+
+  /******************************************************************* 
+   * Her kommer hjelpemetoder til bruk i dette programmet 
+   *******************************************************************/
+
+  // Metode for å spørre brukeren om det er ønske om programgjentak.     
+  private static boolean ønskerFortsettelse() {
+    // Brukerdialog Ja/Nei for å fortsette
+    String innTekst = showInputDialog("Fortsett? (Ja=1/Nei=0): ");
+    int svar = parseInt(innTekst);
+    return (svar == 1);
+  }  
+
+  // Metode for å plukke ut hvert siffer i et 3-sifret heltall,
+  // legge dem sammen til tverrsum og returnere denne.
+  private static int tverrsum(int heltall) {
+    int s1 = heltall / 100;
+    int s2 = (heltall / 10) % 10;
+    int s3 = heltall % 10;
+    int sum = s1 + s2 + s3;
+    return sum;
+  }
+
+  // Metode for å trekke et tilfeldig heltall i området min - max    
+  private static int trekkTall(int min, int max) {
+    return min + (int)( random()*(max-min+1) );
+  }
+
+  // Slutt på hjelpemetodene
+}
+
+
+
+/* Leksjon 4: Jobb nr 3 
+ * Utviklet av RMI - Oktober 2017
+ **************************************************************
+ * Programmet leser et ønsket antall ord (2-10), og skriver ut
+ * en setning med dette antallet ord (i ordlengder 1-5) som er 
+ * skrevet i tilfeldig valgte store (engelske) bokstaver.
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*; 
+import static java.lang.Math.*; 
+
+public class Tegntesting {
+
+  public static void main(String[] args) {
+
+    do {
+
+      // Leser inn (lovlig) ønsket antall ord 
+      int antOrd = lesAntallOrd(2, 10);
+
+      // Trekker tilfeldig det ønskede antallet ord
+      String setning = "Setning: ";
+      for (int ordNr=1; ordNr<=antOrd; ordNr++) {
+        int ordlengde = trekkTall(1,5);
+        for (int bokstav=1; bokstav<=ordlengde; bokstav++)                 
+          setning += trekkBokstav();
+        setning += " "; // Mellomrom mellom ordene
+      }
+      
+      // Skriver ut den aktuelle setningen 
+      showMessageDialog(null, setning); 
+
+    } while ( ønskerFortsettelse() );
+
+    // Slutt på main-metoden
+  }
+
+  /******************************************************************* 
+   * Her kommer hjelpemetoder til bruk i dette programmet 
+   *******************************************************************/
+
+  // Metode for å lese inn og kontrollere at antall ord er i et angitt
+  // område (parameterliste i metoden).
+  private static int lesAntallOrd(int min, int max) {
+    int antall;
+    do {
+      String melding = "Gi antall ord ("+min+"-"+max+"):";
+      antall  = parseInt( showInputDialog(melding) );
+      if (antall  < min || antall  > max) 
+        showMessageDialog(null, "Ulovlig antall ord!");  
+    } while ( antall  < min || antall  > max );
+    return antall;
+  }
+
+  // Metode for å spørre brukeren om det er ønske om programgjentak.     
+  private static boolean ønskerFortsettelse() {
+    // Brukerdialog Ja/Nei for å fortsette
+    String innTekst = showInputDialog("Fortsett? (Ja=1/Nei=0): ");
+    int svar = parseInt(innTekst);
+    return (svar == 1);
+  }  
+
+  // Metode for å trekke et tilfeldig heltall i området (min,max)
+  private static int trekkTall(int min, int max) {
+    return min + (int)( random()*(max-min+1) );
+  }
+
+  // Metode for å trekke en tilfeldig stor engelsk bokstav (A-Z)
+  private static char trekkBokstav() {
+    return (char)trekkTall(65,90);
+  }
+
+  // Slutt på hjelpemetodene
+}
+
+
+
+/* Leksjon 4: Jobb nr 4 (Utviklet av RMI Oktober 2017) 
+ *******************************************************************
+ * Min egen verktøyklasse - dvs. metodesamling.  NB! Alle metoder må 
+ * være public for at de skal kunne brukes utenfor denne klassen.
+ *******************************************************************
+ * NB! Min.java kan ligge på toppnivået i mappestrukturen for emnet.  
+ *******************************************************************
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+import static java.lang.System.*;
+import static java.lang.Math.*;
+
+public class Min {
+
+  // Metoden skriver en sekvens av tegn i en String
+  public static String skrivTegn(char t, int antall) {
+    String sekvens="";
+    for (int i=1; i<=antall; i++)
+      sekvens += t;
+    return sekvens;
+  }
+
+  // Metoden avgjør om et tegn er en (engelsk) bokstav
+  public static boolean erBokstav(char tegn) {
+    return ('A'<=tegn && tegn<='Z') || ('a'<=tegn && tegn<='z');
+  } 
+
+  // Metoden slår om fra liten til stor bokstav 
+  public static char stor(char tegn) {
+    if ('a'<= tegn && tegn<= 'z')
+      return (char)(tegn - 32); 
+    return tegn; // Slår inn om tegn ikke er liten bokstav
+  }
+
+  // Metoden slår om fra stor til liten bokstav 
+  public static char liten(char tegn) {
+    if ('A'<= tegn && tegn<= 'Z')
+      return (char)(tegn + 32); 
+    return tegn; // Slår inn om tegn ikke er stor bokstav
+  }
+
+  // Metoden avrunder et tall til én desimal
+  public static double avrund1(double tall) { 
+    return (int)Math.round(tall*10)/10.0;
+  }
+
+  // Metoden avrunder et tall til to desimaler
+  public static double avrund2(double tall) { 
+    return (int)Math.round(tall*100)/100.0;
+  }
+
+  // Metoden avrunder et tall til et gitt antall desimaler
+  public static double avrund(double tall, int ant) {
+    double tiPot = Math.pow(10,ant); 
+    return (int)Math.round(tall*tiPot)/tiPot;
+  }
+
+  // Metoden leser inn et heltall i området (min-max)
+  public static int lesHeltall(int min, int max, String ledetekst) {
+    int antall=0;
+    do {
+      String tallTekst = showInputDialog(ledetekst + " ("+min+"-"+max+"): ");
+      antall = parseInt(tallTekst);
+      if ( antall < min || antall > max )
+        showMessageDialog(null,"Ulovlig verdi!");
+    } while (antall < min || antall > max);
+    return antall;
+  }
+
+  // Metoden trekker et tilfeldig heltall i området min - max
+  public static int trekkTall(int min, int max) {
+    return min + (int)( random()*(max-min+1) );
+  }
+
+}
+
+
+
+
+/* Leksjon 4: Jobb nr 4 (Utviklet av RMI - Oktober 2017)
+ *********************************************************************** 
+ * Programmet tester alle hjelpemetodene i min egen verktøyklasse (Min).
+ */
+import static java.lang.System.*;
+import static javax.swing.JOptionPane.*;
+
+public class TestMetodeklasse {
+
+  public static void main(String[] args) {
+
+    int tall = Min.lesHeltall(1,9, "Gi heltall"); 
+    out.println( Min.skrivTegn('*', tall) );
+
+    tall = Min.trekkTall(3,10);       
+    out.println(Min.skrivTegn('+', tall) + " (" + tall + " stk.)" );
+
+    double desimaltall = 12.34567;
+    out.println("Verdi avrundet til en desimal: "
+                + Min.avrund1(desimaltall) );
+    out.println("Verdi avrundet til to desimaler: "
+                + Min.avrund2(desimaltall) );
+    out.println("Verdi avrundet til 4 desimaler: "
+                + Min.avrund(desimaltall,4) );
+
+    // Trekker tilfeldig et tegn
+    char tegn = (char)Min.trekkTall(48,122);
+    out.print("Tegnet <" + tegn + "> er ");
+    if ( !Min.erBokstav(tegn) )
+      out.print("ikke ");
+    out.println("en (engelsk) bokstav!");
+
+  }
+
+}
+
+
+
+/*  EKSTRAJOBB: Terningkast i EasyGraphics
+ *****************************************************************
+ *  Trekker tall 1-6 og skriver dem tilfeldig plassert på skjermen
+ *  som øyne på en terning.
+ *  Et arkiv over alle terningkast tegnes helt nederst i vinduet.
+ */
+import static java.lang.Integer.*;
+import static java.lang.Math.*; 
+ 
+public class TerningkastEG extends EasyGraphics {
+ 
+  public static void main(String[] args) {
+    launch(args);
+  }
+ 
+  public void run() {
+    int wX = 1000, wY = 750;
+    int mX = wX/2, mY = wY/2;
+    makeWindow("Terningkast", wX, wY);   
+    int n = 0;
+    do {
+      n = parseInt( getText("Gi antall terningkast:") );
+    } while ( n <= 0 || n > wX/51 );
+    // Ikke plass til flere enn n små-terninger nederst i vinduet
+    
+    pause(400); // Kort pause før første kast...
+    for (int i=1; i<=n; i++) { 
+      int str = wX/10; 
+      int øyne = (int)(Math.random()*6 + 1);  
+      int pX = 15 + (int)(Math.random()*(wX-str-25)); 
+      int pY = 15 + (int)(Math.random()*(wY-str-85));
+      switch (øyne) {
+        case 1: visEn(pX,pY,str); visEn(i*50, wY-40, 30);     break;
+        case 2: visTo(pX,pY,str); visTo(i*50, wY-40, 30);     break;
+        case 3: visTre(pX,pY,str); visTre(i*50, wY-40, 30);   break;
+        case 4: visFire(pX,pY,str); visFire(i*50, wY-40, 30); break;
+        case 5: visFem(pX,pY,str); visFem(i*50, wY-40, 30);   break;
+        case 6: visSeks(pX,pY,str); visSeks(i*50, wY-40, 30); 
+      } 
+      pause(500);  // Evt. stadig kortere pauser:  pause(900-5*i);
+      // Visker ut (dekker over) kastet terning
+      setColor(255,255,255);
+      fillRectangle(pX-9,pY-9,str+18,str+18);
+    } 
+  }
+
+  // Hjelpemetoder for å tegne terning med et antall øyne
+  // NB! Ikke static på hjelpemetoder i EasyGraphics
+  private void visEn(int x, int y, int s){ 
+    setColor(230,230,230);
+    fillRectangle(x-8,y-8,s+16,s+16);
+    setColor(0,0,0);
+    drawRectangle(x-8,y-8,s+16,s+16);
+    fillCircle(x+s/2, y+s/2, s/6);
+  }  
+
+  private void visTo(int x, int y, int s){ 
+    setColor(230,230,230);    
+    fillRectangle(x-8,y-8,s+16,s+16);
+    setColor(0,0,0);
+    drawRectangle(x-8,y-8,s+16,s+16);
+    fillCircle(x+s/6, y+s/6, s/6);
+    fillCircle(x+5*s/6, y+5*s/6, s/6); 
+  }  
+
+  private void visTre(int x, int y, int s){ 
+    setColor(230,230,230);
+    fillRectangle(x-8,y-8,s+16,s+16);
+    setColor(0,0,0);
+    drawRectangle(x-8,y-8,s+16,s+16);
+    fillCircle(x+s/6, y+s/6, s/6);
+    fillCircle(x+s/2, y+s/2, s/6);
+    fillCircle(x+5*s/6, y+5*s/6, s/6);
+  } 
+
+  private void visFire(int x, int y, int s){ 
+    setColor(230,230,230);
+    fillRectangle(x-8,y-8,s+16,s+16);
+    setColor(0,0,0);
+    drawRectangle(x-8,y-8,s+16,s+16);
+    fillCircle(x+s/6, y+s/6, s/6);
+    fillCircle(x+5*s/6, y+s/6, s/6);
+    fillCircle(x+5*s/6, y+5*s/6, s/6);
+    fillCircle(x+s/6, y+5*s/6, s/6);
+  } 
+
+  private void visFem(int x, int y, int s){ 
+    setColor(230,230,230);
+    fillRectangle(x-8,y-8,s+16,s+16);
+    setColor(0,0,0);
+    drawRectangle(x-8,y-8,s+16,s+16);
+    fillCircle(x+s/6, y+s/6, s/6);
+    fillCircle(x+5*s/6, y+s/6, s/6);
+    fillCircle(x+s/2, y+s/2, s/6);
+    fillCircle(x+5*s/6, y+5*s/6, s/6);
+    fillCircle(x+s/6, y+5*s/6, s/6);
+  }
+
+  private void visSeks(int x, int y, int s){ 
+    setColor(230,230,230);
+    fillRectangle(x-8,y-8,s+16,s+16);
+    setColor(0,0,0);
+    int r = (int)(0.95*s/6);
+    drawRectangle(x-8,y-8,s+16,s+16);
+    fillCircle(x+s/6, y+s/6, r);
+    fillCircle(x+5*s/6, y+s/6, r);
+    fillCircle(x+s/6, y+3*s/6, r);
+    fillCircle(x+5*s/6, y+3*s/6, r);
+    fillCircle(x+5*s/6, y+5*s/6, r);
+    fillCircle(x+s/6, y+5*s/6, r);
+  }
+ 
+}
+ 
+
+ 

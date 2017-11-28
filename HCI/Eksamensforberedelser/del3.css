@@ -1,0 +1,61 @@
+
+header {
+background-color: black;
+height: 5%;
+color: white;
+}
+
+.menydiv {
+display: inline-block;
+width: 20%;
+height: 100vh;
+background-color: lightblue;
+float: left;
+}
+
+nav ul {
+margin: 10px;
+list-style: none;
+}
+nav ul li {
+
+}
+
+nav ul li a {
+text-decoration: none;
+color: black;
+}
+
+.content {
+display: inline-block;
+height: 100%;
+width: 65%;
+float:right;
+}
+
+h2 {
+color: lightblue;
+}
+
+.align-right {
+display: inline-block;
+}
+.align-right img {
+width: 400px;
+box-shadow: 0, 0, 0, 2px;
+}
+
+
+.align-left {
+display: inline-block;
+width: 55%;
+}
+span {
+font-size: 18px;
+color: blue;
+}
+
+footer {
+text-align: center;
+font-size: 10px;
+{

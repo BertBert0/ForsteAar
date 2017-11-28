@@ -1,0 +1,504 @@
+
+
+/**********************************************
+   På denne fila er alle løsningsforlagene til 
+   jobbene 1-5 i leksjon 3 samlet. Du må
+   klippe ut én og én jobb, lime den inn i en
+   fil og lagre den som en java-fil med samme
+   navn som det klassen (jobben) har.
+ **********************************************/ 
+
+
+
+/* Leksjon 3: Jobb 1
+ * Utviklet av RMI - September 2017
+ *******************************************
+ * Programmet leser et heltall, avgjør og
+ * skriver ut om det har mer enn tre siffer. 
+ */ 
+import static java.lang.Integer.*;
+import static javax.swing.JOptionPane.*;
+
+public class Sifferantall {
+
+  public static void main(String[] args) {
+
+    // Innlesing av heltall
+    String tallTekst = showInputDialog("Gi et heltall:");
+    int tall = parseInt(tallTekst);
+
+    // Avgjør om antall siffer overstiger 3
+    // Obs! Tar høyde for at tall kan være negativt
+    String utTekst = "Tallet " + tall + " har ";
+    if ( Math.abs(tall) >= 1000 )
+      utTekst += "flere enn 3 siffer";
+    else
+      utTekst += "ikke flere enn 3 siffer";
+
+    // Utskrift til dialogvindu 
+    showMessageDialog(null,utTekst);
+
+  }
+
+}
+
+
+
+/* Leksjon 3: Jobb 2, pkt b - Kalkulator
+ * Utviklet av RMI - Sep 2017
+ ***********************************************************
+ * Leser to heltall og en regneoperasjon. Skriver kun ut det
+ * tilhørende svaret, enten sum, differans, produkt eller
+ * brøk (hvis mulig).
+ ***********************************************************
+ * Nyere Java-versjoner tillater String som datatype på 
+ * kontrollvariabelen i switch-setningen. Dette kan gjøre
+ * sortering på regneoperasjon litt enklere.
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+
+public class Kalkulator {
+  public static void main(String[] args) {
+    // Innlesing
+    String innTekst = showInputDialog("Gi første tall: ");
+    int t1 = parseInt(innTekst);
+    // NB! Bruker korte (dårlige) variabelnavn av plasshensyn.
+    innTekst = showInputDialog("Gi andre tall: ");
+    int t2 = parseInt(innTekst);
+
+    // Ber om at brukeren oppgir symbol for ønsket regneoperasjon.  
+    String op = showInputDialog("Velg regneoperasjon: (+ - * /)");   
+
+    // Beregner svar hvis lovlig operator, ellers feilmelding 
+    int svar; 
+    double brøk;  // Divisjon kan gi desimalsvar
+    String utTekst="";
+    // op har datatypen String, verdier skrives mellom " "
+    switch (op) {  
+    // NB! String kan være 'datatype' for tilslagsverdier i case
+      case "+": utTekst = t1+"+"+t2+"="+(t1+t2); break;
+      case "-": utTekst = t1+"-"+t2+"="+(t1-t2); break;
+      case "*": utTekst = t1+"*"+t2+"="+(t1*t2); break;
+      case "/": utTekst = t1+"/"+t2+"=";
+                if (t2 != 0)
+                  utTekst += ((double)t1/t2);
+                else  // kan ikke dele på 0
+                  utTekst += "Udefinert"; break;
+      default: utTekst = "Ulovlig regneoperasjon!";  
+    }
+    // Utskrift
+    showMessageDialog(null, utTekst);     
+  }
+}
+
+
+
+/* Leksjon 3: Jobb 3
+ * Utviklet av RMI - Sep 2017
+ ******************************************
+ * Leser inn et dagnummer (1-7), og skriver 
+ * ut det tilhørende dagnavnet.
+ * NB! Testprogram for switch-setning
+ */
+
+import static java.lang.Integer.*;
+import static javax.swing.JOptionPane.*;
+
+public class Dagnavn {
+
+  public static void main(String[] args) {
+
+    // Innlesing av dagnummer
+    String tallTekst = showInputDialog("Gi et dagnummer (1-7):");
+    int dagNr = parseInt(tallTekst);
+
+    // Beregningsdel, kobler dagnr og dagnavn
+    String dagnavn = "";   // Må initiere pga. valgsetningen
+    switch ( dagNr ) {
+    	 case 1: dagnavn = "mandag";  break;
+    	 case 2: dagnavn = "tirsdag"; break;
+	 case 3: dagnavn = "onsdag";  break;
+	 case 4: dagnavn = "torsdag"; break;
+	 case 5: dagnavn = "fredag";  break;
+	 case 6: dagnavn = "lørdag";  break;
+	 case 7: dagnavn = "søndag";  break;
+	 default:dagnavn = "ugyldig dag!";
+    }
+       
+    // Utskrift til dialogvindu
+    String utTekst = "Dag nr " + dagNr + " er en " + dagnavn;
+    showMessageDialog(null,utTekst);
+
+  }
+
+}
+
+ 
+
+/* Leksjon 3: Jobb 4
+ * Utviklet av RMI - Sep 2017
+ **********************************************
+ * Programmet leser et heltall, plukker ut siste
+ * siffer og oppgir dette på tekstlig form.
+ */ 
+import static java.lang.Integer.*;
+import static javax.swing.JOptionPane.*; 
+
+public class Siffertekst {
+
+  public static void main(String[] args) {
+
+    // Innlesing av heltall
+    String tallTekst = showInputDialog("Gi et heltall:");
+    int tall = parseInt(tallTekst);
+
+    utTekst = "Siste i siffer i " + tall + " er ";
+
+    // Beregningsdel: Finner siste siffer og tekster dette 
+
+    // I tilfelle tallet er negativt - uten import her.
+    tall = Math.abs(tall);  
+
+    // Plukker ut bakerste siffer:
+    int siffer = tall % 10; 
+
+    // Tekster sifferet via switch:
+    String utTekst += siffer + " -> ";
+    switch ( siffer ) {
+    	case 9 : utTekst += "NI";    break;
+    	case 8 : utTekst += "ÅTTE";  break;
+    	case 7 : utTekst += "SJU";   break;
+    	case 6 : utTekst += "SEKS";  break;
+    	case 5 : utTekst += "FEM";   break;
+    	case 4 : utTekst += "FIRE";  break;
+    	case 3 : utTekst += "TRE";   break;
+    	case 2 : utTekst += "TO";    break;
+    	case 1 : utTekst += "EN";    break;
+    	case 0 : utTekst += "NULL";  
+        // Trenger ikke default her
+    }
+    // Utskrift til dialogvindu
+    showMessageDialog(null, utTekst);
+
+  }
+
+}
+
+
+
+/* Leksjon 3: Jobb 5 (Tallserier av odde- og partall)
+ * Utviklet av RMI - Sep 2017
+ ***********************************************************************
+ * Programmet skriver ut alle positive heltall mellom innlest nedre og 
+ * øvre grense, ved å skrive alle oddetall på en linje og alle partall 
+ * på neste linje. Programmet kjøres om igjen helt til det blir gitt 
+ * beskjed om å avslutte.
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+
+public class OddeOgPartall {
+
+  public static void main(String[] args) { 
+
+      String innTekst = showInputDialog("Gi nedre grense ( >= 1): ");
+      int nedreGrense = parseInt(innTekst);
+      innTekst = showInputDialog("Gi øvre grense ( >= " + nedreGrense + "):");
+      int øvreGrense = parseInt(innTekst); 
+
+      String utTekst = "";
+      if ( nedreGrense < 1 || øvreGrense < nedreGrense )
+        utTekst = "Ulovlig grenseverdier!";
+      else {
+        // Lager to tekststrenger, en for hver linje i utskriften
+        String utOdde = "Oddetall:  ";  // Linje nr 1
+        String utPar = "Partall:  ";    // Linje nr 2
+        for (int tall=nedreGrense; tall<=øvreGrense; tall++)
+          if ( tall%2==1 )
+            utOdde += tall + "  ";
+          else
+            utPar += tall + "  ";
+        utTekst = utOdde + "\n" + utPar;
+      }
+      showMessageDialog(null, utTekst); 
+
+  }
+
+}
+
+
+
+/* Leksjon 3: Jobb 6  (Gjennomsnitt) 
+ * Utviklet av RMI - Sep 2017
+ *************************************************************************
+ * Leser inn ett og ett posistivt heltall (ved do-løkke), beregner summen, 
+ * finner minste og største tall, beregner gjennomsnittet og skriver ut de 
+ * aktuelle resultatene (avrundet til en desimal).
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+
+public class Gjennomsnitt {
+  public static void main(String[] args) {
+
+    // Deklarerer variabler som blir brukt i programmet
+    int antall = 0;         // Ingen tall lest inn ennå
+    int sum = 0;            // Ingen tall summert ennå
+    int min = MAX_VALUE;    // Alle tall er mindre enn dette
+    int max = 0;            // Alle tall er større enn dette
+    int tall;               // Innlest tall fra brukeren
+
+    do {
+      String tallTekst = showInputDialog("Gi et positivt heltall (stopp=-1):");
+      tall = parseInt(tallTekst);
+      if ( tall != -1 )       // Ikke stoppsignal enda vel . . .
+        if ( tall > 0 ) {     // Feilskrift? Kun positive heltall skal behandles
+          antall++;           // Øker antall innleste tall ett hakk
+          sum += tall;        // Øker summen med det innleste tallet
+          if ( tall < min )
+            min = tall;       // Er dette minste tall (så langt)?
+          if ( tall > max )
+            max = tall;       // Er dette største tall (så langt)?
+        }
+        else
+          showMessageDialog(null, "Ulovlig inndata!");
+    } while ( tall != -1 );
+
+    String utTekst;
+    if ( antall == 0 )
+      utTekst = "Ingen tall er lest inn!";
+    else {
+      double snitt = (double)sum / antall; 
+      snitt = (int)(snitt*10 + 0.5) / 10.0;   // Avrunder til én desimal
+                                              // Se side 57 i læreboka
+      utTekst = "Resultat" + "\n" + " Antall tall: " + antall + "\n" 
+                                  + "Gjennomsnitt: " + snitt + "\n"
+                                  + " Minste tall: " + min + "\n"
+                                  + "Største tall: " + max;
+    }
+    showMessageDialog(null, utTekst);
+
+  }
+
+}
+
+
+
+/* Leksjon 3, Jobb 7: Terningkast
+ * Utviklet av RMI - Sep 2017
+ ***********************************************************************
+ * Simulerer kast med en terning, og teller antall kast til første 6-er.
+ * Utvider til innlesing av et antall kastserier, og så beregnes et
+ * gjennomsnittlig antall kast til første sekser. Dvs. hvilket antall 
+ * kast til første 6-er er det mest sannsynlig at det blir ? 
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+ 
+public class Terningkast {
+ 
+  public static void main( String[] args ) { 
+
+    int antKastserier = parseInt( showInputDialog("Ant. serier: ") );
+    int sumKast = 0;
+    for (int i=1; i<=antKastserier; i++) {
+      int antKast = 0;
+      int øyne; 
+      do {
+        øyne = (int)(6*Math.random() + 1); 
+        antKast++; 
+      } while ( øyne != 6); 
+      sumKast += antKast;
+    }
+
+    // Beregner snittet – husk typeskift i divisjonen 
+    double snitt = (double)sumKast/antKastserier; 
+
+    // Avrunder snittet til en desimal (se side 57 i læreboka) 
+    snitt = (int)(10*snitt + 0.5)/10.0;  // Kan bruke Math.round
+
+    String utTekst = "Snitt ant. kast til første 6-er: " + snitt + "\n"
+                 + "Antall kastserier: " + antKastserier;       
+    showMessageDialog(null, utTekst);  
+     
+  }
+ 
+}
+
+
+///////////////////////////////////////////////////////////
+Eksempel på grafikk-program (EasyGraphic)
+///////////////////////////////////////////////////////////
+
+
+/* Leksjon 3: Fransk flagg
+ * RMI - September 2017
+ *********************************************
+ *  Programmet tegner det franske flagget, tre 
+ *  stolper i fargene blått, hvitt og rødt. 
+ *********************************************
+ *
+ *  Oppgave 17a) Skalere flagget til et større, 
+ *  eller mindre flagg (innlest %-faktor).
+ */
+import static java.lang.Integer.*;
+
+public class FranskFlaggV2 extends EasyGraphics {   
+ 
+  public static void main(String[] args) {
+    launch(args);
+  }
+ 
+  public void run() {
+  	// Må lage vinduet først 
+    makeWindow("Fransk flagg", 800, 500);     
+
+    // Startstørrelse på flagget (100%)
+    final int BREDDE = 300;
+    final int HØYDE = 200;
+
+    // Leser inn ønsket %-skalering fra brukeren
+    String tallText = getText( "Skalering i % (gi verdi 50-200):" );
+    int faktor = parseInt(tallText);
+
+    // VALGSETNING !
+    if ( 50 <= faktor && faktor <= 200 ) {
+      // Hvis lovlig skalering --> Tegne flagg
+
+      // Skalert bredde
+      int flaggbredde = BREDDE*faktor/100;
+      // Skalert høyde
+      int flagghøyde = HØYDE*faktor/100;
+          
+      // Tegner tre stolper, like høye, like brede  
+      int stolpe = flaggbredde/3; 
+
+      // Blå stolpe først
+      setColor(0,0,255);    
+      fillRectangle(50, 50, stolpe, flagghøyde);  
+
+      // Hvit stolpe skjøvet en stolpe mot høyre
+      setColor(255,255,255);    
+      fillRectangle(50+stolpe, 50, stolpe, flagghøyde);    
+
+      // Rød stolpe skjøvet to stolper mot høyre
+      setColor(255,0,0);    
+      fillRectangle(50+2*stolpe, 50, stolpe, flagghøyde);    
+
+      // Svart ramme rundt flagget
+      setColor(0,0,0);    
+      drawRectangle(50, 50, flaggbredde, flagghøyde);  
+    }
+    else { // Ulovlig skalering --> Feilmelding til brukeren 
+      setFont("Arial",64);
+      drawString("Ulovlig skalering!", 100,100);
+    }
+
+  }
+}
+
+
+
+/* Leksjon 3, oppgave 13
+ * RMI - September 2017
+ **********************************************************
+ * Tegner en "murvegg" i et grafisk vindu. Lager animasjon 
+ * ved å legge inn 'pause' mellom hver stein som tegnes ut.
+ * Du kan endre på vindustørrelsen, og muren vil utnytte 
+ * den plassen som stilles til rådighet - etter beste evne.
+ **********************************************************
+ * NB! Kortversjonen av denne løsningen finner du ute på
+ * lærebokas nettsider.
+ **********************************************************
+ */ 
+import static javax.swing.JOptionPane.*;
+
+public class Murvegg extends EasyGraphics {
+ 
+  public static void main(String[] args) {
+    launch(args);
+  }
+ 
+  public void run() {
+
+    // Setter vindustørrelse (minst 300x300)
+    int vinduX = 600, vinduY = 500;
+
+    int steinHøyde = 50; // Høyden på en stein
+    int antStein = 8;    // Lengden på steinraden
+
+    // Setter avstand mellom muren og vinduskanten
+    int margX = 50, margY = 50;
+
+    // Beregner maksimal høyde (max rader) på muren
+    int maxHøyde = (vinduY - 2*margY) / steinHøyde;
+
+    // Oppretter selve vinduet
+    makeWindow("Murvegg", vinduX,vinduY);
+
+    // Setter blågrå himmel i bakgrunnen
+    setBackground(0,150,200);
+    
+    int murhøyde; // Brukes senere og kan ikke deklareres
+                  // lokalt inne i do-løkka.
+    String melding = "Gi murhøyde (1 - "+maxHøyde+"):";
+    boolean ulovlig, gittFeilmelding = false;
+    do {
+      String murhøydeTxt = getText(melding);
+      murhøyde = Integer.parseInt( murhøydeTxt );
+      ulovlig = ( murhøyde < 1 || murhøyde > maxHøyde );
+      if ( ulovlig ) {
+        gittFeilmelding = true;
+        setFont("Arial", 50);
+        drawString("Gi en lovlig murhøyde!", margX, 2*margY);      
+      }
+    } while (ulovlig);  
+
+    // Dekker over evt. feilmelding gitt i vinduet
+    if ( gittFeilmelding ) {
+      setColor(0,150,200);
+      fillRectangle(0,0,vinduX, vinduY);
+    }
+ 
+    // Beregner steinlengdene til å passe med ledig bredde
+    // Husk at hver eneste rad har en halv (0.5) stein
+    int steinLengde = (int)( (vinduX-2*margX)/(antStein-0.5) );
+
+    // Setter starthjørne (x,y) på første stein nede til høyre
+    int x=margX, y=vinduY-margY-steinHøyde;
+ 
+    for (int radNr=1; radNr<=murhøyde; radNr++) { 
+      // Hver rad har et antall steiner 
+      for (int steinNr=1; steinNr<=antStein; steinNr++) {
+        int lengde = steinLengde;
+        // Steinene legges i forband, dvs. en rad starter
+        // med halvstein, den neste avsluttes med halvstein.
+        if ( steinNr == 1 && radNr % 2 == 1  
+             || steinNr == antStein && radNr % 2 == 0 )
+          lengde = steinLengde/2;
+
+        // To ulik farger  på steinene
+        if ( (steinNr+radNr) % 2 == 1 )
+          setColor(240,235,235); // Mørk rødgrå
+        else  
+          setColor(240,225,225); // Lys rødgrå
+        fillRectangle(x, y, lengde, steinHøyde);
+
+        // Trekker svart kontur rundt hver stein
+        setColor(0,0,0);
+        drawRectangle(x, y, lengde, steinHøyde);
+        
+        x += lengde;
+        pause(100);
+      } 
+      // Neste rad begynner i venstre kant igjen
+      x = margX;
+      // Neste rad skal en steinhøyde oppover
+      y -= steinHøyde;
+    }
+  }
+  // Send meg en epost om du har testet og gjerne
+  // eksperimentert med dette programmet.
+}
+

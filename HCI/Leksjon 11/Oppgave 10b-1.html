@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	 <script src="https://code.jquery.com/jquery-git.js"></script>  
+	<title>Oppgave 1</title>
+	<style type="text/css">  
+    button {  
+      display: block;  
+      margin-top: 20px;  
+    }
+  </style>  
+</head>
+<body>  
+  <textarea>This is a text area</textarea>   
+  <p>this is a p tag</p>  
+  <span>this is a span tag</span>  
+  <button id="button1">Click to see the effect</button> 
+  <script type="text/javascript">
+  	$('#button1').click(function(){
+  		$("textarea, p, span").css("background","red");
+  	});
+  </script>
+  </body> 
+</html>

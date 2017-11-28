@@ -1,0 +1,9 @@
+body {background-color: #BDC3C7; width: 50%;}
+h2 {color: #FF7E00;}
+p {background-color:#F6E800;}
+.hello {background-color:#FFFFFF;}
+#special {border:solid; border-color:#002AFF; border-width: 2px;}
+div:nth-of-type(3) > p {color:#DB0000;}
+div:nth-of-type(3) > p:first-of-type {border:solid; border-width:5px; border:color #FFFFFF;}
+div:nth-of-type(1) > p > em {color:#179C05; font-size: 20px;}
+div:nth-of-type(2) ~  *{background-color: #f0e68c;}

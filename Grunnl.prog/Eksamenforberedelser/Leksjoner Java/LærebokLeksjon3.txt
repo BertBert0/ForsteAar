@@ -1,0 +1,618 @@
+/*
+ * Leser to tall a og b, og skriver ut resultatet
+ * av a/b om dette er mulig, ellers feilmelding.
+ */
+import static java.lang.Integer.*;
+import static javax.swing.JOptionPane.*;
+
+public class Divisjon {
+
+  public static void main(String[] args) {
+    String tallTxt = showInputDialog("Gi tall nr 1: a = ");
+    int a = parseInt(tallTxt);
+    tallTxt = showInputDialog("Gi tall nr 2: b = ");
+    int b = parseInt(tallTxt);
+
+    String ut = "Resultat: " + a + "/" + b;
+
+    if ( b != 0 )
+    	ut += " = " + a/b;
+    else
+    	ut += " er umulig!";
+
+    showMessageDialog(null, ut);
+  }
+
+}
+
+
+
+
+/*
+ * Leser tre tall og skriver dem ut sortert i stigende rekkefølge.
+ */
+import static java.lang.Integer.*;
+import static javax.swing.JOptionPane.*;
+
+public class SorterTreTall {
+
+  public static void main(String[] args) {
+    String tallTxt = showInputDialog("Gi tall nr 1: a = ");
+    int a = parseInt(tallTxt);
+    tallTxt = showInputDialog("Gi tall nr 2: b = ");
+    int b = parseInt(tallTxt);
+    tallTxt = showInputDialog("Gi tall nr 3: c = ");
+    int c = parseInt(tallTxt);
+
+    String ut = "Sorterte tall: ";
+
+    if ( a < b )
+      if ( b < c )
+    	  ut += a + " " + b + " " + c;
+      else  // da vet vi at  c <= b
+        if ( a < c )
+    	    ut += a + " " + c + " " + b;
+        else
+    	    ut += c + " " + a + " " + b;
+    else // da vet vi at  b <= a
+      if ( a < c )
+    	  ut += b + " " + a + " " + c;
+      else  // da vet vi at  c <= a
+        if ( b < c )
+    	    ut += b + " " + c + " " + a;
+        else
+    	    ut += c + " " + b + " " + a;
+
+    showMessageDialog(null, ut);
+  }
+
+}
+
+
+
+
+
+/*
+ * Mystisk program - forklart.
+ */
+import static java.lang.Integer.*;
+import static javax.swing.JOptionPane.*;
+
+public class Mystisk {
+
+  public static void main(String[] args) {
+    String tallTxt = showInputDialog("Tall 1:"); // Legg til innlesing
+    int tall1 = parseInt (tallTxt); // Døper om: anne -> tall1
+    tallTxt = showInputDialog("Tall 2:"); // Legger til innlesing
+    int tall2 = parseInt (tallTxt); // Døper om: jens -> tall2
+
+    int differanse ; // Døper om nils til differanse
+
+    if ( tall1 > tall2 )
+      differanse = tall1 - tall2 ;
+    else
+      // Siste else kan aldri slå til, så koden kan forenkles
+      // if ( tall2 >= tall1 )
+      differanse = tall2 - tall1 ;
+      // else
+      //   differanse = tall1 + tall2 ;
+
+    String ut = "Differanse: " + differanse;
+    showMessageDialog(null, differanse);
+  }
+
+  // Programmet leser altså inn to heltall, og skriver
+  // ut differansen mellom dem (absoluttverdien).
+  // Moralen er at valg av variabelnavn er viktig.
+
+}
+
+
+
+
+
+
+/*
+ * Leser 5-sifret personnummer og skriver
+ * ut hvilket kjønn dette hører til.
+ */
+import static java.lang.Integer.*;
+import static javax.swing.JOptionPane.*;
+
+public class PersonNr {
+
+  public static void main(String[] args) {
+    String tallTxt = showInputDialog("Gi personnummer (5 siffer):");
+    int nr = parseInt(tallTxt);
+
+    String ut = "Personnummer: " + nr + " er fra en ";
+
+    int midtsiffer = (nr / 100) % 10;
+    if ( midtsiffer % 2 == 0 )     // et partall?
+    	ut += "kvinne";
+    else
+    	ut += "mann";
+
+    showMessageDialog(null, ut);
+  }
+
+}
+
+
+
+
+
+
+
+/*
+ * Leser et månedsnummer og skriver ut
+ * navnet på måneden dette tilhører.
+ */
+import static java.lang.Integer.*;
+import static javax.swing.JOptionPane.*;
+
+public class Maanedsnavn {
+
+  public static void main(String[] args) {
+    String tallTxt = showInputDialog("Gi månedsnummer (1-12):");
+    int mndNr = parseInt(tallTxt);
+
+    String ut = "Månedsnummer " + mndNr + " er ";
+
+    switch (mndNr) {
+      case 1 : ut += "januar";    break;
+      case 2 : ut += "februar";   break;
+      case 3 : ut += "mars";      break;
+      case 4 : ut += "april";     break;
+      case 5 : ut += "mai";       break;
+      case 6 : ut += "juni";      break;
+      case 7 : ut += "juli";      break;
+      case 8 : ut += "august";    break;
+      case 9 : ut += "september"; break;
+      case 10: ut += "oktober";   break;
+      case 11: ut += "november";  break;
+      case 12: ut += "desember";  break;
+      default: ut += "er ugyldig!";
+    }
+
+    showMessageDialog(null, ut);
+  }
+
+}
+
+
+
+
+
+
+/*
+ * Programmet skriver ut kvadrattallene i området 0-100.
+ * Du bør selv utvide programmet slik at det leser inn
+ * øvre grense for området, dvs. ikke bare 100!
+ */
+import static javax.swing.JOptionPane.*;
+
+public class KvadratTall {
+
+  public static void main(String[] args) {
+    String ut = "Kvadrattall: ";
+
+    for (int tall=1; tall<=10; tall++) {
+      ut += tall*tall + "  ";
+    }
+
+    showMessageDialog(null, ut);
+  }
+
+}
+
+
+
+
+
+
+/*
+ * Programmet skriver ut ASCII-tabellen (for alle tallkodene 1–128).
+ */
+import static java.lang.Integer.*;
+import static java.lang.System.*;
+
+public class Unicode {
+
+  public static void main ( String [] args ) {
+    for (int kodeNr=1; kodeNr<=128; kodeNr++) {
+      char tegn = (char) kodeNr;
+      out.println(kodeNr + " = " + tegn);
+    }
+  }
+
+}
+
+
+
+
+
+
+
+import static javax.swing.JOptionPane.*;
+import static java.lang.Double.*;
+import static java.lang.Integer.*;
+import static java.lang.String.*;
+
+public class KinoprisVerdisjekk { 
+
+  public static void main(String[] args) {  
+    final double MIN_PRIS = 10;
+    final double MAX_PRIS = 150;
+
+    String prisTxt = showInputDialog("Fullpris:");
+    double pris = parseDouble(prisTxt); 
+    if ( pris < MIN_PRIS || pris > MAX_PRIS )
+      showMessageDialog(null, "Ulovlig pris!");
+    else  { // Prisen er altså ok
+      String alderTxt = showInputDialog("Alder:");
+      int alder = parseInt(alderTxt);
+      if ( alder < 1 || alder > 110 )
+        showMessageDialog(null, "Alderen må være feil!");
+      else { // Alderen er altså ok
+        if ( alder <= 5 ) // Gratis
+          pris = 0.0;
+        else if ( alder < 12  ||  alder >= 60 ) // Halv pris
+          pris = pris/2.0;
+        showMessageDialog(null, "Pris: " + pris);     
+      } // slutt alder
+    } // slutt pris
+  } // slutt main
+
+}
+
+
+
+
+
+/*
+ * Programmet skriver ut den lille gangetabellen
+ * (uten kolonne- og rad-overskrifter).
+ */
+import static java.lang.Integer.*;
+import static java.lang.System.*;
+import static javax.swing.JOptionPane.*;
+
+public class Gangetabell {
+
+  public static void main ( String [] args ) {
+
+    for(int x=1; x <=10; x++) {
+      for (int y=1; y <=10; y++) {
+        out.print(x*y + " ");
+      }
+      out.println();
+    }
+  }
+
+}
+
+
+
+
+
+
+
+/*
+ * Leser inn antall linjer og tegner
+ * en rettvinklet trekant-figur.
+ */
+import static java.lang.Integer.*;
+import static java.lang.System.*;
+import static javax.swing.JOptionPane.*;
+
+public class TegnTrekant {
+
+  public static void main(String[] args) {
+
+    int antall;
+    // Leser inn en lovlig verdi i området 1 - 10
+    do {
+      String tallTxt = showInputDialog("Gi antall linjer (1 - 10):");
+      antall = parseInt(tallTxt);
+    } while ( antall < 1 || antall > 10 );
+
+    // Nøstet for-setning for å tegne linjene lengre og lengre
+    for (int linjeNr = 1; linjeNr <= antall; linjeNr++) {
+      for (int tegnNr = 1; tegnNr <= linjeNr; tegnNr++)
+        out.print("+ ");
+      out.println();
+    }
+  }
+
+}
+
+
+
+
+
+
+
+/*
+ * Leser inn antall linjer og tegner ut
+ * en rettvinklet figur, en slags L.
+ */
+import static java.lang.Integer.*;
+import static java.lang.System.*;
+import static javax.swing.JOptionPane.*;
+ 
+public class TegnVinkel {
+ 
+  public static void main(String[] args) {
+ 
+    int antall;
+    // Leser inn en lovlig verdi i området 1 - 10
+    do {
+      String tallTxt = showInputDialog("Gi antall linjer (1 - 10):");
+      antall = parseInt(tallTxt);
+      if ( antall < 1 || antall > 10 )
+        showMessageDialog(null, "Ulovlig antall linjer!");
+    } while ( antall < 1 || antall > 10 );
+ 
+    // Første for-setning tegner vertikal linje nedover, men
+    // stopper hakket før horisontal linje starter.
+    for (int linjeNr = 1; linjeNr < antall; linjeNr++) 
+      out.println("+");
+
+    // Andre for-setning tegner horisontal linje.  
+    for (int tegnNr = 1; tegnNr <= antall; tegnNr++)
+        out.print("+ ");
+    out.println(); 
+    
+  }
+ 
+}
+
+
+
+
+
+/*
+ * Teller ned 10 tall, ved å vise en 'animasjon'
+ * av ett og ett tall  9 --> 0
+ */
+import static java.lang.Integer.*;
+import static java.lang.Math.*;
+
+public class Nedtelling extends EasyGraphics {
+
+  public static void main(String[] args) {
+    launch(args);
+  }
+
+  public void run() {
+    makeWindow("Nedtelling", 500, 500);
+
+    setFont("Arial", 240);
+    for (int nr = 9; nr >= 0; nr--) {
+	  setColor(255,0,0);
+	  // Stroe røde tall midt på tegneflaten
+      drawString(""+nr, 200, 300);
+
+      pause(1000);  // Vent i ett sekund
+
+      setColor(255,255,255);
+      // Hvisker ut forrige tall ved å legge
+      // en hvit firkant oppå tegneflaten.
+      fillRectangle(0,0,500,500);
+    }
+  }
+
+}
+
+
+
+
+
+/*
+ * Programmet simulerer et "slide show" med ett enkelt lysbilde,
+ * der overskriften blir vist med en gang, mens tre tekster i en
+ * punktliste "flyr inn" etter hvert.
+ *
+ * Oppgaveteksten sier at de tre tekstene i punktlisten skal lagres
+ * i tre String-variabler (linje 25-27). Koden for å "fly inn" hver
+ * av de tre tekstene blir nesten helt lik, og du tenker kanskje at
+ * det burde være mulig å ta i bruk løkker her? Da tenker du riktig,
+ * men først må du lære om tabeller (kapittel 5).
+ *
+ */
+import static java.lang.Integer.*;
+import static java.lang.Math.*;
+
+public class Slideshow extends EasyGraphics {
+
+  public static void main(String[] args) {
+    launch(args);
+  }
+
+  public void run() {
+
+    makeWindow("Slideshow", 500, 500);
+
+    // Innholdet på lysarket
+    String overskrift = "Løkker i Java";
+    String punkt1 = "while-løkke";
+    String punkt2 = "do-løkke";
+    String punkt3 = "for-løkke";
+
+    // Sett stor font og vis overskrift
+    setFont("Arial", 48);
+    setColor(0, 0, 0);
+    int x=20;
+    int y=50;
+    drawString(overskrift, x, y);
+
+    // Skru ned font og endre farge
+    setFont("Arial", 28);
+    setColor(0, 0, 255);
+
+    // Utgangspunkt for punktlisten
+    x = x + 50;
+    y = 100;
+
+    // Langsom fart
+    setSpeed(1);
+    
+    // Vis og "fly inn" første punkt
+    int id = drawString(punkt1, 0, 0);
+    moveString(id, x, y);
+
+    // 1 sekund pause
+    pause(1000);
+
+    // Posisjon til neste punkt
+    y = y+30;  
+    
+    // Vis og "fly inn" andre punkt
+    id = drawString(punkt2, 0, 0);
+    moveString(id, x, y);
+
+    // Og tilsvarende for punkt 3
+    pause(1000);
+    y = y+30;      
+    id = drawString(punkt3, 0, 0);
+    moveString(id, x, y);
+
+    // Koden for å "fly inn" tekstene i punktlisten kan kodes
+    // mer elegant ved å bruke tabeller. Vend gjerne tilbake til
+    // denne oppgaven etter at du har gått gjennom kapittel 5.
+
+  }
+
+}
+
+
+
+
+
+
+/*
+ * Programmet skriver ut et antall Fibonacci-tall.
+ * Bruker skriver inn antall tall.
+ * Pr. def. er neste Fibonacci-tall:   f = a + b
+ * der a og b er de to foregående Fibonacci-tallene.
+ */
+
+import static java.lang.Integer.*;
+import static javax.swing.JOptionPane.*;
+
+public class Fibonacci {
+
+  public static void main(String[] args) {
+    String tallTxt = showInputDialog("Antall Fibonaccitall: ");
+    int n = parseInt(tallTxt);
+
+    int a=1, b=1; // De to første Fibonacci-tallene.
+    String ut = "Fibonaccitall: " + a + "  " + b + "  ";
+
+    // Skriver alltid ut de to første tallene, men her bør du
+    // legge inn en if-setning som sjekker om n >= 3 som er
+    // det første tallet som virkelig må beregnes.
+
+    for (int tall=3; tall<=n; tall++) {
+      int f = a + b;
+      ut += f + "  ";
+      b = a;
+      a = f;
+    }
+
+    showMessageDialog(null, ut);
+  }
+
+}
+
+
+
+
+
+/*
+ * Tegner en "murvegg" i et grafisk vindu.
+ */
+
+public class Murvegg extends EasyGraphics {
+
+  public static void main(String[] args) {
+    launch(args);
+  }
+
+  public void run() {
+    makeWindow("Murvegg");
+
+    int xStart = 100, yStart = 350;
+    int xStr = 80, yStr = 50;
+    int bredde = 7, høyde = 5;
+    int x=xStart, y=yStart;
+
+    for (int rad=1; rad<=høyde; rad++) {
+      if ( rad%2 == 1 ) {
+         // Oddetallsrader starter med en halv-sten
+         drawRectangle(x, y, xStr/2, yStr);
+         x += xStr/2;
+         pause(180);
+      }
+      for (int stein=1; stein<=bredde; stein++) {
+        drawRectangle(x, y, xStr, yStr);
+        x += xStr;
+        pause(180);
+      }
+      if ( rad%2 == 0 ) {
+        // Partallsrader slutter med en halv-sten
+        drawRectangle(x, y, xStr/2, yStr);
+        pause(150);
+      }
+      x = xStart;
+      y -= yStr;
+    }
+  }
+
+}
+
+
+
+
+
+import static java.lang.Integer.*;
+
+public class BlinkSkiver extends EasyGraphics {
+
+  public static void main(String[] args) {
+    launch(args);
+  }
+ 
+  public void run() {
+    makeWindow("BlinkSkiver");
+    
+    // Leser antall ringer til lovlig verdi (2-10) er sikret 
+    int antRinger = parseInt( getText("Antall ringer (2-10): ") ); 
+    if ( 2 <= antRinger && antRinger <= 10 ) {
+      int startRadius = 25;
+      int x = 400;
+      int y = 400;
+      boolean erHvit = true;
+      for (int i=antRinger; i>=1; i--) {
+        int radius = startRadius*i;
+        if ( erHvit )
+          setColor(0,0,0); 
+          // skifter til svart 
+        else
+          setColor(255,255,255); 
+          // skifter til hvit igjen
+        erHvit = !erHvit;
+        // Passer på aktuell tegnefarge
+        fillCircle (x, y, radius);
+        pause(300);
+      }
+    }
+    else
+      if (  antRinger <= 2 )  
+        drawString("Ulovlig verdi: Antall ringer er for lavt!", 100, 100);
+      else
+        drawString("Ulovlig verdi: Antall ringer er for høyt!", 100, 100);
+  } 
+  
+}

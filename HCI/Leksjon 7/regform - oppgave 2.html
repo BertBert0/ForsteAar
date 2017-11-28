@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Feedback</title>
+<style type="text/css">
+form {
+	border: solid 1px;
+	border-radius: 20px;
+	margin: auto;
+    padding: 20px;
+    width: 900px ;
+    margin: 0 auto;
+}
+input {
+	width: 400px;
+	margin-bottom: 20px;
+
+}
+label {
+	display: inline-block;
+	text-align: right;
+	width: 65px;
+    vertical-align: top;
+}
+
+
+</style>
+</head>
+<body>
+	<div id="formdiv">
+<form>
+	<fieldset>
+	<legend>Personal Details</legend>
+	<label for="firstname">First Name:</label>
+	<input type="text" name="firstname" placeholder="First Name only">
+
+	<label for="lastname">Last Name:</label>
+	<input type="text" name="lastname" placeholder="Last Name only">
+
+	<label for="email">E-mail:</label>
+	<input type="email" name="email" placeholder="example@domain.com">
+
+	<label for="url">URL:</label>
+	<input type="url" name="url" placeholder="http://mysite.com">
+
+	<label for="tel">Telephone:</label>
+	<input type="tel" name="tel" placeholder="eg. +447000 000000">
+
+	<label for="shoe">Shoe size:</label>
+	<input type="number" name="shoe" min="1">
+	
+	<label for="fly">Flying Skill level (1 low - 100 high):</label>
+	<input type="range" min="1" max="100" name="fly">
+	</fieldset>
+
+	<fieldset>
+		<label for="billing">Message:</label>
+		<textarea name="message"></textarea>
+	</fieldset>
+</form>
+</div>
+
+</body>
+</html>

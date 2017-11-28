@@ -1,0 +1,759 @@
+/*
+ * Programmet bruker metoden skrivStjerner til å
+ * lage en ny rektangel-metode med to parametre:
+ * bredde og høyde.
+ */
+import static java.lang.System.*;
+import static java.lang.Integer.*;
+
+public class TegnRektangel {
+  public static void main(String[] args) {
+    int bredde = 8, høyde = 3;
+    // Lag innlesing fra brukeren selv!
+
+    rektangel(bredde, høyde);
+  }
+
+  public static void rektangel(int linjelengde, int antallLinjer) {
+    for (int i=1; i<=antallLinjer; i++)
+      skrivStjerner(linjelengde);
+  }
+
+  public static void skrivStjerner(int antall) {
+    for (int i=1; i<=antall; i++)
+      out.print('*');
+    out.println();
+  }
+
+}
+
+
+
+
+/*
+ * Programmet bruker metoden skrivStjerner til å
+ * lage en ny trekant-metode med en parameter
+ * bredde som er også er lik høyde.
+ */
+import static java.lang.System.*;
+import static java.lang.Integer.*;
+
+public class TegnTrekant {
+  public static void main(String[] args) {
+    int bredde = 5;
+    // Lag innlesing fra brukeren selv!
+
+    trekant(bredde);
+  }
+
+  public static void trekant(int antallLinjer) {
+    for (int linjeNr=1; linjeNr<=antallLinjer; linjeNr++)
+      skrivStjerner(linjeNr);
+  }
+
+  public static void skrivStjerner(int antall) {
+    for (int i=1; i<=antall; i++)
+      out.print('*');
+    out.println();
+  }
+
+}
+
+
+
+
+
+/*
+* Programmet bruker metoden skrivTegn
+* til å lage og teste en ny metode skrivPil
+* som skriver ut et "pil-mønster".
+*/
+import static java.lang.System.*;
+import static java.lang.Integer.*;
+import static javax.swing.JOptionPane.*;
+
+public class Pil {
+  public static void main(String[] args) {
+    int nivå = 3;
+    // Lag innlesing fra brukeren selv!
+    skrivPil(nivå);
+  }
+
+  public static void skrivPil(int nivåLinje) {
+    // Først lengre og lengre linjer...
+    for (int linje=1; linje<=nivåLinje; linje++)
+      skrivTegn('>', 2*linje-1);
+
+    // Deretter kortere og kortere linjer igjen...
+    for (int linje=nivåLinje-1; linje>=1; linje--)
+      skrivTegn('>', 2*linje-1);
+  }
+
+  public static void skrivTegn(char t, int antall) {
+    for (int i=1; i<=antall; i++)
+      out.print(t);
+    out.println();
+  }
+
+}
+
+
+
+
+
+/*
+ * Programmet tester to metoder for omregning
+ * mellom lengder i cm og i tommer.
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.Double.*;
+
+public class OmregnLengde {
+
+  public static void main(String[] args) {
+    double lengdeCm = parseDouble(showInputDialog("Gi lengede i cm:"));
+    double lengdeTommer = omregnFraCm(lengdeCm);
+    String utTxt = "Lengde i cm: " + lengdeCm + "\n" +
+                   "Lengde i tommer: " + lengdeTommer + "\n" +
+                   "Kontroll i cm: " + omregnTilCm(lengdeTommer);
+    showMessageDialog(null, utTxt);
+  }
+
+  public static double omregnFraCm(double lengde) {
+    return lengde/2.54;
+  }
+
+  public static double omregnTilCm(double lengde) {
+    return lengde * 2.54;
+  }
+
+}
+
+
+
+
+
+/*
+ * Programmet bruker metoden fakultet som via ei
+ * løkke beregner:  n! = n x n-1 x . . . x 2 x 1
+ */
+
+import static java.lang.Integer.*;
+import static javax.swing.JOptionPane.*;
+
+public class Fakultet {
+
+  public static void main(String[] args) {
+    boolean ulovlig;
+    int n;
+
+    do { // Leser inn lovlig n-verdi
+      String tallTxt = showInputDialog("Gi n =");
+      n = parseInt(tallTxt);
+      ulovlig = (n < 0  || 12 < n);
+      if (ulovlig)
+        showMessageDialog(null, "Ugyldig n-verdi!");
+    } while (ulovlig);
+
+    showMessageDialog( null, n + "! = " + fakultet(n) );
+  }
+
+  public static int fakultet(int maxTall) {
+    int nFak = 1;
+    for (int tall=1; tall<=maxTall; tall++)
+      nFak = nFak * tall;
+    return nFak;
+  }
+
+}
+
+
+
+
+
+
+/*
+ * Programmet leser inn et heltall og sjekker at
+ * dette ligger i et angitt intervall.
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+
+public class Innlesing {
+
+  public static void main ( String [] args ) {
+    int heltall = lesHeltall (2,10);
+    showMessageDialog (null ," Heltall : " + heltall );
+  }
+
+  private static int lesHeltall (int nedre, int øvre) {
+    int tall;
+    do {
+      String tallTxt = showInputDialog (" Gi heltall ("+nedre+"-"+øvre+"):");
+      tall = parseInt ( tallTxt );
+    } while ( tall < nedre || øvre < tall );
+    return tall ;
+  }
+
+}
+
+
+
+
+
+
+/*
+ * Programmet leser et tegn og bruker metoder til å
+ * avgjøre om dette er en bokstav, og i så fall stor
+ * eller liten, og vokal eller konsonant. Ser kun på
+ * engelske bokstaver (dvs. ikke æ,ø,å).
+ */
+import static java.lang.Integer.*;
+import static javax.swing.JOptionPane.*;
+
+public class BokstavSjekk {
+
+  public static void main(String[] args) {
+    String tegnTxt = showInputDialog("Gi et tegn");
+    char tegn = tegnTxt.charAt(0);
+    String ut = "Tegnet " + tegn + " er";
+
+    if ( erBokstav(tegn) ) {
+      ut += " en";
+      if ( erStorBokstav(tegn) )
+        ut += " stor";
+      else
+        ut += " liten";
+      ut += " bokstav og";
+      if ( erVokal(tegn) )
+        ut += " vokal";
+      else
+        ut += " konsonant";
+    }
+    else
+      ut += " ikke en bokstav";
+
+    showMessageDialog(null, ut);
+  }
+
+  public static boolean erBokstav(char t) {
+    return ('a'<=t && t<='z' || 'A'<=t && t<='Z');
+  }
+
+  public static boolean erStorBokstav(char t) {
+    return ('A'<=t && t<='Z');
+  }
+
+  public static boolean erVokal(char t) {
+    if ( erStorBokstav(t) )
+      t = (char)(t + 32);   // slår om til liten bokstav
+    return (t=='a'||t=='e'||t=='i'||t=='o'||t=='u'||t=='y');
+  }
+
+}
+
+
+
+
+
+
+/*
+ * Programmet beregner summen av en sekvens
+ * med påfølgende heltall.
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+
+public class SumAvSekvens {
+
+  public static void main ( String [] args ) {
+    int svar = sum (3, 7);
+    // De to tallene bør leses inn!
+    showMessageDialog(null,"Sum fom 3 tom 7 = " + svar );
+  }
+
+  private static int sum (int fra, int til ) {
+    int summen = 0;
+    for (int tall = fra; tall <= til; tall++)
+      summen += tall;
+    return summen ;
+  }
+
+}
+
+
+
+
+
+/*
+ * Programmet tegner et antall lastebiler i en kolonne.
+ * Lastebilene blir større lengre fremme i kolonnen,
+ * men de kjører alle på den 'samme vegen'.
+ */
+import java.awt.*;
+import java.applet.*;
+
+public class Lastebiler extends EasyGraphics {
+
+  public static void main (String[] args) {
+    launch (args);
+  }
+
+  public void run() {
+    makeWindow ("Lastebilkolonne",900,500);
+
+    int antBiler = 5;
+    // Kan leses inn fra brukeren
+    int xPos=20, yPos=200, str=90;
+    for (int i=1; i<=antBiler; i++) {
+      tegnLastebil(xPos, yPos, str);
+      xPos += str + str/2;
+      str += 15;
+    }
+  }
+
+  public void tegnLastebil(int x, int y, int lengde) {
+    // Først tegnes underdelen
+    int yUnder =  y-lengde/3-lengde/5;
+    drawRectangle(x, yUnder, lengde, lengde/3);
+    // Så tegnes lasten
+    int yLast = y-2*lengde/3-lengde/5;
+    drawRectangle(x, yLast, 3*lengde/4, lengde/3);
+    // Deretter tegnes førerhuset
+    int yHus = y-lengde/5-lengde/3-lengde/5;
+    drawRectangle(x+3*lengde/4, yHus, lengde/6, lengde/5);
+    // Tre like store hjul, forskjøvet i x-retningen
+    int r = lengde/8;
+    drawCircle(x+r, y-r/2, r);
+    drawCircle(x+3*r, y-r/2, r);
+    drawCircle(x+7*r, y-r/2, r);
+  }
+
+}
+
+
+
+
+
+
+/*
+ * Programmet tegner ut en husrekke slik som i læreboken,
+ * men det er nå lagt til et lite takutstikk.
+ */
+import java.awt.*;
+import java.applet.*;
+
+public class Husrekke extends EasyGraphics {
+
+  public static void main (String[] args) {
+    launch (args);
+  }
+
+  public void run() {
+    makeWindow ("Husrekke",800,300);
+
+    tegnHusrekke(5, 50, 100, 90, 50, 25);
+  }
+
+  private void tegnHusrekke(int antallHus,
+          int startX, int startY, int bredde, int høyde, int avstand) {
+    for (int husNr=1; husNr<=antallHus; husNr++) {
+      tegnHus(startX, startY, bredde, høyde);
+      startX = startX + bredde + bredde/3 + avstand;
+      // bredde/3 er tillegget pga takutstikket, se nedenfor
+    }
+  }
+
+  private void tegnHus(int x, int y, int bredde, int høyde ) {
+    int veggHøyde = høyde*2/3;
+    int toppVegg  = y - veggHøyde;
+    drawRectangle(x, toppVegg, bredde, veggHøyde);
+    // Takutstikket er valgt til 1/6 av bredden på huset.
+    // Ett på hver side gjør til sammen grunnlinja i taket
+    // 1/3 lengre enn bredden på huset.
+    int ut = bredde/6;
+    tegnTrekant(x-ut, toppVegg, bredde + 2*ut, høyde/3);
+  }
+
+  private void tegnTrekant(int x, int y, int bredde, int høyde) {
+    drawLine(x, y, x+bredde, y);
+    drawLine(x+bredde, y, x+bredde/2, y-høyde);
+    drawLine(x+bredde/2, y-høyde, x, y);
+  }
+
+}
+
+
+
+
+
+
+
+/*
+ * Programmet tegner en familie av fyrstikkfigurer.
+ * Antall figurer leses inn, to store foreldre og
+ * resten er (mindre, alle like små) barn.
+ */
+import static java.lang.Integer.*;
+
+public class FyrstikkFamilie extends EasyGraphics {
+
+  public static void main(String[] args) {
+    launch(args);
+  }
+
+  public void run() {
+
+    makeWindow("Strekfigurer", 900, 500);
+
+    int ant = parseInt( getText("Gi ant. figurer:") );
+
+    // Plassering av midtpunktet til det første hodet
+    int xPos = 50, yPos = 100;
+
+    // Setter størrelsen på en voksen, og på et barn
+    int stor = 150, liten = stor/2;
+
+    // Setter avstand mellom figurene
+    int avstand = liten;
+
+    // Tegner barna lengre ned for at alle 'skal stå på gulvet'
+    int littNed = stor/2;
+
+    for (int i=0; i<ant; i++) {
+      if ( i < 2)
+        tegnFigur(xPos+i*avstand,yPos,stor);
+      else
+        tegnFigur(xPos+(i+2)*avstand/2, yPos+littNed, liten);
+        // Tegner barna to hakk lengre mot høyre, derfor (i+2)
+      pause(400);
+    }
+  }
+
+  // Ulike hjelpemetoder for å tenge figurene
+
+  private void tegnFigur(int x, int y, int str) {
+    int r = str/5;
+    tegnHode(x,y,r);
+    tegnKropp(x,y+r,r);
+    tegnBein(x,y+3*r,r);
+  }
+
+  private void tegnHode(int x, int y, int str) {
+    drawCircle(x,y,str);
+    // Tegner to øyne
+    fillCircle(x-str/4,y-str/3,str/6);
+    fillCircle(x+str/4,y-str/3,str/6);
+    // Tegner en smilemunn....
+    drawArc(x,y,str/2,str/2,190,160);
+  }
+
+  private void tegnKropp(int x, int y, int str) {
+    drawLine(x,y,x,y+2*str);
+    drawLine(x-str,y+str,x+str,y+str);
+  }
+
+  private void tegnBein(int x, int y, int str) {
+    drawLine(x,y,x-str,y+2*str);
+    drawLine(x,y,x+str,y+2*str);
+  }
+
+}
+
+
+
+
+
+/*
+ * Verktøyklasse for geometriske beregninger.
+ * Areal og omkrets av diverse figurer.
+ */
+public class Geometri {
+
+  // Sirkler
+  public static double arealSirkel(double radius) {
+    return Math.PI*radius*radius;
+  }
+
+  public static double omkretsSirkel(double radius) {
+    return 2*Math.PI*radius;
+  }
+
+  // Rektangel
+  public static double arealRektangel(double bredde, double høyde) {
+    return bredde*høyde;
+  }
+
+  public static double omkretsRektangel(double bredde, double høyde) {
+    return 2*bredde + 2*høyde;
+  }
+
+  // Kun for rettvinklet trekant
+  public static double arealTrekant(double bredde, double høyde) {
+    return bredde*høyde/2;
+  }
+
+  public static double omkretsTrekant(double bredde, double høyde) {
+    return bredde + høyde + Math.sqrt(bredde*bredde + høyde*høyde);
+  }
+
+}
+
+
+
+
+
+
+
+/*
+ * Programmet tester bruk av verktøyklassen Geometri.
+ */
+import static javax.swing.JOptionPane.*;
+
+public class TestAvGeometri {
+
+  public static void main ( String [] args ) {
+    double rad = 3.5;
+    double bredde = 8.5, høyde = 10.0;
+    showMessageDialog (null,
+      "Radius: r = " + rad + "\n" +
+      "Areal: " + Geometri.arealSirkel(rad) + "\n" +
+      "Omkrets: " + Geometri.omkretsSirkel(rad) + "\n" +
+      "Bredde: " + bredde + ", høyde: " + høyde + "\n" +
+      "Rektangel - Areal: " + Geometri.arealRektangel(bredde, høyde) + "\n" +
+      "Rektangel - Omkrets: " + Geometri.omkretsRektangel(bredde, høyde) + "\n" +
+      "Trekant - Areal: " + Geometri.arealTrekant(bredde, høyde) + "\n" +
+      "Trekant - Omkrets: " + Geometri.omkretsTrekant(bredde, høyde) );
+
+    showMessageDialog (null, "Overflate av prisme: " + overflatePrisme(1,2,3) );
+  }
+
+  public static double overflatePrisme(double lengde, double bredde, double høyde) {
+    return 2*Geometri.arealRektangel(lengde, bredde)
+           + 2*Geometri.arealRektangel(lengde, høyde)
+           + 2*Geometri.arealRektangel(bredde, høyde);
+  }
+}
+
+
+
+
+
+
+/*
+ * Programmet bruker en egen metode for å avgjøre om et heltall
+ * er et primtalll eller ikke, for å finne alle primtall i 1-100.
+ */
+import static javax.swing.JOptionPane.*;
+
+public class Primtall {
+
+  public static void main ( String [] args ) {
+
+    String utTxt = "Primtall (1-100):   ";
+
+    for (int heltall=2; heltall<=100; heltall++)
+      if ( erPrimtall(heltall) )
+        utTxt += heltall + "    ";
+
+    showMessageDialog (null, utTxt);
+  }
+
+  public static boolean erPrimtall(int tall) {
+    if ( tall % 2 == 0 )
+      return ( tall == 2 );   // 2 er eneste partallige primtall
+    boolean prim = true;
+    for (int faktor=3; faktor<=tall/2; faktor+=2)
+      if ( tall % faktor == 0 )
+        return false;
+    // Ingen faktorer funnet, dvs. primtall
+    return true;
+  }
+
+}
+
+
+
+
+/*
+ * Programmet lager en nettside ved omdirigering
+ * av utskriften fra konsollet til fil under kjøring.
+ */
+import static java.lang.System.*;
+
+public class Nettside{
+
+  public static void main(String[] args) {
+    startDok();
+    overskrift1("Testside");
+    avsnitt("Dette er teksten som skal stå i et avsnitt.");
+    avsnitt("Litt mer tekst til et nytt avsnitt.");
+    stoppDok();
+  }
+
+  private static void startDok() {
+    out.println("<html><body>");
+  }
+
+  private static void stoppDok() {
+    out.println("</body></html>");
+  }
+
+  private static void overskrift1(String s) {
+    out.println("<h1>" + s + "</h1>");
+  }
+
+  private static void avsnitt(String s) {
+    out.println("<p>" + s + "</p>");
+  }
+
+}
+
+
+
+
+/*
+ * Programmet lager en nettside med den lille
+ * multiplikasjonstabellen.
+ */
+import static java.lang.System.*;
+
+public class LilleGangetabell{
+
+  public static void main(String[] args) {
+    startDok();
+    overskrift1("Den lille multiplikasjonstabellen");
+    out.println("<table>");
+    for (int y=1; y<=10; y++) {
+      out.print("<tr>");
+      for (int x=1; x<=10; x++)
+        out.print("<td width='40' align='right'>"+x*y+"</td>");
+      out.println("</tr>");
+    }
+    out.println("</table>");
+    stoppDok();
+  }
+
+  private static void startDok() {
+    out.println("<html><body>");
+  }
+
+  private static void stoppDok() {
+    out.println("</body></html>");
+  }
+
+  private static void overskrift1(String s) {
+    out.println("<h1>" + s + "</h1>");
+  }
+
+  private static void avsnitt(String s) {
+    out.println("<p>" + s + "</p>");
+  }
+
+}
+
+
+
+
+
+/*
+ * Programmet lager en nettside med en multiplikasjonstabell,
+ * innenfor området gitt ved innlest start- og stoppverdi.
+ * Kjør programmet i kommandovinduet for å lage nettsiden:
+ *              java Kalender > Kalender.html
+ */
+import static java.lang.System.*;
+import static java.lang.Integer.*;
+import static javax.swing.JOptionPane.*;
+
+public class Gangetabell{
+
+  public static void main(String[] args) {
+    int start = parseInt( showInputDialog("Gi nedre grense:") );
+    int stopp = parseInt( showInputDialog("Gi øvre grense:") );
+    startDok();
+    overskrift1("Multiplikasjonstabell");
+    out.println("<table>");
+    for (int y=start; y<=stopp; y++) {
+      out.print("<tr>");
+      for (int x=start; x<=stopp; x++)
+        out.print("<td width='40' align='right'>"+x*y+"</td>");
+      out.println("</tr>");
+    }
+    out.println("</table>");
+    stoppDok();
+  }
+
+  private static void startDok() {
+    out.println("<html><body>");
+  }
+
+  private static void stoppDok() {
+    out.println("</body></html>");
+  }
+
+  private static void overskrift1(String s) {
+    out.println("<h1>" + s + "</h1>");
+  }
+
+  private static void avsnitt(String s) {
+    out.println("<p>" + s + "</p>");
+  }
+
+}
+
+
+
+
+/*
+ * Programmet tegner ut en husrekke slik som i læreboken,
+ * men det er nå lagt til et lite takutstikk.
+ */
+import java.awt.*;
+import java.applet.*;
+import static java.lang.Double.*;
+
+public class HusrekkeUtvidet extends EasyGraphics {
+
+  public static void main (String[] args) {
+    launch (args);
+  }
+
+  public void run() {
+    makeWindow ("Husrekke",800,300);
+
+    double f = parseDouble( getText("Høydeforhold:") );
+    // f = forhold mellom høyden på husveggen og hele huset
+    tegnHusrekke(5, 50, 100, 90, 80, 25, f);
+  }
+
+  private void tegnHusrekke(int antallHus,
+                            int startX, int startY, int bredde,
+                            int høyde, int avstand, double andel) {
+    for (int husNr=1; husNr<=antallHus; husNr++) {
+      tegnHus(startX, startY, bredde, høyde, andel);
+      startX = startX + bredde + bredde/3 + avstand;
+      // bredde/3 er tillegget pga takutstikket, se nedenfor
+    }
+  }
+
+  private void tegnHus(int x, int y,
+                       int bredde, int høyde, double andelHøyde) {
+    int veggHøyde = (int)(høyde*andelHøyde);
+    int takHøyde = høyde - veggHøyde;
+    int toppVegg  = y - veggHøyde;
+    drawRectangle(x, toppVegg, bredde, veggHøyde);
+    // Takutstikket er valgt til 1/6 av bredden på huset.
+    // Ett på hver side gjør til sammen grunnlinja i taket
+    // 1/3 lengre enn bredden på huset.
+    int ut = bredde/6;
+    tegnTrekant(x-ut, toppVegg, bredde + 2*ut, takHøyde);
+  }
+
+  private void tegnTrekant(int x, int y, int bredde, int høyde) {
+    drawLine(x, y, x+bredde, y);
+    drawLine(x+bredde, y, x+bredde/2, y-høyde);
+    drawLine(x+bredde/2, y-høyde, x, y);
+  }
+
+}

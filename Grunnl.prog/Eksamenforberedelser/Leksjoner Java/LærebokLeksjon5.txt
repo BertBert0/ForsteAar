@@ -1,0 +1,1121 @@
+/*
+ * Programmet leser inn ett siffer og teller antall
+ * forekomster som er mindre enn dette i et tallsett
+ * som allerede er lagret i en tabell.
+ */
+import static java.lang.Integer.*;
+import static javax.swing.JOptionPane.*;
+
+public class AntallMindre {
+
+  public static void main(String[] args) {
+
+  // Tallsett: Legger noen siffer i en tabell
+    int[] siffer = {1,2,1,2,3,1,7,1,8,2};
+
+    String tallTxt = showInputDialog("Gi søkesiffer:");
+    int søkesiffer = parseInt(tallTxt);
+    int antall = 0;
+
+    for (int i=0; i<siffer.length; i++)
+      if ( siffer[i] < søkesiffer )
+        antall++;
+
+    String ut = "Antall siffer mindre enn " + søkesiffer + ": " + antall;
+    showMessageDialog(null, ut);
+  }
+
+}
+
+
+
+
+
+/*
+ * Programmet sorterer et tallsett i avtagende rekkefølge,
+ * og skriver det ut.
+ */
+import static javax.swing.JOptionPane.*;
+import java.util.*;  // Trenger Arrays-klassen
+
+public class SorterAvtagende {
+
+  public static void main(String[] args) {
+    int[] tall = {1,2,1,2,9,8,7,1,8,2};
+    Arrays.sort(tall);  // Sortert stigende - feil ordning
+
+    int[] kopi = Arrays.copyOf(tall, tall.length);
+    int sistePos = tall.length - 1;
+
+    for (int i=0; i<=sistePos; i++)
+      tall[i] = kopi[sistePos-i];
+
+    String ut = "Sortert tallsett: " + Arrays.toString(tall);
+    showMessageDialog(null, ut);
+  }
+
+}
+
+
+
+
+
+/*
+ * Programmet teller antall tall i et tallsett
+ * som står i ro (er uflyttede) når tallsettet
+ * blir sortert (stigende).
+ */
+import static javax.swing.JOptionPane.*;
+import java.util.*;  // Trenger Arrays-klassen
+
+public class AntallUflyttede {
+  public static void main(String[] args) {
+    int[] tall = {1,2,1,2,9,8,7,1,8,2};
+    int[] kopi = Arrays.copyOf(tall, tall.length);
+
+    Arrays.sort(kopi);
+
+    int antallRo = 0;
+    for (int i=0; i<tall.length; i++)
+      if ( tall[i] == kopi[i] )
+        antallRo++;
+
+    String ut = "Antall uflyttede tall er " + antallRo + "\n" +
+                "Original: " + Arrays.toString(tall) + "\n" +
+                "Sortert : " + Arrays.toString(kopi);
+    showMessageDialog(null, ut);
+  }
+
+}
+
+
+
+
+
+
+/*
+ * Program for å registrere temperatur for hver dag i en
+ * uke. Skriver ut en samlet oversikt over temperaturene,
+ * inkludert gjennomsnittstemperatur, min- og makstemperatur.
+ */
+
+import static java.lang.System.*;
+import static java.lang.Integer.*;
+import static java.lang.Double.*;
+import static javax.swing.JOptionPane.*;
+
+public class Temperatur {
+
+  public static void main(String[] args) {
+
+    // Koblingstabell:  dagnr -> dagnavn
+    String[] navn = {"man", "tir","ons", "tor","fre", "lør","søn"};
+    double[] temperatur = new double[7];  // Antal dager i uka er 7
+
+    for (int dag=0; dag<7; dag++) {
+      String melding = "Reg. temp. for " + navn[dag] +"dag:";
+      String tallTxt = showInputDialog( melding );
+        temperatur[dag] = parseInt(tallTxt);
+    }
+
+    // Utskrift til konsollet
+    out.println("Registrerte temperaturer:");
+    double tempSum = 0;
+    double minTemp = 100, maxTemp = -100;
+    int minDag, maxDag;
+
+    for (int dag=0; dag<7; dag++) {
+      out.println( navn[dag] + "dag:  " + temperatur[dag] );
+      tempSum += temperatur[dag];
+      if ( temperatur[dag] < minTemp ) {
+        minTemp = temperatur[dag];
+        minDag = dag;
+    	}
+      if ( temperatur[dag] > maxTemp ) {
+        maxTemp = temperatur[dag];
+        maxDag = dag;
+    	}
+    }
+
+    double tempSnitt = tempSum / 7;
+    out.println("Gjennomsnittstemperatur: " + tempSnitt);
+    out.println("Minimumstemperatur: " + minTemp);
+    out.println("Maksimumstemperatur: " + maxTemp);
+  }
+
+}
+
+
+
+
+
+
+/*
+ * Programmet tar to sorterte tabeller og fletter dem til en
+ * sortert tabell av eksakt samme lengde som de to til sammen.
+ */
+import static javax.swing.JOptionPane.*;
+import java.util.*;  // Trenger Arrays-klassen
+
+public class Fletting {
+  public static void main(String[] args) {
+    int[] tabEn = {1,2,1,2,9,8,7,1,8,2};
+    int[] tabTo = {1,1,3,2,4};
+
+    Arrays.sort(tabEn);
+    Arrays.sort(tabTo);
+
+    int sumLengde = tabEn.length + tabTo.length;
+    int[] tabSamlet = new int[sumLengde];
+
+    int iEn = 0, iTo = 0, i = 0;
+    while ( iEn < tabEn.length && iTo < tabTo.length )
+      if ( tabEn[iEn] < tabTo[iTo] )
+        tabSamlet[i++] = tabEn[iEn++];
+      else
+        tabSamlet[i++] = tabTo[iTo++];
+
+    if ( iEn == tabEn.length )
+      while ( i < sumLengde )
+        tabSamlet[i++] = tabTo[iTo++];
+    else
+      while ( i < sumLengde )
+        tabSamlet[i++] = tabEn[iEn++];
+
+    String utTxt = "Tabell nr 1: " + Arrays.toString(tabEn) + "\n" +
+                   "Tabell nr 2: " + Arrays.toString(tabTo) + "\n" +
+                   "Samlet: " + Arrays.toString(tabSamlet);
+    showMessageDialog(null, utTxt);
+  }
+
+}
+
+
+
+
+
+/*
+ * Programmet leser inn et antall tallkarakter og
+ * beregner gjennomsnittskarakter. Skriver ut denne
+ * snittkarakteren som bokstavkarakter.
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+
+public class KarakterSnitt {
+
+  public static void main(String[] args) {
+    char[] bokstav = {'F','E','D','C','B','A'};
+
+    int sumKarakter = 0, nr = 0;
+    String svar;
+    do {
+      nr++;
+      int karakter;
+      do{
+        String tallTxt = showInputDialog("Gi kar. nr. "+nr+":");
+        karakter = parseInt(tallTxt);
+        if ( karakter < 0 || 5 < karakter)
+          showMessageDialog(null,"Ugyldig! Gi ny karakter.");
+      } while ( karakter < 0 || 5 < karakter);
+      sumKarakter += karakter;
+      svar = showInputDialog("Flere karakter? (Ja/Nei):");
+      svar = svar.toUpperCase();
+    } while ( svar.equals("JA") );
+
+    int snittKarakter = (int)( (sumKarakter*1.0/nr + 0.5) );
+    // Vanlig avrunding opp til nærmeste heltall.
+
+    String utTxt = "Antall karakterer: " + nr + "\n" +
+                   "Snittkarakter: " + bokstav[snittKarakter];
+    showMessageDialog(null, utTxt);
+  }
+
+}
+
+
+
+
+
+/*
+ * Programmet tester ut en metode som skriver ut en
+ * heltallstabell til konsollet. Dvs. utskriften er
+ * et alternativ til out.println på Arrays.toString.
+ */
+
+import static java.lang.System.*;
+
+public class SkrivUtTabell {
+
+  public static void main(String[] args) {
+    int[] tall = {4, 3, 7, 1, 2, 5};
+    skrivUt(tall);
+  }
+
+  public static void skrivUt(int[] tab) {
+    String txt = "[" + tab[0];
+    for (int i=1; i<tab.length; i++)
+      txt += ", " + tab[i];
+    txt += "]";
+    out.println(txt);
+  }
+
+}
+
+
+
+
+
+/*
+ * Programmet tester ut en metode som fyller
+ * en tabell med et gitt heltall.
+ */
+import static java.lang.Integer.*;
+import static javax.swing.JOptionPane.*;
+
+public class FyllTabell {
+
+  public static void main(String[] args) {
+    String tallTxt = showInputDialog("Gi antall tall i serien: ");
+    int antall = parseInt(tallTxt);
+    int[] tall = new int[antall];
+    fyllOpp(tall, 5);
+    String utTxt = "Tallserie (alle like): " + skriv(tall);
+    showMessageDialog(null, utTxt);
+  }
+
+  // Metoden fyller tabellen med den gitte verdien
+  public static void fyllOpp(int[] tab, int verdi) {
+    for (int i=0; i<tab.length; i++)
+      tab[i] += verdi;
+  }
+
+  // Hjelpemetode: Alternativ til Arrays.toString
+  public static String skriv(int[] tab) {
+    String txt = "[" + tab[0];
+    for (int i=1; i<tab.length; i++)
+      txt += ", " + tab[i];
+    return txt + "]";
+  }
+
+}
+
+
+
+
+
+
+/*
+ * Programmet tester ut en metode som reverserer
+ * en heltallstabell.
+ */
+import static javax.swing.JOptionPane.*;
+
+public class Reverser {
+
+  public static void main(String[] args) {
+    int[] tall = {4, 3, 7, 1, 2, 5};
+    String utTxt = "Tallserien: " + skriv(tall) + "\n";
+    reverser(tall);
+    utTxt += "Reversert: " + skriv(tall);
+    showMessageDialog(null, utTxt);
+  }
+
+  // Metoden snur rekkefølgen av tabellverdiene
+  public static void reverser(int[] tab) {
+    int sistePos = tab.length - 1;
+    // Plassbytte kun inn til midten av tabellen!
+    for (int i=0; i<=sistePos/2; i++) {
+      int hjelp = tab[i];
+      tab[i] = tab[sistePos-i];
+      tab[sistePos-i] = hjelp;
+    }
+  }
+
+  // Hjelpemetode: Alternativ til Arrays.toString
+  public static String skriv(int[] tab) {
+    String txt = "[" + tab[0];
+    for (int i=1; i<tab.length; i++)
+      txt += ", " + tab[i];
+    return txt + "]";
+  }
+
+}
+
+
+
+
+
+/*
+ * Programmet tester ut en metode som sjekker om en
+ * tegnsekvens er et palindrom, dvs. samme sekvens
+ * uansett om den er lest fra høyre eller venstre.
+ */
+import static javax.swing.JOptionPane.*;
+import java.util.*;
+
+public class Palindrom {
+
+  public static void main(String[] args) {
+  /*
+    // Først en enklere versjon: Kontroll av tegnsekvens
+    String innTxt = showInputDialog("Gi en tekst:");
+    String kopiTxt = "";
+    int sistePos = innTxt.length()-1;
+    for (int i=0; i<=sistePos; i++)
+      kopiTxt += innTxt.charAt(sistePos-i);
+
+    String utTxt = "Original: " + innTxt + "\n" +
+                   "Reversert: " + kopiTxt + "\n" +
+                   "Dvs. teksten er ";
+    if ( innTxt.equals(kopiTxt) )
+      utTxt += "et palindrom";
+    else
+      utTxt += "ikke et palindrom";
+    showMessageDialog(null, utTxt);
+  */
+
+    // Versjon 2: Reverser tabellen
+    String innTxt = showInputDialog("Gi en tekst:");
+    char[] tekst = new char[innTxt.length()];
+
+    for (int i=0; i<tekst.length; i++)
+      tekst[i] = innTxt.charAt(i);
+
+    char[] kopiTekst = Arrays.copyOf(tekst, tekst.length);
+    reverser(kopiTekst);
+
+    String utTxt = "Inntekst: " + skriv(tekst) + "\n" +
+                   "Reversert: " + skriv(kopiTekst) + "\n" +
+                   "Dvs. teksten er ";
+    if ( Arrays.equals(tekst,kopiTekst) )
+      utTxt += "et palindrom";
+    else
+      utTxt += "ikke et palindrom";
+    showMessageDialog(null, utTxt);
+  }
+
+  // Metoden snur rekkefølgen av tabellverdiene
+  public static void reverser(char[] tab) {
+    int sistePos = tab.length - 1;
+    // Plassbytte kun inn til midten av tabellen!
+    for (int i=0; i<=sistePos/2; i++) {
+      char hjelp = tab[i];
+      tab[i] = tab[sistePos-i];
+      tab[sistePos-i] = hjelp;
+    }
+  }
+
+  // Hjelpemetode: Alternativ til Arrays.toString
+  public static String skriv(char[] tab) {
+    String txt = "[" + tab[0];
+    for (int i=1; i<tab.length; i++)
+      txt += ", " + tab[i];
+    return txt + "]";
+  }
+
+}
+
+
+
+
+
+
+
+/*
+ * Programmet tar to tabeller og slår dem sammen til
+ * en tabell som sorteres ved hjelp av Arrays.sort.
+ */
+import static javax.swing.JOptionPane.*;
+import java.util.*;  // Trenger Arrays-klassen
+
+public class Flettemetode {
+  public static void main(String[] args) {
+    int[] tabEn = {1,2,1,2,9,8,7,1,8,2};
+    int[] tabTo = {1,1,3,2,4};
+
+    int[] tabSamlet = samle(tabEn, tabTo);
+
+    Arrays.sort(tabSamlet);
+
+    String utTxt = "Tabell nr 1: " + Arrays.toString(tabEn) + "\n" +
+                   "Tabell nr 2: " + Arrays.toString(tabTo) + "\n" +
+                   "Samlet: " + Arrays.toString(tabSamlet);
+    showMessageDialog(null, utTxt);
+  }
+
+  public static int[] samle (int[] tabA, int[] tabB) {
+    int nyLengde = tabA.length + tabB.length;
+    int[] nyTab = new int[nyLengde];
+    for (int i=0; i<tabA.length; i++) {
+      nyTab[i] = tabA[i];
+    }
+    for (int j=0; j<tabB.length; j++) {
+      nyTab[tabA.length+j] = tabB[j];
+    }
+    return nyTab ; // Returnerer referanse til ny tabell
+  }
+
+}
+
+
+
+
+
+
+/*
+ * Programmet tar inn kommandolinjeparametre (tegnsekvenser)
+ * som legges i args. Skriver ut igjen en og en sekvens med
+ * info om tegnsekvensen er et palindrom, eller ikke.
+ *
+ * NB! Programmet kjøres via kommandovindu/konsoll
+ */
+import static java.lang.System.*;
+
+public class ParameterPalindrom {
+
+  public static void main(String[] args) {
+    for (int i=0; i<args.length; i++) {
+      String innTxt = args[i];
+      out.print("Sekvens nr. " + (i+1)+": " + innTxt);
+      String kopiTxt = "";
+      int sistePos = innTxt.length()-1;
+      for (int j=0; j<=sistePos; j++)
+        kopiTxt += innTxt.charAt(sistePos-j);
+      if ( innTxt.equals(kopiTxt) )
+        out.println(" (palindrom)");
+      else
+        out.println(" (ikke palindrom)");
+    }
+  }
+
+}
+
+
+
+
+/*
+ * Programmet leser fornavn og etternavn, og skriver
+ * dem ut igjen i små bokstaver, men stor forbokstav.
+ */
+import static javax.swing.JOptionPane.*;
+
+public class NavnSkriving {
+
+  public static void main(String[] args) {
+    String fornavn = showInputDialog("Gi fornavn:");
+    String etternavn = showInputDialog("Gi etternavn:");
+    etternavn = etternavn.toLowerCase();
+
+    // Viser to ulike måter å lage nytt navn av stor
+    // forbokstav, etterfulgt av kun små bokstaver
+
+    // Først: Fornavnet
+    char forbokstav = Character.toUpperCase(fornavn.charAt(0));
+    fornavn = fornavn.toLowerCase();
+    String nyFornavn = ""+forbokstav;
+    for (int i=1; i<fornavn.length(); i++)
+      nyFornavn += fornavn.charAt(i);
+
+    // Så: Etternavnet
+    etternavn = Character.toUpperCase(etternavn.charAt(0))
+                + etternavn.substring(1);
+    // substring(1) betyr hele sekvensen f.o.m. posisjon nr 1
+
+    showMessageDialog(null, nyFornavn + " " + etternavn);
+  }
+
+}
+
+
+
+
+
+/*
+ * Programmet leser en klartekst og skriver den ut i
+ * Cæsar-kode, og samme omkoding den motsatte veien.
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+
+public class Ceasarkoding {
+
+  public static void main(String[] args) {
+
+    int nøkkel = parseInt( showInputDialog("Gi nøkkel:") );
+    String klarTxt = showInputDialog("Gi klartekst:");
+    klarTxt = klarTxt.toUpperCase();
+
+    String kodeTxt = kode(klarTxt,nøkkel);
+
+    showMessageDialog(null, "Klar: " + klarTxt + "\n" +
+                            "Kode: " + kodeTxt);
+
+    nøkkel = parseInt( showInputDialog("Gi nøkkel:") );
+    kodeTxt = showInputDialog("Gi kodetekst:");
+    kodeTxt = kodeTxt.toUpperCase();
+
+    klarTxt = dekode(kodeTxt,nøkkel);
+    showMessageDialog(null, "Kode: " + kodeTxt + "\n" +
+                            "Klar: " + klarTxt);
+  }
+
+  public static String kode(String txt, int key) {
+    char[] kode = new char[26]; // 26 eng.bokstaver
+    char bokstav = 'A';
+    for (int i=key; i<26; i++)
+      kode[i] = bokstav++;
+    for (int i=key-1; i>=0; i--)
+      kode[i] = bokstav++;
+
+    String kodeAvTxt = "";
+
+    for (int i=0; i<txt.length(); i++) {
+      char tegn = txt.charAt(i);
+      if ( 65 <= tegn && tegn <= 91 )
+        kodeAvTxt += kode[tegn-65];
+      else
+        kodeAvTxt += tegn;
+    }
+    return kodeAvTxt;
+  }
+
+  public static String dekode(String txt, int key) {
+    char[] kode = new char[26]; // 26 eng.bokstaver
+    char bokstav = 'A';
+    for (int i=key; i<26; i++)
+      kode[i] = bokstav++;
+    for (int i=key-1; i>=0; i--)
+      kode[i] = bokstav++;
+
+    String dekodeAvTxt = "";
+
+    for (int i=0; i<txt.length(); i++) {
+      char tegn = txt.charAt(i);
+      if ( 65 <= tegn && tegn <= 91 ) {
+        for (int j=0; j<26; j++)
+           if ( tegn == kode[j] )
+             dekodeAvTxt += (char)(65+j);
+        }
+      else
+        dekodeAvTxt +=tegn;
+    }
+    return dekodeAvTxt;
+  }
+
+}
+
+
+
+
+
+/*
+ * Programmet simulerer tilfeldig trekning som kast med
+ * en terning. Teller antall av hvert kastresultat 1-6.
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+
+public class Terningkast {
+
+  public static void main(String[] args) {
+    int[] antallAv = new int[6];  // 6 kastresultat skal telles
+
+    int antallKast = parseInt( showInputDialog("Gi antall kast:") );
+
+    for (int i=0; i<antallKast; i++) {
+      int øyne = (int)(Math.random()*6);    // Trekker 0-5
+      antallAv[øyne]++;   // Teller opp ett hakk på kastresultatet
+    }
+    String utTxt = "Resultat fra " + antallKast + " kast:" + "\n";
+    for (int i=0; i<6; i++)
+      utTxt += "Ant. " + (i+1) + "-ere: " + antallAv[i] + "\n";
+    showMessageDialog(null, utTxt);
+  }
+
+}
+
+
+
+
+
+/*
+ * Programmet simulerer tilfeldig trekning som kast med
+ * en terning. Teller antall av hvert kastresultat 1-6.
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+
+public class Siffertelling {
+
+  public static void main(String[] args) {
+
+    int[] antallAv = new int[10];   // 10 siffer skal telles
+    int antallTrekk = 100;          // 100 siffer-trekninger
+    int[] kastSiffer = new int[antallTrekk];
+
+    for (int i=0; i<antallTrekk; i++)
+      kastSiffer[i] = (int)(Math.random()*10);    // Trekker 0-9
+
+    // Teller opp antall forekomster av hvert siffer
+    for (int i=0; i<antallTrekk; i++)
+      antallAv[kastSiffer[i]]++;
+
+    String utTxt = "Resultat fra " + antallTrekk + " siffer:" + "\n";
+    for (int i=0; i<=9; i++) {
+      utTxt += i + ": ";
+      for (int j=0; j<antallAv[i]; j++)
+        utTxt += '*';
+      utTxt += "\n";
+    }
+    showMessageDialog(null, utTxt);
+  }
+
+}
+
+
+
+
+
+/*
+ * Programmet simulerer kast med to terninger og teller
+ * antall forekomster av hver øyne-sum 2-12.
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+
+public class ToTerningkast {
+
+  public static void main(String[] args) {
+
+    int[] antallAv = new int[11];  // 11 muligheter for sum øyne
+
+    int antallKast = parseInt( showInputDialog("Gi antall kast:") );
+
+    for (int i=0; i<antallKast; i++) {
+      int øyneEn = (int)(Math.random()*6);    // Kaster første terning
+      int øyneTo = (int)(Math.random()*6);    // Kaster andre terning
+      antallAv[øyneEn+øyneTo]++;    // Teller opp dette kastresultatet
+    }
+
+    int[] andelAv = new int[11];   // Prosent av hver mulig sum øyne
+    for (int i=0; i<11; i++)
+      andelAv[i] = antallAv[i]*100/antallKast;
+
+    String utTxt = "Resultat fra " + antallKast + " kast:" + "\n";
+    for (int i=0; i<=10; i++) {
+      if ( i < 8 ) utTxt += "  ";
+      utTxt += (i+2) + ": ";
+      for (int j=0; j<andelAv[i]; j++)
+        utTxt += '*';
+      utTxt += "\n";
+    }
+    showMessageDialog(null, utTxt);
+  }
+
+}
+
+
+
+
+
+
+/*
+ * Programmet trekker tilfeldig ulike Lotto-rekker (7 tall, 1-34),
+ * på en kupong (minst 2, maks 10 rekker). Programmet skal også kunne
+ * telle opp antall rette på hver rekke i forhold til en vinnerrekke.
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+import java.util.*;
+
+public class LottoKupong {
+
+  public static void main(String[] args) {
+
+    int[][] kupong = new int[10][7];  // 10 rekker a 7 tall
+
+    int antallRekker;
+    do {
+      antallRekker = parseInt( showInputDialog("Gi antall rekker (2-10):") );
+    } while ( antallRekker < 2 || 10 < antallRekker );
+
+    for (int i=0; i<antallRekker; i++) {
+      boolean fraFør;
+      int[] rekke;
+      do {
+        fraFør = false;
+        rekke = trekkRekke(34);
+        for (int j=0; j<i; j++)
+          if ( Arrays.equals(kupong[j],rekke) )
+            fraFør = true;
+      } while ( fraFør );
+      kupong[i] = rekke;
+    }
+
+    String utTxt = "Lotto-kupong:" + "\n";
+    for (int i=0; i<antallRekker; i++) {
+      if ( i < 9 ) utTxt += "  ";
+      utTxt += (i+1) + ": " + skriv(kupong[i]) + "\n";
+    }
+    showMessageDialog(null, utTxt);
+
+    int[] vinnerRekke = {2,4,6,8,10,12,14};
+    utTxt = "Vinner-rekke: " + skriv(vinnerRekke) + "\n";
+    utTxt += "Antall rette på kupongen:" + "\n";
+    for (int i=0; i<antallRekker; i++) {
+      if ( i < 9 ) utTxt += "  ";
+      utTxt += (i+1)+": "+ skriv(kupong[i]);
+      utTxt += "  (" + sjekkRette(kupong[i],vinnerRekke)+ ")" + "\n";
+    }
+    showMessageDialog(null, utTxt);
+  }
+
+  public static int[] trekkRekke(int max) {
+    int[] ny = new int[7];
+    for (int i=0; i<7; i++) {
+      int tall;
+      boolean fraFør;
+      do {
+        fraFør = false;
+        tall = (int)(Math.random()*34) +1 ;
+        for (int j=0; j<i; j++)
+          if ( tall == ny[j] )
+            fraFør = true;
+      } while ( fraFør );
+      ny[i] = tall;
+    }
+    Arrays.sort(ny);
+    return ny;
+  }
+
+  public static String skriv(int[] tab) {
+    String txt = " ";
+    for (int i=0; i<tab.length; i++) {
+      if ( tab[i] <= 9 ) txt += "  ";
+      txt += tab[i] + "  ";
+    }
+    return txt;
+  }
+
+  public static int sjekkRette(int[] enRekke, int[] fasit) {
+    int antRette = 0;
+    for (int i=0; i<enRekke.length; i++)
+      for (int j=0; j<fasit.length; j++)
+        if ( enRekke[i] == fasit[j] )
+          antRette++;
+    return antRette;
+  }
+}
+
+
+
+
+
+
+/*
+ * Programmet bruker en to-dimensjonal tabell til å
+ * representere en matrise. En metode speiler matrisa
+ * om hoveddiagonalen, og en annen kan skrive ut matrisa.
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+
+public class Matriser {
+
+  public static void main(String[] args) {
+    int[][] matrise = {{0,0,1,1,1,1,0,0},
+                       {0,1,0,0,0,0,1,0},
+                       {0,1,0,0,0,0,1,0},
+                       {0,0,1,1,1,1,0,0},
+                       {0,1,0,0,0,0,1,0},
+                       {0,1,0,0,0,0,1,0},
+                       {0,1,0,0,0,0,1,0},
+                       {0,0,1,1,1,1,0,0}};
+
+    String utTxt = "Matrise:" + "\n" + skriv(matrise) + "\n";
+    speile(matrise);
+    utTxt += "Speilet matrise:" + "\n" + skriv(matrise);
+    showMessageDialog(null, utTxt);
+  }
+
+  public static void speile(int[][] tab) {
+    for (int i=0; i<tab.length; i++)
+      for (int j=0; j<i; j++) {
+        int h = tab[i][j];
+        tab[i][j] = tab[j][i];
+        tab[j][i] = h;
+      }
+  }
+
+  public static String skriv(int[][] tab) {
+    String txt = "";
+    for (int i=0; i<tab.length; i++) {
+      for (int j=0; j<tab.length; j++)
+        txt += tab[i][j] + "  ";
+      txt += "\n";
+    }
+    return txt;
+  }
+
+}
+
+
+
+
+
+
+/*
+ * Programmet en egen metode til å gjennomføre
+ * sortering ved innsetting.
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+
+public class InsettingSortering {
+
+  public static void main(String[] args) {
+    int[] tallTabell = {3,1,9,7,5,5,2,3,1,1,8,1,6,6};
+    String utTxt = "Usortert tabell: " + skriv(tallTabell) + "\n";
+    sorter(tallTabell);
+    utTxt += "Sortert tabell: " + skriv(tallTabell) + "\n";
+    tallTabell = sorter2(tallTabell);
+    utTxt += "Sortert tabell-2: " + skriv(tallTabell);
+    showMessageDialog(null, utTxt);
+  }
+
+  public static void sorter(int[] tab) {
+    int[] nyTab = new int[tab.length];
+    for (int i=0; i<tab.length; i++) {
+      int innPos = 0;
+      while ( tab[i] > nyTab[innPos]  &&  innPos < i )
+        innPos++;
+      if ( innPos < i )
+        for (int j=i; j>innPos; j--)
+          nyTab[j] = nyTab[j-1];
+      nyTab[innPos] = tab[i];
+      System.out.println( skriv(nyTab) );
+    }
+    tab = nyTab;
+    System.out.println("Ferdig: " + skriv(tab));
+  }
+
+  public static int[] sorter2(int[] tab) {
+    int[] nyTab = new int[tab.length];
+    for (int i=0; i<tab.length; i++) {
+      int innPos = 0;
+      while ( tab[i] > nyTab[innPos]  &&  innPos < i )
+        innPos++;
+      if ( innPos < i )
+        for (int j=i; j>innPos; j--)
+          nyTab[j] = nyTab[j-1];
+      nyTab[innPos] = tab[i];
+    }
+    return nyTab;
+  }
+
+  public static String skriv(int[] tab) {
+    String txt = "";
+    for (int i=0; i<tab.length; i++)
+      txt += tab[i] + "  ";
+    txt += "\n";
+    return txt;
+  }
+
+}
+
+
+
+
+
+
+/*
+ * Programmet oppretter et lite varelager, med en tabell pr
+ * vare-opplysning (varenr, -navn, -antall og -pris). Det skal
+ * leses inn et varenummer, og all info om denne varen skal
+ * gjenfinnes i tabellene og skrives ut.
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+import static java.lang.System.*;
+
+public class Varelager {
+
+  public static void main(String[] args) {
+
+    int[] nrTab = {1,2,3};
+    String[] navnTab = {"Spade","Hakke","Spett"};
+    double[] prisTab = {220.5,199,170};
+    int[] antallTab = {1,2,3};
+
+
+    int vareNr = parseInt( showInputDialog("Gi varenr.:") );
+    String utTxt;
+    int nrPos = finn(vareNr, nrTab);
+    if ( nrPos < 0 )
+      utTxt = "Ulovlig varenr. " + vareNr;
+    else {
+      utTxt = "Varenr...... " + vareNr + "\n"
+            + "Navn........ " + navnTab[nrPos] + "\n"
+            + "Pris........ " + prisTab[nrPos] + "\n"
+            + "Beholdning.. " + antallTab[nrPos];
+    }
+    out.println(utTxt);
+  }
+
+  public static int finn(int nr, int[] tab) {
+    int pos = -1;
+    for (int i=0; i<tab.length; i++)
+      if ( tab[i] == nr )
+        pos = i;
+    return pos;
+  }
+
+}
+
+
+
+
+
+
+/*
+ * Programmet simulerer kast med to terninger og teller
+ * antall forekomster av hver øyne-sum 2-12. Resultatene
+ * presenteres grafisk i et søylediagram.
+ */
+import static java.lang.Integer.*;
+
+public class GrafikkToTerninger extends EasyGraphics {
+
+  public static void main(String[] args) {
+  launch(args);
+  }
+
+  public void run() {
+  makeWindow("Kast med to terninger");
+
+    int[] antallAv = new int[13];  // 11 muligheter for sum øyne,
+                                   // lagret på indeksene 2 - 12
+
+    // Leser inn antall kast, ikke for få, og ikke flere enn det
+    // som er nødvendig for å få en rimelig fordeling av sum øyne.
+    int antallKast;
+    do {
+      antallKast = parseInt( getText("Gi antall kast (100-8000):") );
+    } while (antallKast < 100 || antallKast > 8000);
+
+    // Gjennomfører ønsket antall kast og registrerer sum øyne på
+    // de to terningene i en telletabell. Tabellen er litt for stor,
+    // og indeksene 0 og 1 står ubrukte som uaktuelle sum-verdier.
+    for (int i=0; i<antallKast; i++) {
+      int øyneEn = (int)(Math.random()*6) + 1;    // Kaster første terning
+      int øyneTo = (int)(Math.random()*6) + 1;    // Kaster andre terning
+      antallAv[øyneEn+øyneTo]++;    // Teller opp dette kastresultatet
+    }
+
+    // Regner om antallsverdiene til prosenter, slik at ingen
+    // av de ulike søylene blir høyere enn det grafiske vinduet.
+    int[] andelAv = new int[13];   // Prosent av hver mulig sum øyne
+    for (int i=2; i<=12; i++)
+      andelAv[i] = antallAv[i]*100/antallKast;
+
+    // Lager en overskrift på søylediagrammet
+    setFont("Arial",18);
+    drawString("Resultat fra " + antallKast + " kast.",300,50);
+    pause(150);
+    setFont("Arial",14);
+
+    fillRectangle(80,600,620,2);   // Tegner x-aksen som tykk strek
+    fillRectangle(100,80,2,540);  // Tegner y-aksen som tykk strek
+
+    // Setter enheter på x-aksen, vertikal strek 10 piksler.
+    // Skriver ulike sum øyne som enheter under aksemerkene.
+    for (int i=2; i<=12; i++) {
+      drawLine(50+i*50,595,50+i*50,605);
+      drawString(""+i, 50+i*50-5, 630);
+      pause(90);
+    }
+
+    // Setter enheter på y-aksen, horisontal strek 10 piksler.
+    // Skriver prosentverdier 10-100 som aksemerker
+    for (int i=1; i<=5; i++) {
+      drawLine(95, 600-i*100, 105, 600-i*100);
+      drawString(""+i*5+"%", 60, 600-i*100+5);
+      pause(90);
+    }
+    // Legger på røde linjer for å lette lesing av %-verdi
+    setColor(255,0,0);
+    for (int i=1; i<=10; i++) {
+      drawLine(100, 600-i*50, 700, 600-i*50);
+      pause(90);
+    }
+
+    // Tegner blå søyler, dvs. andelen av hver mulige sum øyne.
+    setColor(0,0,255);
+    for (int i=2; i<=12; i++) {
+      int x = 50+i*50-20;
+      int y = andelAv[i]*20;
+      fillRectangle(x, 600-y, 40, y);
+      pause(150);
+    }
+
+  }
+
+}
+
+
+
+
+
+
+/*
+ * Programmet bruker en to-dimensjonal tabell til å
+ * representere en matrise. En metode speiler matrisa
+ * om hoveddiagonalen, og en annen kan skrive ut matrisa
+ * grafisk ved hvite (0) eller svarte ruter (1).
+ */
+public class GrafikkMatriser extends EasyGraphics {
+
+  public static void main(String[] args) {
+  launch(args);
+  }
+
+  public void run() {
+  makeWindow("Matriser");
+
+    int[][] matrise = {{0,0,1,1,1,1,0,0},
+                       {0,1,0,0,0,0,1,0},
+                       {0,1,0,0,0,0,1,0},
+                       {0,0,1,1,1,1,0,0},
+                       {0,1,0,0,0,0,1,0},
+                       {0,1,0,0,0,0,1,0},
+                       {0,1,0,0,0,0,1,0},
+                       {0,0,1,1,1,1,0,0}};
+    skriv(matrise, 50, 50, 20);
+    speile(matrise);
+    skriv(matrise, 400, 50, 20);
+  }
+
+  public void speile(int[][] tab) {
+  for (int i=0; i<tab.length; i++)
+      for (int j=0; j<i; j++) {
+        int h = tab[i][j];
+        tab[i][j] = tab[j][i];
+        tab[j][i] = h;
+      }
+  }
+
+  public void skriv(int[][] tab, int x, int y, int str) {
+  // tab = matrisa,  (x,y) = øvre venstre hjørne for utskrift,
+  // str = størrelse på smårute (tegnet 0, eller 1)
+    for (int i=0; i<tab.length; i++)
+      for (int j=0; j<tab.length; j++) {
+        if( tab[i][j] == 0 )
+          drawRectangle(x+j*str, y+i*str, str, str);
+        else
+          fillRectangle(x+j*str, y+i*str, str, str);
+        pause(50);
+      }
+  }
+
+}

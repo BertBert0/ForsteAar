@@ -1,0 +1,1550 @@
+/*
+ * Programmet ber om navnet på en tekstfil, leser innholdet på
+ * denne og teller totalt antall tegn (alle slags tegn).
+ */
+import static javax.swing.JOptionPane.*;
+import java.io.*;     // Diverse fil-klasser
+import java.util.*;   // Spesielt Scanner-klassen
+
+public class LesFraFil {
+
+  public static void main(String[] args) throws Exception {
+    // Åpner fil for innlesing
+    String filnavn = showInputDialog("Gi filnavn:");
+    File fil = new File(filnavn);
+    Scanner leser = new Scanner(fil);
+
+    int antallTegn = 0;
+    while ( leser.hasNextLine() ) {
+      String linje = leser.nextLine();
+      antallTegn += linje.length();
+    }
+    leser.close();
+
+    String utTxt = "Filnavn: " + fil + "\n"
+                 + "Totalt antall tegn: " + antallTegn;
+
+    showMessageDialog(null, utTxt);
+  }
+
+}
+
+
+
+
+
+
+/*
+ * Programmet leser heltall fra en fil med ukjent antall
+ * linjer, og ukjent antall tall pr linje. Telleresultat
+ * skrives ut i en ny fil med 'Res' foran filnavnet.
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+import java.io.*;     // Diverse fil-klasser
+import java.util.*;   // Spesielt Scanner-klassen
+
+public class LesHeltallFraFil {
+
+  public static void main(String[] args) throws Exception {
+    // Åpner fil med heltall for innlesing
+    String filnavn = showInputDialog("Gi filnavn:");
+    File fil = new File(filnavn);
+    Scanner leser = new Scanner(fil);
+
+    // Åpner resultatfil for skriving
+    PrintWriter skriver = new PrintWriter("Res"+fil);
+
+    int linjenr = 0;
+    skriver.println("Resultat fra: " + fil);
+    while ( leser.hasNextLine() ) {
+      String linje = leser.nextLine();
+      int antall, sum;
+      if (linje.length() > 0 ) {
+        // Linje med tall på, finn ut hvor mange...
+        String[] dataTab = linje.split(" ");
+        antall = dataTab.length;
+        // Beregn summen av tallen på linjen
+        sum=0;
+        for (int i=0; i<dataTab.length; i++) {
+          int tall = parseInt(dataTab[i]);
+          sum += tall;
+        }
+      }
+      else { // Tom linje, ingen heltall her...
+        antall = 0;
+        sum = 0;
+      }
+      linjenr++;
+      skriver.println(linjenr + ":  " + antall + " - " + sum);
+    }
+    leser.close();
+    skriver.close();
+
+    showMessageDialog(null, "Filen er ferdigbehandlet!");
+  }
+
+}
+
+
+
+
+/*
+ * Programmet leser en tekstfil og teller opp forekomsten
+ * av hhv korte ord (1-4), halvlange ord (5-10) og lange
+ * ord (>10). Resultatene skrives ut både som abslolutte
+ * tall og som prosenter.
+ */
+
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+import java.io.*;     // Diverse fil-klasser
+import java.util.*;   // Spesielt Scanner-klassen
+
+public class Ordlengder {
+
+  public static void main(String[] args) throws Exception {
+
+    String filnavn = showInputDialog("Gi filnavn:");
+    File fil = new File(filnavn);
+    Scanner leser = new Scanner(fil);
+
+    int kort = 0, middels = 0, lang = 0;
+    while ( leser.hasNextLine() ) {
+      String linje = leser.nextLine();
+      String[] ordliste = linje.split(" ");
+      for (int i=0; i<ordliste.length; i++) {
+         int ordlengde = ordliste[i].length();
+         if ( ordlengde <= 4 )
+           kort++;
+         else
+           if ( ordlengde <= 10 )
+             middels++;
+           else
+             lang++;
+      }
+    }
+    leser.close();
+    int antOrd = kort + middels + lang;
+    if ( antOrd > 0 ) {
+      int kortProsent = 100*kort / antOrd;
+      int middelsProsent = 100*middels / antOrd;
+      int langProsent = 100*lang / antOrd;
+
+      String ut = "Resultat." + "\n"
+                + "Ant. korte ord: " + kort
+                + ", dvs. " + kortProsent + "%" + "\n"
+                + "Ant. halvlange ord: " + middels
+                + ", dvs. " + middelsProsent + "%" + "\n"
+                + "Ant. lange ord: " + lang
+                + ", dvs. " + langProsent + "%";
+      showMessageDialog(null, ut);
+    }
+    else
+      showMessageDialog(null, "Filen inneholdt ingen ord!");
+  }
+
+}
+
+
+
+
+
+
+/*
+ * Programmet fjerner alle blanke linjer fra en Java-fil.
+ * Filnavnet er en kommandolinjeparameter.
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.System.*;
+import java.io.*;     // Diverse fil-klasser
+import java.util.*;   // Spesielt Scanner-klassen
+
+public class FjernLinjer {
+
+  public static void main(String[] args) throws Exception {
+    // Filnavn er kommandolinjeparameter
+    String filnavn = args[0];
+    File fil = new File(filnavn);
+    Scanner leser = new Scanner(fil);
+
+    String filTxt = "";
+    while ( leser.hasNextLine() ) {
+      String linje = leser.nextLine();
+      if ( linje.length() > 0 )
+        filTxt += linje + "\n";
+    }
+    leser.close();
+
+    PrintWriter skriver = new PrintWriter(fil);
+    skriver.println(filTxt);
+    skriver.close();
+
+    showMessageDialog(null, "Filbehandlingne er ferdig!");
+  }
+
+}
+
+
+
+
+
+
+/*
+ * Programmet sammenligner to tekstfiler. Finner
+ * og skriver ut linjer som er forksjellige.
+ */
+import java.io.*;
+import java.util.*;
+import static javax.swing.JOptionPane.*;
+
+public class Diff {
+
+  public static void main(String[] args) {
+	// 'ut' er en felles sluttmelding til brukeren
+    String ut = "Sammenliknede filer" + "\n";
+
+    try {
+      String filnavn = showInputDialog("Gi filnavn (fil nr 1):");
+      File fil = new File(filnavn);
+      Scanner leser1 = new Scanner(fil, "utf8");
+      // NB! Det kan være norske bokstaver på filene, og da
+      // er info om filens tegnsett en mulig parameter til
+      // Scanner-konstruktøren.
+      ut += "Fil nr 1: " + filnavn;
+
+      filnavn = showInputDialog("Gi filnavn (fil nr 2):");
+      fil = new File(filnavn);
+      Scanner leser2 = new Scanner(fil, "utf8");
+      ut += "Fil nr 2: " + filnavn;
+      // Da er begge datastrømmene åpne
+
+      int antUlike = 0;
+      String ulikeLinjer = "";
+      int linjeNr = 0;
+      while ( leser1.hasNextLine() ) {
+        String linjeFra1 = leser1.nextLine();
+        String linjeFra2 = leser2.nextLine();
+        linjeNr++;
+        if ( !linjeFra1.equals(linjeFra2) ) {
+          antUlike++;
+          ulikeLinjer += linjeNr + ": " + linjeFra1 + "\n"
+                       + linjeNr + ": " + linjeFra2 + "\n\n";
+        }
+      }
+      if ( antUlike > 0 ) {
+        ut += "Følgende linjer var ulike: " +
+              "\n" + ulikeLinjer +
+              "\n" + "Antall ulike linjer: " + antUlike;
+      }
+      else
+        ut += "Ingen linjer var ulike! Ant.linjer = "+linjeNr;
+    }
+    catch (Exception e) {
+      ut = "Filsammenlikningen lot seg ikke utføre!";
+    }
+    showMessageDialog(null, ut);
+  }
+}
+
+
+
+
+
+
+/*
+ * Programmet leser lese en tekstfil med alfabetisk sorterte
+ * navn, ett navn pr linje, og skriver listen tilbake til den
+ * samme filen men, med motsatt sortering. Filnavnet er en
+ * kommandolinjeparameter.
+ */
+
+import static javax.swing.JOptionPane.*;
+import java.io.*;     // Diverse fil-klasser
+import java.util.*;   // Spesielt Scanner-klassen
+
+public class SnuSortertNavneliste {
+
+  public static void main(String[] args) throws Exception {
+    // Lager stor nok navneliste med plass alle navn på filen
+    final int ANT_NAVN = 1000;
+    String[] navneliste = new String[ANT_NAVN];
+
+    // Filnavnet er kommandolinjeparameter
+    String filnavn = args[0];
+    File fil = new File(filnavn);
+    Scanner leser = new Scanner(fil);
+
+    // Leser inn en alfabetisk sortert navneliste
+    int i = 0;
+    while ( leser.hasNextLine() )
+      navneliste[i++] = leser.nextLine();
+    leser.close();
+    int logiskLengde = i-1;
+
+    // Skriver listen tilbake til filen med motsatt sortering
+    PrintWriter skriver = new PrintWriter(filnavn);
+    for (i=0; i<=logiskLengde; i++)
+      skriver.println(navneliste[logiskLengde-i]);
+    skriver.close();
+  }
+
+}
+
+
+
+
+
+
+/*
+ * Programmet leser en fornavnsliste fra fil og et nytt
+ * navn leses fra brukeren og settes inn i lista slik at
+ * den kan skrives tilbake til filen alfabetisk sortert.
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.System.*;
+import java.io.*;     // Diverse fil-klasser
+import java.util.*;   // Spesielt Scanner-klassen
+
+public class SettInnSortert {
+
+  public static void main(String[] args) throws Exception {
+
+    String filnavn = showInputDialog("Gi filnavn:");
+    File fil = new File(filnavn);
+    Scanner leser = new Scanner(fil);
+
+    // Hvor mange navn er det på filen?
+    int antNavn = 0;
+    while ( leser.hasNextLine() ) {
+      String navn = leser.nextLine();
+      antNavn++;
+    }
+    leser.close();
+    // Lager navneliste med plass til ett nytt navn
+    String[] navneliste = new String[antNavn+1];
+
+    // Reåpner den samme filen
+    leser = new Scanner(fil);
+    int nr = 0;
+    for (int i=0; i<antNavn; i++)
+      navneliste[i] = leser.nextLine();
+    leser.close();
+
+    // Legger inn nytt navn bakerst i navnelisten
+    navneliste[antNavn] = showInputDialog("Gi nytt fornavn:");
+
+    Arrays.sort(navneliste);
+
+    PrintWriter skriver = new PrintWriter(filnavn);
+    for (int i=0; i<=antNavn; i++)
+      skriver.println(navneliste[i]);
+    skriver.close();
+
+    out.println("Filbehandling ferdig. Reåpne filen: "+filnavn);
+  }
+
+}
+
+
+
+
+
+/*
+ * Programmet leser en tekstfil og teller opp forekomsten
+ * av alle ord med lengder under 12 (ord av lengde 1, av
+ * lengde 2, osv.) Ord som er lengre en 12 telles samlet.
+ */
+
+import static javax.swing.JOptionPane.*;
+import java.io.*;     // Diverse fil-klasser
+import java.util.*;   // Spesielt Scanner-klassen
+
+public class TellOrdlengder {
+
+  public static void main(String[] args) throws Exception {
+    final int MAX_LENGDE = 12;
+    int[] antallAv = new int[MAX_LENGDE];
+
+    String filnavn = showInputDialog("Gi filnavn:");
+    File fil = new File(filnavn);
+    Scanner leser = new Scanner(fil);
+
+    // Dersom det er norske bokstaver i teksten, og
+    // den er lagret i tegnsettet utf8, bruk:
+    //    Scanner leser = new Scanner(fil, "utf8");
+
+    while ( leser.hasNextLine() ) {
+      String linje = leser.nextLine();
+      String[] ordliste = linje.split("( |\\.|,)+");
+      // Deler linjen i ord vha. mellomrom, punktum og komma.
+      for (int i=0; i<ordliste.length; i++) {
+         int ordlengde = ordliste[i].length();
+         if ( ordlengde < MAX_LENGDE )
+           antallAv[ordlengde]++;
+         else
+           antallAv[0]++;
+      }
+    }
+    leser.close();
+
+    String utTxt = "RESULTAT" + "\n";
+    for (int i=1; i<MAX_LENGDE; i++)
+      utTxt += "Ordlengde " + i + ":  " + antallAv[i] + "\n";
+    utTxt += "Ordlengde >= " + MAX_LENGDE + ":  " + antallAv[0];
+    showMessageDialog(null, utTxt);
+  }
+
+}
+
+
+
+
+
+/*
+ * Programmet skal inngå i en produksjonslinje med
+ * RenskHTML og de to må ligge i samme mappe.
+ * OBS! Koden er hentet fra eksempel i læreboken,
+ * men endret slik at brukeren ikke trenger å skrive
+ * protokoll (http://), kun vanlig nettadresse.
+ */
+import java.net.*;
+import java.io.*;
+import java.util.*;
+import static java.lang.System.*;
+
+public class NettsideLeser {
+
+  public static void main(String[] args) throws Exception {
+
+    URL url = new URL("http://"+args[0]);
+    // Nok å skrive inn www osv.
+
+    URLConnection connection = url.openConnection();
+
+    InputStream inn = connection.getInputStream();
+    Scanner leser = new Scanner( new InputStreamReader(inn) );
+
+    while ( leser.hasNextLine() )
+      out.println( leser.nextLine() );
+
+    inn.close();
+  }
+
+}
+
+
+
+
+
+
+/*
+ * Programmet mottar inndata som er en nettside, via
+ * programmet NettsideLeser. Tekstlinje for tekslinje
+ * blir håndtert, og alle HTML-tagger fjernes.
+ *
+ * OBS!
+ * 1) I samme mappe må du ha NettsideLeser.java.
+ * 2) Det er trykkfeil i oppgaveteksten. De to
+ *    programmene i produksjonslinjen kjøres slik:
+ *    java NettsideLeser www.nrk.no | java RenskHTML
+ */
+import static java.lang.System.*;
+import java.util.*;
+
+public class RenskHTML {
+
+  public static void main(String[] args) {
+
+    Scanner stdin = new Scanner(in);
+
+    while (stdin.hasNextLine()) {
+	  String linje = stdin.nextLine();
+      out.println( fjernHTML(linje) );
+    }
+
+    stdin.close();
+  }
+
+  private static String fjernHTML(String txt) {
+  // Hopper over tekst f.o.m.  <  t.o.m.  >
+    String ut = "";
+    boolean taMedTegn = true;
+    for (int i=0; i<txt.length(); i++) {
+      char tegn = txt.charAt(i);
+      if ( tegn == '<' )
+        taMedTegn = false;
+      if ( taMedTegn && tegn != '>' )
+        ut += tegn;
+      if ( tegn == '>' )
+        taMedTegn = true;
+    }
+    return ut;
+  }
+
+}
+
+
+
+
+
+
+/*
+ * Programmet leser høydedata fra fil, jentenes
+ * høyde på første linje og guttenes på andre.
+ * Både jentenes og guttenes medianhøyde beregnes
+ * og skrives inn til slutt på samme fil.
+ * Høyder er skilt av ett eller flere blanke tegn.
+ */
+import static java.lang.System.*;
+import static java.lang.Integer.*;
+import static javax.swing.JOptionPane.*;
+import java.io.*;
+import java.util.*;
+
+public class Median {
+
+  public static void main(String[] args) {
+    try {
+      String filnavn = showInputDialog("Gi filnavn:");
+      File fil = new File(filnavn);
+      Scanner leser = new Scanner(fil);
+
+      // Første linje inneholder jentenes høyder
+      String linje = leser.nextLine();
+      String[] dataTab = linje.split("( )+");
+      int[] jenteHøyder = new int[dataTab.length];
+      for (int i=0; i<dataTab.length; i++)
+        jenteHøyder[i] = parseInt(dataTab[i]);
+
+      // Andre linje inneholder guttenes høyder
+      linje = leser.nextLine();
+      dataTab = linje.split("( )+");
+      int[] gutteHøyder = new int[dataTab.length];
+      for (int i=0; i<dataTab.length; i++)
+        gutteHøyder[i] = parseInt(dataTab[i]);
+
+      leser.close();
+
+      FileWriter skrivelink = new FileWriter(filnavn, true);
+      PrintWriter skriver = new PrintWriter(skrivelink);
+      skriver.println("\n"+"Jentemedian: " + median(jenteHøyder)
+                    + "\n"+"Guttemedian: " + median(gutteHøyder) );
+      skriver.close();
+    }
+    catch (Exception e) {
+      out.println("Problemer med fildata: " + e.toString());
+    }
+  }
+
+  private static int median(int[] tab) {
+    int median = 0;
+    Arrays.sort(tab);
+      int midten = tab.length/2;
+      if ( tab.length % 2 == 1 )
+        median = tab[midten];
+      else
+        median = (tab[midten-1]+tab[midten])/2;
+    return median;
+  }
+}
+
+
+
+
+
+
+
+/*
+ * Leser drivstoffsalg (4 ulike typer) fra fil for en enkelt
+ * dag. Beregner og skriver tilbake til den samme filen samlet
+ * omsetning for hhv. bensin og diesel for denne dagen.
+ * Evt. tomme linjer på filen blir bare hoppet over.
+ */
+
+import static java.lang.Integer.*;
+import static java.lang.Double.*;
+import static javax.swing.JOptionPane.*;
+import java.util.*;
+import java.io.*;
+
+public class Drivstoff {
+
+  public static void main(String[] args) {
+    String filnavn = showInputDialog("Gi filnavn:");
+    try {
+      // Inndatastrøm åpnes
+      File fil = new File(filnavn);
+      Scanner leser = new Scanner(fil);
+      double sumLB=0, sumLD=0, sumKrB=0, sumKrD=0;
+      while ( leser.hasNextLine() ) {
+        String linje = leser.nextLine();
+        linje = linje.trim();
+        // Fjerner tomme tegn foran og bak i tegnsekvensensen, og
+        // om den da blir tom så er den ikke en inndatalinje.
+        if ( linje.length() > 0 ) {
+          String[] data = linje.split("( )+");
+          // Skilletegn på filen er ett eller flere blanke tegn
+          // Splitter linjen i tre element:  kode   liter   kr
+          char kode = data[0].toUpperCase().charAt(0);
+          double liter = parseDouble(data[1]);
+          double kr = parseDouble(data[2]);
+          if ( kode == 'L' || kode == 'H') {
+            sumLB += liter;
+            sumKrB += kr;
+          }
+          else {  // koden er V eller F
+            sumLD += liter;
+            sumKrD += kr;
+          }
+        }
+      }
+      leser.close();
+      String ut = "\n" + "Omsetning" + "\n"
+                + "Bensin: " + avrund(sumLB) + " liter   "
+                + avrund(sumKrB) + " kr " + "\n"
+                + "Diesel: " + avrund(sumLD) + " liter   "
+                + avrund(sumKrD) + " kr " + "\n";
+
+      //  Utdatastrøm åpnes
+      FileWriter skrivekobling = new FileWriter(fil, true);
+      // Her betyr  Append=true innholdet skal legges til på slutten
+      PrintWriter skriver = new PrintWriter(skrivekobling);
+      skriver.println(ut);
+      skriver.close();
+      showMessageDialog(null, "Registrering vellykket!");
+    }
+    catch (FileNotFoundException e) {
+      showMessageDialog(null, "Problem, finner ikke filen!");
+    }
+    catch (NumberFormatException e) {
+      showMessageDialog(null, "Problem, innholdet kan ikke håndteres!");
+    }
+    catch (Exception e) {
+      showMessageDialog(null, "Uidentifisert problem!");
+    }
+  }
+
+  private static int avrund(double tall) {
+  // Hjelpemetoden avrunder til nærmeste heltall
+     return (int)(tall + 0.5);
+  }
+
+}
+
+
+
+
+
+
+
+
+
+/*
+ * Leser personopplysninger fra en fil, der hver linje er på
+ * formen:  fornavn#etternavn#alder#yrke.
+ * Programmet skriver ut en navneliste sortert på etternavn.
+ * Forutsetter at alle inndatalinjene er korrekt oppsatt.
+ */
+import static javax.swing.JOptionPane.*;
+import java.util.*;
+import java.io.*;
+
+public class PersonOpplysninger {
+
+  public static void main(String[] args) {
+    String filnavn = showInputDialog("Gi filnavn:");
+    try {
+      File fil = new File(filnavn);
+      Scanner leser = new Scanner(fil);
+      String[] navneListe = new String[100]; // Nok plass?
+      int nr = 0;
+      while ( leser.hasNextLine() ) {
+        String linje = leser.nextLine();
+        String[] data = linje.split("#");
+        // Skilletegn på filen er ett grindtegn #
+        String fornavn = data[0];
+        String etternavn = data[1];
+        // alder og yrke er ikke aktuelle her!
+        navneListe[nr] = etternavn + ", " + fornavn;
+        nr++;
+      }
+      leser.close();
+      int antallNavn = nr;
+
+      Arrays.sort(navneListe, 0, antallNavn);
+
+      String utTxt = "Sortert navneliste:" + "\n";
+      for (int i=0; i<antallNavn; i++)
+        utTxt += navneListe[i] + "\n";
+      showMessageDialog(null, utTxt);
+    }
+    catch (Exception e) {
+      showMessageDialog(null, "Problem med filen!");
+    }
+  }
+
+}
+
+
+
+
+
+
+
+public class Person {
+  String fornavn;
+  String etternavn;
+  int    alder;
+  String yrke;
+
+  public Person(String fornavn, String etternavn,
+                            int alder, String yrke) {
+    this.fornavn = fornavn;
+    this.etternavn = etternavn;
+    this.alder = alder;
+    this.yrke = yrke;
+  }
+
+  public String getNavn() {
+    return etternavn + ", " + fornavn;
+  }
+
+  public String toString() {
+    return getNavn() + " - " + alder + " - " + yrke;
+  }
+
+}
+
+
+
+
+
+
+/*
+ * Leser personopplysninger fra en fil, der hver linje er på
+ * formen:  fornavn#etternavn#alder#yrke.
+ * Programmet skriver ut en liste, sortert på etternavn,
+ * over dem som har en innlest alder.
+ * Forutsetter at alle inndatalinjene er korrekt oppsatt.
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+import java.util.*;
+import java.io.*;
+
+public class PersonAlderInfo {
+
+  public static void main(String[] args) {
+    String filnavn = showInputDialog("Gi filnavn:");
+    try {
+      // Inndatastrøm åpnes
+      File fil = new File(filnavn);
+      Scanner leser = new Scanner(fil);
+      Person[] personListe = new Person[100];
+      int nr = 0;
+      while ( leser.hasNextLine() ) {
+        String linje = leser.nextLine();
+        String[] data = linje.split("#");
+        // Skilletegn på filen er ett grindtegn #
+        String fornavn = data[0];
+        String etternavn = data[1];
+        int alder = parseInt(data[2]);
+        String yrke = data[3];
+        personListe[nr] = new Person(fornavn, etternavn, alder, yrke);
+        nr++;
+      }
+      leser.close();
+      int antallNavn = nr;
+
+      String tallTxt = showInputDialog("Gi alder:");
+      int lestAlder = parseInt(tallTxt);
+      String utTxt = "Liste over dem som er " + lestAlder + " år:" + "\n";
+      for (int i=0; i<antallNavn; i++)
+        if ( personListe[i].alder == lestAlder  )
+          utTxt += personListe[i].toString() + "\n";
+      showMessageDialog(null, utTxt);
+    }
+    catch (Exception e) {
+      showMessageDialog(null, "Problem med filen!");
+    }
+  }
+
+}
+
+
+
+
+
+
+
+/*
+ *  Leser personopplysninger fra en SQLite-database, og
+ *  skriver ut en navneliste sortert på etternavn.
+ *
+ *  Forutsetter at databasetabellen Person er opprettet
+ *  i databasen person.db, se SQL-skript nederst i filen.
+ * 
+ */
+
+
+import static javax.swing.JOptionPane.*;
+import java.util.*;
+import java.io.*;
+import java.sql.*;
+
+
+public class PersonOpplysningerSQL {
+
+  private static String jdbcDriver = "org.sqlite.JDBC";
+  private static String url        = "jdbc:sqlite:person.db";
+  
+  private static Connection conn   = null;
+  
+    
+  public static void main(String[] args) {
+    String utTxt = "";
+    kobleOpp();
+    
+    String sql = "SELECT * FROM Person ORDER BY Etternavn, Fornavn";
+    utTxt = hentPersonData(sql);
+    
+    showMessageDialog(null, utTxt);
+    kobleNed();
+  }
+  
+  
+  // Henter personopplysninger fra databasen
+  private static String hentPersonData(String sql) {
+    String svar = "";
+    
+    try {
+      Statement stmt = conn.createStatement();
+      ResultSet rs   = stmt.executeQuery(sql);
+ 
+      String fornavn, etternavn, stilling;
+      int alder;
+      
+      while (rs.next()) {
+        fornavn   = rs.getString("Fornavn");
+        etternavn = rs.getString("Etternavn");
+        alder     = rs.getInt("Alder");
+        stilling  = rs.getString("Stilling");
+        
+        svar += etternavn + ", " + fornavn + " (" + alder + ") - " + stilling + "\n";
+      }
+    }
+    catch (SQLException e) {
+      feil("Spørring mot databasen feilet." + e.toString());
+    }
+
+    return svar;
+  }
+  
+  
+  // Kobler opp til databasen.
+  private static void kobleOpp() {
+    try {
+      Class.forName(jdbcDriver);
+      conn = DriverManager.getConnection(url);  
+    }
+    catch (ClassNotFoundException e) {
+      feil("Fant ikke JDBC-driver " + jdbcDriver + "\n" + e.toString());
+    }
+    catch (SQLException e) {
+      feil("Oppkobling til databasen " + url + " feilet.\n" + e.toString());
+    }
+  }
+  
+  
+  // Lukker forbindelsen til databasen.
+  private static void kobleNed() {
+    try {
+      if (conn != null)
+        conn.close();
+    }
+    catch (SQLException e) {
+      feil("Klarte ikke å lukke forbindelsen til databasen " + url + "\n" + e.toString());
+    }
+  }
+  
+  
+  // Viser feilmelding og avslutter
+  private static void feil(String msg) {
+    if (conn != null)
+      kobleNed();
+    showMessageDialog(null, msg);
+    System.exit(-1);
+  }
+  
+}
+
+
+/*
+
+create table Person
+(
+  Nr        integer primary key,
+  Fornavn   varchar(50),
+  Etternavn varchar(50),
+  Alder     integer,
+  Stilling  varchar(50)
+);
+
+insert into Person values(1, 'Per',      'Olsen',  24, 'Selger');
+insert into Person values(2, 'Anne',     'Hansen', 31, 'Mellomleder');
+insert into Person values(3, 'Jon Ola',  'Bakken', 41, 'Reparatør');
+insert into Person values(4, 'Oda Lise', 'Li',     28, 'Saksbehandler');
+
+*/
+
+
+
+
+
+
+
+
+
+
+/*
+ *  Leser personopplysninger fra en SQLite-database, og
+ *  skriver ut opplysninger om alle med en gitt alder
+ *  (lest inn fra brukeren).
+ *
+ *  Forutsetter at databasetabellen Person er opprettet
+ *  i databasen person.db, se SQL-skript nederst i filen.
+ * 
+ */
+
+
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+import java.util.*;
+import java.io.*;
+import java.sql.*;
+
+
+public class PersonAlderSQL {
+
+  private static String jdbcDriver = "org.sqlite.JDBC";
+  private static String url        = "jdbc:sqlite:person.db";
+  
+  private static Connection conn   = null;
+  
+    
+  public static void main(String[] args) {
+    String utTxt = "";
+    kobleOpp();
+    
+    try {
+      String tallTxt = showInputDialog("Gi alder:");
+      int lestAlder = parseInt(tallTxt);
+      
+      String sql = "SELECT * FROM Person WHERE Alder = " + lestAlder;
+      utTxt = hentPersonData(sql);
+    }
+    catch (NumberFormatException e) {
+      // Gjør gjerne denne koden om slik at innlesing av alder
+      // fortsetter helt til inndata er lovlig.
+      utTxt = "Ulovlig alder!";
+    }
+    
+    showMessageDialog(null, utTxt);
+    kobleNed();
+  }
+  
+  
+  // Henter personopplysninger fra databasen
+  private static String hentPersonData(String sql) {
+    String svar = "";
+    
+    try {
+      Statement stmt = conn.createStatement();
+      ResultSet rs   = stmt.executeQuery(sql);
+ 
+      String fornavn, etternavn, stilling;
+      int alder;
+      
+      while (rs.next()) {
+        fornavn   = rs.getString("Fornavn");
+        etternavn = rs.getString("Etternavn");
+        alder     = rs.getInt("Alder");
+        stilling  = rs.getString("Stilling");
+        
+        svar += etternavn + ", " + fornavn + " (" + alder + ") - " + stilling + "\n";
+      }
+    }
+    catch (SQLException e) {
+      feil("Spørring mot databasen feilet." + e.toString());
+    }
+
+    return svar;
+  }
+  
+  
+  // Kobler opp til databasen.
+  private static void kobleOpp() {
+    try {
+      Class.forName(jdbcDriver);
+      conn = DriverManager.getConnection(url);  
+    }
+    catch (ClassNotFoundException e) {
+      feil("Fant ikke JDBC-driver " + jdbcDriver + "\n" + e.toString());
+    }
+    catch (SQLException e) {
+      feil("Oppkobling til databasen " + url + " feilet.\n" + e.toString());
+    }
+  }
+  
+  
+  // Lukker forbindelsen til databasen.
+  private static void kobleNed() {
+    try {
+      if (conn != null)
+        conn.close();
+    }
+    catch (SQLException e) {
+      feil("Klarte ikke å lukke forbindelsen til databasen " + url + "\n" + e.toString());
+    }
+  }
+  
+  
+  // Viser feilmelding og avslutter
+  private static void feil(String msg) {
+    if (conn != null)
+      kobleNed();
+    showMessageDialog(null, msg);
+    System.exit(-1);
+  }
+  
+}
+
+
+/*
+
+create table Person
+(
+  Nr        integer primary key,
+  Fornavn   varchar(50),
+  Etternavn varchar(50),
+  Alder     integer,
+  Stilling  varchar(50)
+);
+
+insert into Person values(1, 'Per',      'Olsen',  24, 'Selger');
+insert into Person values(2, 'Anne',     'Hansen', 31, 'Mellomleder');
+insert into Person values(3, 'Jon Ola',  'Bakken', 41, 'Reparatør');
+insert into Person values(4, 'Oda Lise', 'Li',     28, 'Saksbehandler');
+
+*/
+
+
+
+
+
+
+
+
+import java.net.*;
+import java.io.*;
+import java.util.*;
+import static java.lang.System.*;
+import static java.lang.Double.*;
+import static javax.swing.JOptionPane.*;
+
+public class ValutaOmregning {
+
+  public static void main(String[] args) {
+    double kurs = 0;
+    // Dagens kurs, EUR mot NKR hentes fra den europeiske sentralbanken
+    try {
+      URL url = new URL(
+          "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml");
+      URLConnection connection = url.openConnection();
+      InputStream inn = connection.getInputStream();
+      Scanner leser = new Scanner(new InputStreamReader(inn));
+      while ( leser.hasNextLine() && (kurs == 0) ) {
+        String txtLinje = leser.nextLine();
+        String[] data = txtLinje.split("\'");
+        // Mange linjer på fila inneholder ikke valutainfo, og hoppes over.
+        // Leter opp den linjen med valutainfo som inneholder norske kroner
+        if ( data.length > 3 && data[1].equals("NOK") )
+          kurs = parseDouble(data[3]);
+          // Kursen er funnet (kurs != 0), og lesingen avbrytes.
+      }
+      inn.close();
+
+      String tallTxt = showInputDialog("Gi beløp i euro:");
+      double euro = parseDouble(tallTxt);
+
+      double kroner = euro * kurs;
+
+      String ut = "Vekslebeløp: " + avrund(euro,2) + " EUR" + "\n" +
+                  "Dagens kurs: " + avrund(kurs,3) + " NKR/EUR" + "\n" +
+                  "Utbetaling:  " + avrund(kroner,2) + " NKR";
+      showMessageDialog(null, ut);
+    }
+    catch(Exception e) {
+      out.println("Feil med url og nettilgangen");
+    }
+  }
+
+  public static double avrund(double tall, int d) {
+    double tiPot = Math.pow(10,d);
+    tall = (int)(tall*tiPot +0.5)/tiPot;
+    return tall;
+  }
+
+}
+
+
+
+
+
+
+
+/*
+ *  Klasse for å representere en enkelt deltager i skøyteløp.
+ *
+ */
+public class Deltager {
+  int    nr;     // Deltagernummer
+  String navn;   // Navn på deltager
+  double tid5H, tid5T, tid15H, tid10T;
+      // Tid på hver av de fire distansene
+      // 5H=500, 5T=5000, 15H=1500, 10T=10000
+
+  public Deltager(int nr, String navn,
+                  double tid5H, double tid5T,
+                  double tid15H, double tid10T) {
+                  
+    this.nr = nr;         
+    this.navn = navn;
+    this.tid5H = tid5H;   
+    this.tid5T = tid5T;
+    this.tid15H = tid15H; 
+    this.tid10T = tid10T;
+  }
+
+  public Deltager(int nr, String navn,
+                  double tid5H, double tid5T) {
+    this(nr, navn, tid5H, tid5T, 0.0, 0.0);
+  }
+
+  
+  public void setNr(int nr) {
+    this.nr = nr;
+  }
+  
+  public void setNavn(String navn) {
+    this.navn = navn;
+  }
+  
+  public void setTid5H(double tid5H) {
+    this.tid5H = tid5H;
+  }
+  
+  public void setTid5T(double tid5T) {
+    this.tid5T = tid5T;
+  }
+  
+  public void setTid15H(double tid15H) {
+    this.tid15H = tid15H;
+  }
+  
+  public void setTid10T(double tid10T) {
+    this.tid10T = tid10T;
+  }
+
+  public int getNr() {
+    return nr;
+  }
+
+  public String getNavn() {
+    return navn;
+  }
+  
+  public double getTid5T() {
+    return tid5T;
+  }
+
+  public double getTid15H() {
+    return tid15H;
+  }
+  
+  public double getTid10T() {
+    return tid10T;
+  }
+  
+  public double getTid5H() {
+    return tid5H;
+  }
+  
+  
+  public double poengsum() {
+    // Poengsum er samlet tid regnet om til 500-metertider.
+    return tid5H + tid5T/10 + tid15H/3 + tid10T/20;
+  }
+
+  
+  public String toString() {
+    return "Deltager " + nr + " " + navn
+         + " - 500m = " + tid5H 
+         + " - 5000m = " + tid5T 
+         + " - 1500m = " + tid15H
+         + " - 10000m = " + tid10T
+         + " - poengsum = " + poengsum();
+  }
+}
+
+
+
+
+
+
+
+
+
+import java.lang.Double;
+import java.lang.Integer;
+import javax.swing.JOptionPane;
+
+/*
+ *  Hjelpeklasse med statiske metoder for robust innlesing
+ *  av tekststrenger, heltall og kommatall via dialogvindu,
+ *  samt visning av meldinger via dialogvindu.
+ */
+public class Dialog {
+
+  public static void visMelding(String ledetekst) {
+    JOptionPane.showMessageDialog(null, ledetekst);
+  }
+
+  public static String lesString(String ledetekst) {
+    String innTxt = JOptionPane.showInputDialog(ledetekst);
+    return innTxt;
+  }
+
+  public static int lesInt(String ledetekst) {
+    int tall = 0;
+    boolean ok = true;
+    String feilmelding = "";
+    do {
+      String innTxt = JOptionPane.showInputDialog(feilmelding + ledetekst);
+      try {
+        tall = Integer.parseInt(innTxt);
+        ok = true;
+      }
+      catch (NumberFormatException e) {
+        ok = false;
+        feilmelding = "Ulovlig tallverdi! \n";
+      }
+    } while (!ok);
+
+    return tall;
+  }
+
+  public static double lesDouble(String ledetekst) {
+    double tall = 0;
+    boolean ok = true;
+    String feilmelding = "";
+    do {
+      String innTxt = JOptionPane.showInputDialog(feilmelding + ledetekst);
+      try {
+        tall = Double.parseDouble(innTxt);
+        ok = true;
+      }
+      catch (NumberFormatException e) {
+        ok = false;
+        feilmelding = "Ulovlig tallverdi! \n";
+      }
+    } while (!ok);
+
+    return tall;
+  }
+
+}
+
+
+
+
+
+
+import static java.lang.System.*;
+import java.lang.Double;
+import java.lang.Integer;
+import java.util.*;
+import java.io.*;
+
+/*
+ *  Hovedklasse for registrering av skøytetider.
+ *
+ *  Resultatene blir lagret på en fast tekstfil og blir
+ *  registrert i to omganger (etter dag 1 og etter dag 2).
+ *
+ *  Hvis datafilen er tom, så blir programmet kjørt for dag 1,
+ *  dvs. at nr, navn og tider for 500 og 5000 skal registreres.
+ *  Etter dag 2 skal data for dag 1 først leses inn fra fil, 
+ *  og tider for 1500 og 10000 legges til.
+ *
+ *  Etter dag 2 blir navn på vinnere skrevet ut, sammen med
+ *  navn, tider og poengsum for alle deltagere.
+ *  
+ */
+public class Skoytelop {
+
+  // Skilletegn ved lagring til fil
+  private static String SKILLETEGN = ";";
+  
+  // Navn på tekstfil der resultatene blir lagret.
+  private static String FILNAVN = "skoytelop.txt";
+
+  // Referansetabell for å ta vare på deltagere.
+  private static Deltager[] løperTab;
+
+  // Settes til true hvis datafilen er tom.
+  private static boolean dag1;
+
+  
+  public static void main(String[] args) throws Exception {
+    lesInnFraFil();
+    lesInnResultat();
+    skrivTilFil();
+    
+    if (!dag1) {
+      double best = bestePoengsum();
+      visResultater(best);
+    }
+  }
+ 
+  private static void lesInnFraFil() throws Exception {
+
+    // Inndatastrøm åpnes
+    File fil = new File(FILNAVN);
+    Scanner leser = new Scanner(fil);
+
+    // Første linje på filen inneholder antall deltagere.
+    // Hvis filen er tom, leses antall deltagere inn fra bruker.
+    int antall;
+    if (leser.hasNextLine()) {
+      antall = Integer.parseInt(leser.nextLine());
+      dag1 = false;
+    }
+    else {
+      antall = Dialog.lesInt("Antall deltagere:");
+      dag1 = true;
+    }
+    løperTab = new Deltager[antall];
+
+    // Les inn resultater for alle deltagere
+    int pos = 0;
+    while (leser.hasNextLine()) {
+      String linje = leser.nextLine();
+      String[] data = linje.split(SKILLETEGN);
+      int nr = Integer.parseInt(data[0]);
+      String navn = data[1];
+      double tid5H = Double.parseDouble(data[2]);
+      double tid5T = Double.parseDouble(data[3]);
+      double tid15H = Double.parseDouble(data[4]); // Settes til 0.0 etter dag 1
+      double tid10T = Double.parseDouble(data[5]); // Settes til 0.0 etter dag 1
+      Deltager d = new Deltager(nr, navn, tid5H, tid5T, tid15H, tid10T);
+      løperTab[pos] = d;
+      pos++;
+    }
+
+    leser.close();
+  }
+
+  public static void skrivTilFil() throws Exception {
+    PrintWriter skriver = new PrintWriter(FILNAVN);
+    
+    // Skriv antall deltagere på første linje
+    int antall = løperTab.length;
+    skriver.println(antall);
+    
+    // Skriv ut alle deltagere
+    for (int nr=0; nr<antall; nr++) {
+      Deltager d = løperTab[nr];
+      String linje = d.getNr() + SKILLETEGN
+        + d.getNavn() + SKILLETEGN
+        + d.getTid5H() + SKILLETEGN
+        + d.getTid5T() + SKILLETEGN
+        + d.getTid15H() + SKILLETEGN
+        + d.getTid10T();
+      skriver.println(linje);
+    }
+    
+    skriver.close();
+  }
+
+  private static void lesInnResultat() {
+
+    if (dag1) {
+      // Les inn nr, navn og tider for 500m og 5000m
+      for (int nr=0; nr<løperTab.length; nr++) {
+        løperTab[nr] = lesDeltagerDag1();
+      }
+    }
+
+    else { 
+      // Dag 2: Oppdater med tider for 1500m og 10000m
+      for (int nr=0; nr<løperTab.length; nr++) {
+        oppdaterDeltagerDag2(løperTab[nr]);
+      }
+    }
+  }
+  
+  private static Deltager lesDeltagerDag1() {
+    int nr       = Dialog.lesInt("Deltagernr:");
+    String navn  = Dialog.lesString("Navn:");
+    double tid5H = Dialog.lesDouble("Tid 500m:");
+    double tid5T = Dialog.lesDouble("Tid 5000m:");
+
+    // Opprett nytt Deltager-objekt.
+    Deltager d = new Deltager(nr, navn, tid5H, tid5T);
+
+    return d;
+  }
+
+  private static void oppdaterDeltagerDag2(Deltager d) {
+    int dnr = d.getNr();
+    double tid15H  = Dialog.lesDouble("Tid 1500m for deltager " + dnr + ":");
+    double tid10T = Dialog.lesDouble("Tid 10000m for deltager " + dnr + ":");
+
+    // Oppdater Deltager-objekt
+    d.setTid15H(tid15H);
+    d.setTid10T(tid10T);
+  }
+
+  private static double bestePoengsum() {
+    double bestePoengsum = Double.MAX_VALUE;
+
+    for (int nr=0; nr<løperTab.length; nr++) {
+      // Ta vare på hvis ny beste poengsum
+      if (løperTab[nr].poengsum() < bestePoengsum) {
+        bestePoengsum = løperTab[nr].poengsum();
+      }
+    }
+
+    return bestePoengsum;
+  }
+ 
+  private static void visResultater(double best) {
+    String vinnere = "Vinnere:\n";
+    for (int lnr=0; lnr<løperTab.length; lnr++) {
+      
+      // Skriv ut navn, tider og poengsum for alle
+      out.println(løperTab[lnr].toString());
+
+      // Ta vare på navn til de som har best poengsum
+      if (løperTab[lnr].poengsum() == best) {
+        vinnere += løperTab[lnr].getNavn() + " ";
+      }
+    }
+    
+    out.println(vinnere);
+  }
+
+}
+
+
+
+
+
+
+public class Rektangel {
+  int x;   // (x,y) er posisjon for
+  int y;   // øvre venstre hjørne
+  int b;   // rektangelets bredde
+  int h;   // rektangelets høyde
+ 
+  public Rektangel(int x, int y, int b, int h ) {
+    this.x = x;  this.y = y;
+    this.b = b;  this.h = h;
+  }
+ 
+  public void størrelse(int b, int h) {
+    this.b = b;  this.h = h;
+  }
+ 
+  public void flytt(int dx, int dy) {
+    this.x += dx;  this.y += dy;
+  }
+ 
+  public double omkrets() {
+    return 2*b + 2*h;
+  }
+ 
+  public String vis() {
+    return "("+x+","+y+") - B="+b+", H="+h;
+  }
+  
+}
+
+
+
+
+
+
+
+/*
+ * Programmet leser data om rektangler fra en
+ * skilletegnseparert fil. Rektanglene opprettes
+ * i en tabell, og tegnes ut på en grafisk flate.
+ */
+import static java.lang.Integer.*;
+import static java.lang.System.*;
+import java.io.*;
+import java.util.*;
+
+public class RektangelTegning extends EasyGraphics {
+
+  public static void main(String[] args) {
+    launch(args);
+  }
+
+  public void run() {
+    makeWindow("Rektangeltegning", 900, 500);
+
+    // Antar at det ikke er flere enn 50
+    // rektangler på den aktuelle filen.
+    Rektangel[] r = new Rektangel[20];
+    int i = 0;
+    try {
+      String filnavn = "rektangler.txt";
+      File fil = new File(filnavn);
+      Scanner leser = new Scanner(fil);
+
+      while ( leser.hasNextLine() ) {
+        String linje = leser.nextLine();
+        String[] data = linje.split("#");
+        int x = parseInt(data[0]);
+        int y = parseInt(data[1]);
+        int b = parseInt(data[2]);
+        int h = parseInt(data[3]);
+        r[i++] = new Rektangel(x,y,b,h);
+      }
+      leser.close();
+      int antRek = i;
+
+      for (i=0; i<antRek; i++) {
+        int rv = trekk(0,255);
+        int gv = trekk(0,255);
+        int bv = trekk(0,255);
+        setColor(rv,gv,bv);
+        fillRectangle(r[i].x,r[i].y,r[i].b,r[i].h);
+        pause(50);
+      }
+    }
+    catch ( Exception e) {
+      out.println("Problem med filen");
+    }
+  }
+
+  // Trekker et tilfeldig heltall i området: fra-til.
+  public static int trekk(int fra, int til) {
+    return (int)( Math.random()*(til-fra+1) ) + fra;
+  }
+
+}

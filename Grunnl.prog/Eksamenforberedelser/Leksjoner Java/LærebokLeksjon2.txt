@@ -1,0 +1,796 @@
+/*
+ * Programmet leser inn to heltall og
+ * skriver ut summen av dem.
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+
+public class SumAvHeltall {
+  public static void main(String[] args) {
+
+    // Leser inn de to heltallene fra brukeren
+    String tall1Txt = showInputDialog("Gi første heltall:");
+    int tall1 = parseInt(tall1Txt);
+    String tall2Txt = showInputDialog("Gi andre heltall:");
+    int tall2 = parseInt(tall2Txt);
+
+    // Beregner summen av de to heltallene
+    int sum = tall1 + tall2;
+
+    showMessageDialog(null, "Sum: " + sum);
+  }
+}
+
+
+
+
+/*
+ * Program for å beregne arealet av et rektangel.
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+
+public class RektangelAreal {
+  public static void main(String[] args) {
+    // Innlesing
+    String tallTxt = showInputDialog("Gi lengde:");
+    int lengde = parseInt(tallTxt);
+    tallTxt = showInputDialog("Gi bredde:");
+    int bredde = parseInt(tallTxt);
+
+    // Beregning
+    int areal = lengde * bredde;
+
+    // Utskrift
+    showMessageDialog(null, "Areal = " + areal);
+  }
+}
+
+
+
+
+/*
+ * Programmet leser inn radius i en sirkel og skriver
+ * ut arealet av den avrundet til nærmeste heltall.
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.Double.*;
+import static java.lang.Math.*;
+
+public class SirkelAreal {
+  public static void main(String[] args) {
+    // Leser inn radius
+    String radiusTxt = showInputDialog("Gi radius: r = ");
+    double radius = parseDouble(radiusTxt);
+
+    // Beregner arealet av sirkelen vha Math.PI
+    double areal = PI * radius * radius;
+
+    // Avrunder til nærmeste heltall vha Math.round
+    int helAreal = (int) round(areal);
+
+    showMessageDialog(null, "Radius: r = " + radius + "\n"
+                          + "Areal: " + helAreal);
+  }
+}
+
+
+
+
+/* 
+ * Programmet leser inn et beløp i amerikanske dollar,
+ * og skriver ut tilsvarende beløp i norske kroner.
+ */
+ 
+import static java.lang.Double.*;
+import static javax.swing.JOptionPane.*;
+
+public class ValutaOmregning {
+
+  public static void main(String[] args) {
+    double kurs = 5.88; // dagens kurs, dollar mot krone
+    
+    String tallTxt = showInputDialog("Gi dollarbeløp:");
+    double dollar = parseDouble(tallTxt);
+    
+    double kroner = dollar * kurs; 
+    
+    String ut = "Vekslebeløp: " + dollar + " USD" + "\n" +
+                "Dagens kurs: " + kurs + " NKR/USD" + "\n" +
+                "Utbetaling:  " + kroner + " NKR";
+    showMessageDialog(null, ut);
+  }
+
+}
+
+
+
+
+
+
+/*
+* Programmet leser inn et heltall mellom 0 og 1000,
+* og skriver ut summen av sifrene i tallet (tverrsummen).
+*/
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+
+public class Tverrsum {
+  public static void main(String[] args) {
+    String tallTxt = showInputDialog("Gi heltall (1-999):");
+    int tall = parseInt(tallTxt);
+
+    // Tar kopi av innlest heltall til bruk i utskriften. 
+    // Feil rettet etter innspill fra Roy Christian Wego, 2015. 
+    int heltall = tall;
+
+    // Tenk deg at  tall = "s1 s2 s3" (tre siffer i rekkefølge)
+
+    int s3 = tall % 10; // finner bakerste siffer
+    tall = tall / 10;   // tar bort bakerste siffer fra tall
+    int s2 = tall % 10; // finner bakerste siffer i redusert tall
+                        // som er det midterste i det opprinnelige
+    int s1 = tall / 10; // finner første siffer i redusert tall
+                        // som også er første siffer i det opprinnelige
+
+    int tverrsum = s1 + s2 + s3;
+
+    // Viser både sifre og tverrsum i utskriften
+    String ut = "Tallet " + heltall + " har tverrsummen: " +
+                s1 + "+" + s2 + "+" + s3 + "=" + tverrsum;
+    showMessageDialog(null, ut);
+  }
+}
+
+
+
+
+
+/*
+ * Programmet leser inn fire heltall og skriver dem ut igjen
+ * sammen med det minste av dem funnet vha. Math.min-metoden.
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+ 
+public class MinstAvFire {
+  public static void main(String[] args) {
+    // Setter sammen metodekall for dialogvindu og tallkverning
+    int tall1 = parseInt( showInputDialog("Gi heltall nr. 1:") );
+    int tall2 = parseInt( showInputDialog("Gi heltall nr. 2:") );
+    int tall3 = parseInt( showInputDialog("Gi heltall nr. 3:") );
+    int tall4 = parseInt( showInputDialog("Gi heltall nr. 4:") );
+ 
+    // I Java 8 så finnes metoden min både i Integer og i Math, og
+    // det oppstår dermed en tvetydighet som ikke var der i Java 7.
+    //
+    // Vi må dermed skrive på klassenavnet foran: Math.min
+    // Slike metodekall blir omtalt på side 61 og forklart på side
+    // 158-159 i læreboken. Se også kommentar nederst i denne filen.
+	
+    int minst1 = Math.min(tall1, tall2);
+    int minst2 = Math.min(tall3, tall4);
+
+ 
+    int allerMinste = Math.min(minst1, minst2);
+    // Alternativt oppsett uten bruk av minst1 og minst2, kun:
+    // int allerMinste = 
+    //   Math.min(Math.min(tall1, tall2), Math.min(tall3, tall4));
+ 
+    String utTxt = "Innleste tall: " + tall1 + ", " + tall2 + ", "
+                                     + tall3 + ", " + tall4 + "\n"
+                         + "Det minste tallet er: " + allerMinste;
+    showMessageDialog(null, utTxt);
+  }
+}
+
+// Statisk import gjør at vi f.eks. kan skrive parseInt i stedet for
+// Integer.parseInt. Det kan være behagelig i et nybegynnerkurs.
+// Desverre kan statisk import også føre til såkalte navnekollisjoner,
+// ved at samme metodenavn er deklarert i flere klasser, som metoden
+// min i denne oppgaven. Ved utvikling av større program vil man være
+// forsiktig med bruk av statisk import, som kommentert øverst på
+// side 195 i læreboken.
+
+
+
+
+
+
+/* 
+ * Programmet beregner antall mulige rekker på en tippekupong.
+ * Antall kamper på kupongen blir lest inn fra bruker
+ * (ikke alltid 12 kamper).
+ */ 
+import static java.lang.Integer.*; 
+import static java.lang.Math.*; 
+import static javax.swing.JOptionPane.*;
+
+public class Tippekupong {
+
+  public static void main(String[] args) { 
+    String antTxt = showInputDialog("Antall kamper:");
+    int antKamper = parseInt(antTxt);
+    
+    int antRekker = (int) pow(3, antKamper);     
+
+    String ut = "Antall rekker med " + antKamper +
+                " kamper: " + antRekker;
+    showMessageDialog(null, ut);
+  }
+  
+}
+
+
+
+
+
+/* 
+ * Programmet bytter om verdien til tre variabler x, y og z
+ * på en "sirkulær" måte, dvs. at y får startverdien til x,
+ * z får startverdien til y, og x får startverdien til z.
+ */ 
+ 
+import static javax.swing.JOptionPane.*;
+
+public class Bytt {
+
+  public static void main(String[] args) {
+    // Gir variablene "tilfeldige" startverdier
+    // (kan evt. endres til å lese inn fra bruker)
+    int x = 25;
+    int y = 7;
+    int z = 12;
+    
+    String ut = "Før: x = " + x + ", y = " + y + ", z = " + z + "\n";
+         
+    int tmp = z; // x=25, y= 7, z=12, tmp=12
+    z = y;       // x=25, y= 7, z= 7, tmp=12
+    y = x;       // x=25, y=25, z= 7, tmp=12
+    x = tmp;     // x=12, y=25, z= 7, tmp=12
+    
+    ut += "Etter: x = " + x + ", y = " + y + ", z = " + z;
+    showMessageDialog(null, ut);
+  }
+  
+}
+
+
+
+
+/*
+ * Programmet leser inn tre heltall for hhv. dag, mnd og år.
+ * Skriver tallene ut på vanlig datoformat.
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.System.*;
+import static java.lang.Integer.*;
+import static java.lang.Math.*;
+
+public class SkrivDato {
+  public static void main(String[] args) {
+    // Setter sammen dialogvindu og tallkverning
+    int dag = parseInt( showInputDialog("Gi dagnr.:") );
+    int mnd = parseInt( showInputDialog("Gi mndnr.:") );
+    int år = parseInt( showInputDialog("Gi år:") );
+
+    String utTxt = "Dato: " + dag + "." + mnd + "." + år;
+    showMessageDialog(null, utTxt);
+  }
+}
+
+
+
+
+
+/*
+ * Programmet setter en pris som skal betales og et
+ * beløp som er betalt inn. Det beregnes hvor mye som skal
+ * betales tilbake og hvordan i 10-kr og 1-kr, uten bruk
+ * av restoperatoren (%).
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+
+public class AlternativRest {
+  public static void main(String[] args) {
+    int pris = 124;
+    int beløp = 200;  // Disse to bør leses inn!
+
+    // Beregner tilbakebetalingen
+    int veksel = beløp - pris;
+
+    // Utbetaling av veksel
+    int ant10kr = veksel / 10;
+    int ant1kr = veksel - 10*ant10kr;
+
+    showMessageDialog(null, "Pris å betale: kr " + pris + "\n"
+                          + "Innbetalt: kr " + beløp + "\n"
+                          + "Tilbakebetalt 10-kr: " + ant10kr + " stk" + "\n"
+                          + "Tilbakebetalt 1-kr: " + ant1kr + " stk");
+  }
+}
+
+
+
+
+
+
+
+
+
+/* 
+ * Programmet tegner det franske flagget.
+ */
+ 
+public class FranskFlagg extends EasyGraphics {
+
+  public static void main(String[] args) {
+    launch(args);
+  }
+  
+  public void run() {
+    makeWindow("Det franske flagget");
+
+    setColor(0, 0, 255);
+    fillRectangle(50, 50, 100, 200);
+    setColor(255, 0, 0);
+    fillRectangle(250, 50, 100, 200);
+    setColor(0, 0, 0);
+    drawRectangle(50, 50, 300, 200);
+  }
+  
+}
+
+
+
+
+
+/* 
+ * Programmet tegner et hode med hatt, øyne og strekmunn.
+ */
+ 
+public class MannMedHatt extends EasyGraphics {
+
+  public static void main(String[] args) {
+    launch(args);
+  }
+  
+  public void run() {
+    makeWindow("Mann med hatt");
+    
+    // Definerer midtpunktet (x,y) og radius r til hodet.
+    // Figuren kan skaleres og flyttes ved å endre startverdiene.
+    int x = 100;
+    int y = 160;
+    int r = 80;
+    
+    // tegner hodet ved å fylle en gul sirkel
+    setColor(255, 255, 0);
+    fillCircle(x, y, r);
+    
+    // tegner øyne og munn i svart
+    setColor(0, 0, 0);
+    fillCircle(x-r/5, y-r/4, r/15);
+    fillCircle(x+r/5, y-r/4, r/15);
+    drawLine(x-r/4, y+r/2, x+r/4, y+r/2);
+    
+    // tegner hatten ved å fylle to svarte rektangler
+    fillRectangle(x-r, y-3*r/4, 2*r, r/3);
+    fillRectangle(x-5*r/8, y-3*r/2, 5*r/4, r);
+  }
+  
+}
+
+
+
+
+
+
+/* 
+ * Programmet tegner et spillbrett for "bondesjakk".
+ */
+ 
+public class Spillbrett extends EasyGraphics {
+
+  public static void main(String[] args) {
+    launch(args);
+  }
+  
+  public void run() {
+    makeWindow("Bondesjakk");
+
+    int venstre = 100;  // Øverste venstre hjørne
+    int topp = 100;     // er (x=100, y=100)
+    int rute = 200;     // Sidelengden til en rute
+    int rute2 = rute*2;
+    int rute3 = rute*3;
+    
+    // Tegner vertikale linjer
+    drawLine(venstre, topp, venstre, topp+rute3);
+    drawLine(venstre+rute, topp, venstre+rute, topp+rute3);
+    drawLine(venstre+rute2, topp, venstre+rute2, topp+rute3);
+    drawLine(venstre+rute3, topp, venstre+rute3, topp+rute3);
+    
+    // Tegner horisontale linjer
+    drawLine(venstre, topp, venstre+rute3, topp);
+    drawLine(venstre, topp+rute, venstre+rute3, topp+rute);
+    drawLine(venstre, topp+rute2, venstre+rute3, topp+rute2);
+    drawLine(venstre, topp+rute3, venstre+rute3, topp+rute3);
+    
+    // Dette kan alternativt gjøres ved å tegne 3*3 kvadrater.
+  }
+  
+}
+
+
+
+
+
+
+
+
+/* 
+ * Programmet beregner den "beste" måten å veksle et
+ * beløp i 10-kroner og 1-kroner.
+ */ 
+ 
+import static javax.swing.JOptionPane.*;
+
+public class Veksel {
+
+  public static void main(String[] args) {
+    // Gir sum (prisen å betale) og betalt beløp
+    // "tilfeldige" verdier (kan evt. lese inn fra bruker)
+    int sum = 124;
+    int beløp = 200;
+    
+    int veksel = beløp - sum ; // veksel er 76
+    
+    int ant10kr = veksel / 10; // ant10kr er 7
+    int ant1kr = veksel - 10*ant10kr; // ant1kr er 6
+    
+    String ut = veksel + " kr kan veksles i " +
+                ant10kr + " 10-kroner og " +
+                ant1kr + " 1-kroner";
+    showMessageDialog(null, ut);
+  }
+  
+}
+
+
+
+
+
+
+
+/*
+ * Skriver ut et desimaltall formatert
+ * vha. String-klassen og format-metoden som er der.
+ */
+import static java.lang.System.*;
+import static java.lang.String.*;
+
+public class FormaterDesimaltall {
+  public static void main(String args[]) {
+	// Setter bare et beløp
+    double beløp = 257.3421;
+
+    out.println("Vanlig oppsett: " + beløp);
+
+    // Format: To siffer etter komma
+    out.println("Formatert verdi: " + format("%.2f", beløp) );    
+    // NB! Hvordan bl.a. desimaltall skrives ut er avhengig av
+    // installasjonsinnstillingene for JVM. Sjekk utskriften på din 
+    // egen maskin, blir det punktum (257.34) eller komma (257,34)?
+
+    // Engelsk/amerikansk oppsett har punktum, og dette kan vanligvis 
+    // ordnes ved følgende metode-kall på format:    
+    out.println("Formattert verdi (USA): " 
+               + format(java.util.Locale.US,"%.2f", beløp));
+  }
+}
+
+
+
+
+
+
+
+/* 
+ * Programmet bytter om verdien til tre variabler x, y og z
+ * på en "sirkulær" måte, dvs. at y får startverdien til x,
+ * z får startverdien til y, og x får startverdien til z.
+ *
+ * Dette gjøres uten bruk av hjelpevariabler.
+ */ 
+ 
+import static javax.swing.JOptionPane.*;
+
+public class ByttUtenHjelpevariabler {
+
+  public static void main(String[] args) {
+    // Gir variablene "tilfeldige" startverdier
+    // (kan evt. endres til å lese inn fra bruker)
+    int x = 25;
+    int y = 7;
+    int z = 12;
+    
+    String ut = "Før: x = " + x + ", y = " + y + ", z = " + z + "\n";
+    
+    // x=25, y=7, z=12
+                
+    z = z + y;   // x=25, y= 7, z=19
+    y = z - y;   // x=25, y=12, z=19
+    z = z - y;   // x=25, y=12, z= 7
+    
+    // Nå har y og z byttet verdier
+    
+    x = x + y;   // x=37, y=12, z= 7
+    y = x - y;   // x=37, y=25, z= 7
+    x = x - y;   // x=12, y=25, z= 7
+    
+    ut += "Etter: x = " + x + ", y = " + y + ", z = " + z;
+    showMessageDialog(null, ut);
+  }
+  
+}
+
+
+
+
+
+
+
+/*
+ * Programmet er en utvidelse av Unicode-eksemplet 
+ * på side 59, der et innlest kodenummer (int) blir
+ * konvertert til tegn (char). Nå blir dette tegnet 
+ * konvertert tilbake til kodenummeret.
+ */
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.*;
+ 
+public class UnicodeMotsatt {
+ 
+  public static void main(String[] args) {
+    String melding = "Kodenummer: ";
+    String kodeTxt = showInputDialog(melding);
+    int kodeNr = parseInt(kodeTxt);
+ 
+    char tegn = (char) kodeNr;
+ 
+    melding = melding + kodeNr + " => " + tegn;
+
+    // Utvidelse: Automatisk typetvang 'ned' til 
+    // den mindre datatypen char
+    int tegnNr = tegn;
+    melding = melding + "\n" 
+            + "Enkelttegn " + tegn + " => " + tegnNr;
+
+    showMessageDialog(null, melding);
+  }
+ 
+}
+
+
+
+
+
+
+
+// Felles løsningsforslag for oppgave 16a, b og c.
+
+import static java.lang.Integer.*;
+ 
+public class SirkelKvadrater extends EasyGraphics {
+ 
+  public static void main(String[] args) {
+    launch(args);
+  }
+ 
+  public void run() {
+    makeWindow("TegnKvadrat");
+ 
+    // Bør leses inn, sjekk læreboka! 
+    int x = 150;
+    int y = 150;
+    int h = 450;
+ 
+    // Det store kvadratet
+    drawRectangle(x, y, h, h);
+
+    // Den store sirkelen
+    int nyH = h/2;
+    int senterX = x + nyH;
+    int senterY = y + nyH; 
+
+    // Lager gul ring
+    setColor(255,255,0);
+    fillCircle(senterX, senterY, nyH);
+    // Merker av svart ring i ytterkant
+    setColor(0,0,0);
+    drawCircle(senterX, senterY, nyH);
+
+
+    // Den lille sirkelen
+    int radius = (int)(nyH/Math.sqrt(2)); 
+    setColor(255,255,255);
+    fillCircle(senterX, senterY, radius);
+    // Merker av svart ring i ytterkant
+    setColor(0,0,0);
+    drawCircle(senterX, senterY, radius);
+ 
+    // Det lille kvadratet
+    int nyX = x + nyH/2;
+    int nyY = y + nyH/2;
+    fillRectangle(nyX, nyY, nyH, nyH);
+
+
+  }
+ 
+}
+
+
+
+
+
+
+
+
+/* 
+ * Programmet tegner det franske flagget. Bruker
+ * kan skalere flagget ved å skrive inn en prosentsats.
+ * 100 (prosent) gir "vanlig" størrelse, 50 halv størrelse,
+ * 200 dobbel størrelse.
+ */
+
+import static java.lang.Integer.*;
+
+
+public class FranskFlaggMedSkalering extends EasyGraphics {
+
+  public static void main(String[] args) {
+    launch(args);
+  }
+  
+  public void run() {
+    makeWindow("Det franske flagget");
+    
+    String tallTxt = getText("Skalering i prosent:");    
+    int str = parseInt(tallTxt);
+  
+    int vanligBredde = 300, vanligHøyde = 200;
+    int bredde = vanligBredde*str/100;
+    int høyde = vanligHøyde*str/100;
+    
+    setColor(0, 0, 255);
+    fillRectangle(50, 50, bredde/3, høyde);
+    setColor(255, 0, 0);
+    fillRectangle(50+2*bredde/3, 50, bredde/3, høyde);
+    setColor(0, 0, 0);
+    drawRectangle(50, 50, bredde, høyde);
+  }
+}
+
+
+
+
+
+
+
+/* 
+ * Programmet tegner en "smiley".
+ */
+ 
+public class Smiley extends EasyGraphics {
+
+  public static void main(String[] args) {
+    launch(args);
+  }
+  
+  public void run() {
+    makeWindow("Smiley");
+    
+    // Definerer midtpunktet (x,y) og radius r til hodet.
+    // Figuren kan skaleres og flyttes ved å endre startverdiene.
+    int x = 100;
+    int y = 160;
+    int r = 80;
+    
+    // tegner hodet ved å fylle en gul sirkel
+    setColor(255, 255, 0);
+    fillCircle(x, y, r);
+    
+    // tegner øyne og munn i svart
+    setColor(0, 0, 0);
+    fillEllipse(x-r/5, y-r/4, r/20, r/10);
+    fillEllipse(x+r/5, y-r/4, r/20, r/10);
+    drawArc(x, y+r/4, 2*r/5, 2*r/5, 220, 100);
+  }
+  
+}
+
+
+
+
+
+
+
+/*
+ * Programmet presenterer temperaturmålinger for dagene i en uke på
+ * et gitt (tenkt) sted i et søylediagram.
+ *
+ * Det vil si, løsningsforslaget viser kun søyler for mandag-onsdag.
+ * Fortsett gjerne på egen hånd fram til søndag - så vil du oppdage
+ * at du må skrive nesten samme kode flere ganger. Etter at du har lært
+ * om gjentak (løkker) i kapittel 3 og tabeller i kapittel 5, kan du vende
+ * tilbake til denne oppgaven og løse den på en langt mer elegant måte!
+ *
+ */
+public class SoyleDiagram extends EasyGraphics {
+  
+  public static void main(String[] args) {
+    launch(args);
+  }
+  
+  public void run() {
+
+    // Nederste venstre hjørne til venstre søyle
+    int x = 50;
+    int y = 700;
+
+    // Bredden til en søyle
+    int bredde = 50;
+
+    // Luft mellom søylene
+    int luft = bredde/2;
+
+    // Omregningsfaktor fra målt temperatur til piksler
+    int faktor = 50;
+
+    makeWindow("Søylediagram");
+    setFont("Arial", 24);
+
+    // Vis søyle for mandag
+    String ukedag = "man";
+    int temp = 5;               // Målt temperatur
+    int høyde = temp*faktor;    // Regner om til piksler
+    setColor(160, 160, 160);    // Grå fyllfarge
+    fillRectangle(x, y-høyde, bredde, høyde);
+    setColor(0, 0, 0);          // Sort til omriss og tekst
+    drawRectangle(x, y-høyde, bredde, høyde);
+    drawString(ukedag, x, y+luft);
+    drawString(temp+"", x+bredde/4, y-høyde-luft);
+ 
+    // Vis søyle for tirsdag
+    ukedag = "tir";
+    temp = 5;
+    høyde = temp*faktor;        // Må regne ut på nytt for denne dagen
+    x = x + bredde + luft;      // Flytt til høyre
+    setColor(160, 160, 160);
+    fillRectangle(x, y-høyde, bredde, høyde);
+    setColor(0, 0, 0);
+    drawRectangle(x, y-høyde, bredde, høyde);
+    drawString(ukedag, x, y+luft);
+    drawString(temp+"", x+bredde/4, y-høyde-luft);
+
+    // Vis søyle for onsdag
+    ukedag = "ons";
+    temp = 7;
+    høyde = temp*faktor;
+    x = x + bredde + luft;
+    setColor(160, 160, 160);
+    fillRectangle(x, y-høyde, bredde, høyde);
+    setColor(0, 0, 0);
+    drawRectangle(x, y-høyde, bredde, høyde);
+    drawString(ukedag, x, y+luft);
+    drawString(temp+"", x+bredde/4, y-høyde-luft);
+
+    // Og så videre for torsdag til søndag.
+
+    // Men husk: Ved hjelp av løkker (kap. 3) og tabeller (kap. 5) kan
+    // denne oppgaven løses mer elegant og med adskillig færre kodelinjer!
+
+  }
+}
