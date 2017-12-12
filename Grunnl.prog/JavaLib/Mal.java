@@ -7,7 +7,9 @@ public class Mal {
 
   public static void main(String[] args) {
  // Leser inn
-
+char myChar = 'A';
+int myInt = 65;
+out.println(myChar == myInt);
 
     // Skriv Java-setninger her
   }

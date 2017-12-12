@@ -5,3 +5,17 @@ Bytter om på verdien i to variabler
       x = x - y;
 ________________________________________
 
+
+
+
++	<-- Dette tegnet betyr i noen sammenhenger "og" og i andre sammenhenger er den en regneoperator. Hvis den hører til en string eller i utskrift betyr det og, hvis det skal legges sammen to integere eller double variabler så er det en regneoperator. f.eks:
+eks1:
+int a = 2;
+int b = 3;
+int svar = 2+3 // integeren svar vil her ha verdien 5 
+---
+eks2:
+String u = "Dette er en utskrift. " + "Svaret på forgje eksempel er: " + a + "+" + b + "=" + svar // Denne strengen (u) vil nå inneholde teksten "Dette er en utskrift. Svaret på forgje eksempel er: 2+3=5". 
+---
+"/n"	<-- Ny linje, brukes når du skal ha noe i en utskrift, enten i showMessageDialog eller i strengen (String)
+
