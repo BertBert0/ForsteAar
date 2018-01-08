@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Programmet leser inn ett siffer og teller antall
  * forekomster som er mindre enn dette i et tallsett
  * som allerede er lagret i en tabell.
